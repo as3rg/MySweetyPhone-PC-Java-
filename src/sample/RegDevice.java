@@ -78,6 +78,7 @@ public class RegDevice {
                     Error.setText("Вы уже используете это имя!");
                 }else if(i.equals(0L)){
                     props.setProperty("name",PhoneName.getText());
+                    props.setProperty("regdate",((Long) result.get("regdate")).toString());
                     props.store(new FileOutputStream(location.getPath()+"/../../properties.properties"), "");
                     AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
                     MainPane.getChildren().setAll(pane);
@@ -90,7 +91,7 @@ public class RegDevice {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Ошибка");
                 alert.setHeaderText(null);
-                alert.setContentText(e.getMessage());
+                alert.setContentText(e.toString());
                 alert.show();
             }
         };

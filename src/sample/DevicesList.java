@@ -4,10 +4,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
@@ -15,16 +12,14 @@ import javafx.util.Callback;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-import java.awt.*;
+import java.awt.Button;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Properties;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class DevicesList {
 
@@ -80,7 +75,7 @@ public class DevicesList {
     private int id;
 
     @FXML
-    void initialize() throws IOException {
+    public void initialize() throws IOException {
         devices = FXCollections.observableArrayList();
         FileInputStream propFile = new FileInputStream(location.getPath()+"/../../properties.properties");
         Properties props = new Properties();
@@ -172,7 +167,7 @@ public class DevicesList {
                                     Alert alert = new Alert(Alert.AlertType.ERROR);
                                     alert.setTitle("Ошибка");
                                     alert.setHeaderText(null);
-                                    alert.setContentText(e.getMessage());
+                                    alert.setContentText(e.toString());
                                     alert.show();
                                 }
                             };

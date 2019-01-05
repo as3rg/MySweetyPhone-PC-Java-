@@ -50,13 +50,14 @@ public class Login {
             propFile.close();
 
             int id = Integer.parseInt((String) props.getOrDefault("id", "-1"));
+            int regdate = Integer.parseInt((String) props.getOrDefault("regdate", "-1"));
             String login = (String) props.getOrDefault("login", "");
             String name = (String) props.getOrDefault("name", "");
             if (Long.parseLong((String) props.getOrDefault("id", "-1")) != -1L) {
 
                 Runnable r = () -> {
                     try {
-                        URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&Login=" + login + "&Id=" + id + "&Name=" + name);
+                        URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate="+regdate+"&Login=" + login + "&Id=" + id + "&Name=" + name);
 
                         HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                         connection.setRequestMethod("GET");
@@ -86,7 +87,7 @@ public class Login {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Ошибка");
                         alert.setHeaderText(null);
-                        alert.setContentText(e.getMessage());
+                        alert.setContentText(e.toString());
                         alert.show();
                     }
                 };
@@ -154,7 +155,7 @@ public class Login {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Ошибка");
                 alert.setHeaderText(null);
-                alert.setContentText(e.getMessage());
+                alert.setContentText(e.toString());
                 alert.show();
             }
         };

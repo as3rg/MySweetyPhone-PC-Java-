@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_mysweetyphone(pc)" default="compile.module.mysweetyphone(pc)">
+  <dirname property="module.mysweetyphone(pc).basedir" file="${ant.file.module_mysweetyphone(pc)}"/>
+  
+  <property name="module.jdk.home.mysweetyphone(pc)" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.mysweetyphone(pc)" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.mysweetyphone(pc)" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.mysweetyphone(pc)" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="mysweetyphone(pc).output.dir" value="${module.mysweetyphone(pc).basedir}/out/production/MySweetyPhone(PC)"/>
+  <property name="mysweetyphone(pc).testoutput.dir" value="${module.mysweetyphone(pc).basedir}/out/test/MySweetyPhone(PC)"/>
+  
+  <path id="mysweetyphone(pc).module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="mysweetyphone(pc).module.production.classpath">
+    <path refid="${module.jdk.classpath.mysweetyphone(pc)}"/>
+    <path refid="library.json-simple-1.1.1.classpath"/>
+  </path>
+  
+  <path id="mysweetyphone(pc).runtime.production.module.classpath">
+    <pathelement location="${mysweetyphone(pc).output.dir}"/>
+    <path refid="library.json-simple-1.1.1.classpath"/>
+  </path>
+  
+  <path id="mysweetyphone(pc).module.classpath">
+    <path refid="${module.jdk.classpath.mysweetyphone(pc)}"/>
+    <pathelement location="${mysweetyphone(pc).output.dir}"/>
+    <path refid="library.json-simple-1.1.1.classpath"/>
+  </path>
+  
+  <path id="mysweetyphone(pc).runtime.module.classpath">
+    <pathelement location="${mysweetyphone(pc).testoutput.dir}"/>
+    <pathelement location="${mysweetyphone(pc).output.dir}"/>
+    <path refid="library.json-simple-1.1.1.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.mysweetyphone(pc)">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.mysweetyphone(pc)">
+    <patternset refid="excluded.from.module.mysweetyphone(pc)"/>
+  </patternset>
+  
+  <path id="mysweetyphone(pc).module.sourcepath">
+    <dirset dir="${module.mysweetyphone(pc).basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.mysweetyphone(pc)" depends="compile.module.mysweetyphone(pc).production,compile.module.mysweetyphone(pc).tests" description="Compile module MySweetyPhone(PC)"/>
+  
+  <target name="compile.module.mysweetyphone(pc).production" depends="register.custom.compilers" description="Compile module MySweetyPhone(PC); production classes">
+    <mkdir dir="${mysweetyphone(pc).output.dir}"/>
+    <javac2 destdir="${mysweetyphone(pc).output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.mysweetyphone(pc)}/javac">
+      <compilerarg line="${compiler.args.mysweetyphone(pc)}"/>
+      <bootclasspath refid="mysweetyphone(pc).module.bootclasspath"/>
+      <classpath refid="mysweetyphone(pc).module.production.classpath"/>
+      <src refid="mysweetyphone(pc).module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.mysweetyphone(pc)"/>
+    </javac2>
+    
+    <copy todir="${mysweetyphone(pc).output.dir}">
+      <fileset dir="${module.mysweetyphone(pc).basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.mysweetyphone(pc).tests" depends="register.custom.compilers,compile.module.mysweetyphone(pc).production" description="compile module MySweetyPhone(PC); test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.mysweetyphone(pc)" description="cleanup module">
+    <delete dir="${mysweetyphone(pc).output.dir}"/>
+    <delete dir="${mysweetyphone(pc).testoutput.dir}"/>
+  </target>
+</project>
