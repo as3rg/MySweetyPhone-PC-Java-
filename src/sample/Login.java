@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -88,6 +89,7 @@ public class Login {
                         alert.setTitle("Ошибка");
                         alert.setHeaderText(null);
                         alert.setContentText(e.toString());
+                        alert.setOnCloseRequest(event -> Platform.exit());
                         alert.show();
                     }
                 };
@@ -156,6 +158,7 @@ public class Login {
                 alert.setTitle("Ошибка");
                 alert.setHeaderText(null);
                 alert.setContentText(e.toString());
+                alert.setOnCloseRequest(event -> Platform.exit());
                 alert.show();
             }
         };

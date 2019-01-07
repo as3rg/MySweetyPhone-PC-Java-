@@ -73,6 +73,7 @@ public class DevicesList {
     private String name;
     private String login;
     private int id;
+    private int regdate;
 
     @FXML
     public void initialize() throws IOException {
@@ -82,30 +83,40 @@ public class DevicesList {
         props.load(propFile);
         propFile.close();
         id = Integer.parseInt((String)props.getOrDefault("id","-1"));
+        regdate = Integer.parseInt((String)props.getOrDefault("regdate","-1"));
         login = (String)props.getOrDefault("login","");
         name = (String)props.getOrDefault("name","");
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Ошибка");
-        alert.setHeaderText(null);
-        alert.setContentText("Ваше устройство не зарегистрировано!");
+        URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate="+regdate+"&Login=" + login + "&Id=" + id + "&Name=" + name);
+
+        HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+        connection.setRequestMethod("GET");
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
 
         Runnable r = () -> {
             try {
-                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=ShowDevices&Login=" + login + "&Id=" + id + "&MyName=" + name);
+                URL obj2 = new URL("http://mysweetyphone.herokuapp.com/?Type=ShowDevices&RegDate="+regdate+"&Login=" + login + "&Id=" + id + "&MyName=" + name);
 
-                HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
-                connection.setRequestMethod("GET");
+                HttpURLConnection connection2 = (HttpURLConnection) obj2.openConnection();
+                connection2.setRequestMethod("GET");
 
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
+                BufferedReader in2 = new BufferedReader(new InputStreamReader(connection2.getInputStream()));
+                String inputLine2;
+                StringBuffer response2 = new StringBuffer();
 
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
+                while ((inputLine2 = in2.readLine()) != null) {
+                    response2.append(inputLine2);
                 }
-                in.close();
+                in2.close();
 
-                JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                JSONObject result = (JSONObject) JSONValue.parse(response2.toString());
                 Long i = (Long) result.getOrDefault("code", 2);
                 if(i.equals(0L)){
                     for(String device : (ArrayList<String>)result.get("PCs")){
@@ -115,14 +126,14 @@ public class DevicesList {
                         devices.add(new Device(device, true));
                     }
                 }else if(i.equals(4L)){
-                    alert.showAndWait();
-                    Platform.exit();
+                    throw new Exception("Ваше устройство не зарегистрировано!");
                 }
             } catch (Exception e) {
                 Alert alert2 = new Alert(Alert.AlertType.ERROR);
                 alert2.setTitle("Ошибка");
                 alert2.setHeaderText(null);
                 alert2.setContentText(e.getMessage());
+                alert2.setOnCloseRequest(event -> Platform.exit());
                 alert2.show();
             }
         };
@@ -151,15 +162,14 @@ public class DevicesList {
                         button.setOnMouseClicked(event -> {
                             Runnable r = () -> {
                                 try {
-                                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=RemoveDevice&Login=" + login + "&MyName=" + name + "&Id=" + id + "&Name=" + devices.get(getIndex()).getName());
+                                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=RemoveDevice&RegDate="+regdate+"&Login=" + login + "&MyName=" + name + "&Id=" + id + "&Name=" + devices.get(getIndex()).getName());
 
                                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                                     connection.setRequestMethod("GET");
                                     connection.getInputStream();
                                     if (name.equals(devices.get(getIndex()).getName())){
                                         devices.remove(getIndex());
-                                        alert.showAndWait();
-                                        Platform.exit();
+                                        throw new Exception("Ваше устройство не зарегистрировано!");
                                     }
                                     devices.remove(getIndex());
 
@@ -168,6 +178,7 @@ public class DevicesList {
                                     alert.setTitle("Ошибка");
                                     alert.setHeaderText(null);
                                     alert.setContentText(e.toString());
+                                    alert.setOnCloseRequest(event2 -> Platform.exit());
                                     alert.show();
                                 }
                             };

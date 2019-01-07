@@ -17,7 +17,8 @@
                </padding></VBox>
          </content>
       </ScrollPane>
-      <TextArea fx:id="MessageText" layoutX="11.0" layoutY="531.0" prefHeight="56.0" prefWidth="1100.0" promptText="Сообщение" />
-      <Button layoutX="1117.0" layoutY="531.0" mnemonicParsing="false" onAction="#onSendClick" prefHeight="56.0" prefWidth="90.0" text="Отправить" />
+      <TextArea fx:id="MessageText" layoutX="11.0" layoutY="531.0" prefHeight="56.0" prefWidth="1047.0" promptText="Сообщение" />
+      <Button layoutX="1065.0" layoutY="531.0" mnemonicParsing="false" onAction="#onSendClick" prefHeight="56.0" prefWidth="90.0" text="Отправить" />
+      <Button layoutX="1162.0" layoutY="531.0" mnemonicParsing="false" onAction="#onFileClicked" prefHeight="56.0" prefWidth="90.0" text="Файл" />
    </children>
 </AnchorPane>

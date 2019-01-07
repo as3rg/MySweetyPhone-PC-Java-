@@ -79,4 +79,16 @@
     <delete dir="${mysweetyphone(pc).output.dir}"/>
     <delete dir="${mysweetyphone(pc).testoutput.dir}"/>
   </target>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-core</artifactId>
+      <version>1.0.3</version>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.6</version>
+    </dependency>
+  </dependencies>
 </project>
