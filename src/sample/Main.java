@@ -14,7 +14,9 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
         primaryStage.setTitle("MySweetyPhone");
-        primaryStage.setScene(new Scene(root,1270,720 ));
+        Scene scene = new Scene(root,1270,720 );
+        scene.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
+        primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("Images/Icon.png")));
         primaryStage.setOnCloseRequest(event -> Platform.exit());

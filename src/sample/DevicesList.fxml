@@ -6,11 +6,11 @@
 
 <AnchorPane fx:id="MainPane" prefHeight="620.0" prefWidth="1280" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.DevicesList">
    <children>
-      <TableView fx:id="Table" prefHeight="620.0" prefWidth="1280.0">
+      <TableView fx:id="Table" prefHeight="620.0" prefWidth="1280.0" style="-fx-background-color: #202020; -fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, #d53369, #cbad6d);">
         <columns>
-          <TableColumn fx:id="Type" prefWidth="149.0" text="Тип" />
-          <TableColumn fx:id="Name" prefWidth="1061.0" text="Имя" />
-            <TableColumn fx:id="Remove" prefWidth="69.0" text="Удалить" />
+          <TableColumn fx:id="Type" prefWidth="149.0" styleClass=".table-column" text="Тип" />
+          <TableColumn fx:id="Name" prefWidth="1061.0" styleClass=".table-column" text="Имя" />
+          <TableColumn fx:id="Remove" prefWidth="69.0" styleClass=".table-column" text="Удалить" />
         </columns>
       </TableView>
    </children>

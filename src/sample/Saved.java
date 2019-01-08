@@ -5,15 +5,17 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -51,6 +53,9 @@ public class Saved {
 
     @FXML
     private VBox Messages;
+
+    @FXML
+    private ScrollPane scrollPane;
 
     @FXML
     private TextArea MessageText;
@@ -96,7 +101,7 @@ public class Saved {
                     throw new Exception("Неверные данные");
                 }else if(i.equals(0L)){
                     for(Object message : (JSONArray)result.get("messages")){
-                        DrawMessage((String)((JSONObject)message).get("msg"),(Long)((JSONObject)message).get("date"),(String)((JSONObject)message).get("sender"), (String)((JSONObject)message).get("type"));
+                        DrawMessage(((String)((JSONObject)message).get("msg")).replace("\\n","\n"),(Long)((JSONObject)message).get("date"),(String)((JSONObject)message).get("sender"), (String)((JSONObject)message).get("type"));
                     }
                 }else if(i.equals(4L)){
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -128,18 +133,16 @@ public class Saved {
         Date Date = new java.util.Date(date * 1000L);
         SimpleDateFormat sdf = new java.text.SimpleDateFormat("HH:mm dd.MM.yyyy");
         VBox vBox = new VBox();
-        Label TextLabel = new Label();
+        Text TextLabel = new Text();
         Label DateLabel = new Label();
-        vBox.setStyle("-fx-background-color: #1e90ff; -fx-background-radius: 10;");
+        vBox.setStyle("-fx-background-color: linear-gradient(from 0% 100% to 100% 0%, #d53369, #cbad6d); -fx-background-radius: 10;");
+        vBox.setMaxWidth(460);
         DateLabel.setText(sdf.format(Date) + ", " + sender);
         DateLabel.setTextFill(Color.LIGHTGRAY);
         DateLabel.setPadding(new Insets(0, 10, 0, 10));
         TextLabel.setText(text);
-        TextLabel.setMaxWidth(460);
-        TextLabel.setMinWidth(DateLabel.getPrefWidth());
-        TextLabel.setPadding(new Insets(10, 10, 10, 10));
-        TextLabel.setAlignment(Pos.CENTER_LEFT);
-        TextLabel.setWrapText(true);
+        vBox.setPadding(new Insets(10, 10, 10, 10));
+        TextLabel.setFont(Font.font(15));
         vBox.getChildren().add(TextLabel);
         vBox.getChildren().add(DateLabel);
         if(type.equals("File")){
@@ -148,7 +151,7 @@ public class Saved {
             ImageView Download = new ImageView(image);
             Download.setFitWidth(150);
             Download.setFitHeight(150);
-            TextLabel.setMaxWidth(150);
+            //TextLabel.setMaxWidth(150);
             Download.setOnMouseClicked(event -> {
                 Runnable r = () -> {
                     try {
@@ -181,7 +184,7 @@ public class Saved {
         delete.setOnAction(event -> {
             Runnable r = () -> {
                 try {
-                    URL obj = new URL("https://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20"));
+                    URL obj = new URL("https://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
 
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
@@ -226,20 +229,20 @@ public class Saved {
             Thread t = new Thread(r);
             t.run();
         });
-
         vBox.setOnContextMenuRequested((EventHandler<Event>) event -> contextMenu.show(vBox, MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y));
         Messages.getChildren().add(vBox);
-        if(needsAnim){
+        if (needsAnim) {
             Create anim = new Create(vBox);
             anim.play();
         }
+        //scrollPane.vvalueProperty().bind(vBox.heightProperty());
     }
 
     @FXML
     private void onSendClick(){
         Runnable r = () -> {
             try {
-                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=SendMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&MsgType=Text&Msg="+MessageText.getText());
+                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=SendMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&MsgType=Text&Msg="+MessageText.getText().replace(" ","%20").replace("\n","\\n"));
 
                 HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                 connection.setRequestMethod("GET");

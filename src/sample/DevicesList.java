@@ -12,14 +12,15 @@ import javafx.util.Callback;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-import java.awt.Button;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Properties;
+import java.util.ResourceBundle;
 
 public class DevicesList {
 
@@ -153,11 +154,12 @@ public class DevicesList {
                     @Override
                     public void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
-                        button.setTextFill(Paint.valueOf("#FF0000"));
+                        button.setTextFill(Paint.valueOf("#FFFFFF"));
+
                         if (devices.size() > getIndex() && getIndex() != -1)
                             if (name.equals(devices.get(getIndex()).getName())){
-                                button.setTextFill(Paint.valueOf("#FFFFFF"));
-                                button.setStyle("-fx-background-color: red;");
+                                button.setTextFill(Paint.valueOf("linear-gradient(from 0% 0% to 100% 100%, #FC354C, #0ABFBC)"));
+                                button.setStyle("-fx-background-color: #ffffff");
                             }
                         button.setOnMouseClicked(event -> {
                             Runnable r = () -> {

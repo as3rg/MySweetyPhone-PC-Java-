@@ -1,0 +1,30 @@
+.root, .scroll-pane, .scroll-bar, .tab-pane, .text-area, .tab-pane .content, .tab-pane > .tab-header-area > .tab-header-background{
+    -fx-background-color: #202020;
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, #d53369, #cbad6d);
+}
+
+.button{
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #d53369, #cbad6d);
+    -fx-background-radius: 28;
+}
+
+.text-area, .text-area .content {
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #303030;
+}
+
+.tab-pane > .tab-header-area > .tab-header-background{
+    -fx-border-color: #FFFFFF;
+    -fx-border-width: 0 0 1 0;
+}
+
+.table-column{
+    -fx-background-color: #202020;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 0 1 0 0;
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, #d53369, #cbad6d);
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, #d53369, #cbad6d);
+}
