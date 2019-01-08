@@ -45,7 +45,7 @@ public class MainActivity {
         ReplaceToDevicesList.getChildren().setAll(pane);
         pane = Saved.load();
         ReplaceToSaved.getChildren().setAll(pane);
-        Timeline timeline = new Timeline(new KeyFrame(new Duration(10000), ev -> {
+        Timeline timeline = new Timeline(new KeyFrame(new Duration(300000), ev -> {
             switch (TabPane.getSelectionModel().getSelectedItem().getText()){
                 case "Устройства":
                     try {
@@ -56,6 +56,8 @@ public class MainActivity {
                     break;
                 case "Сохраненное":
                     ((Saved)Saved.getController()).initialize();
+                    break;
+                default:
                     break;
             }
         }));

@@ -93,6 +93,12 @@
   <path id="library.json-simple-1.1.1.classpath">
     <pathelement location="C:/Users/Alex/Downloads/json-simple-1.1.1.jar"/>
   </path>
+  
+  <path id="library.lib.classpath">
+    <fileset dir="C:/Users/Alex/Downloads/lib">
+      <patternset refid="library.patterns"/>
+    </fileset>
+  </path>
   <!-- Register Custom Compiler Taskdefs -->
   <property name="javac2.home" value="${idea.home}/lib"/>
   <path id="javac2.classpath">
