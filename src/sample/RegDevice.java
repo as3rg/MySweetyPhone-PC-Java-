@@ -44,7 +44,7 @@ public class RegDevice {
 
     @FXML
     private void onNextClick() throws IOException {
-        FileInputStream propFile = new FileInputStream(location.getPath()+"/../../properties.properties");
+        FileInputStream propFile = new FileInputStream("properties.properties");
         Properties props = new Properties();
         props.load(propFile);
         int id = Integer.parseInt((String)props.getOrDefault("id","-1"));
@@ -80,7 +80,7 @@ public class RegDevice {
                 }else if(i.equals(0L)){
                     props.setProperty("name",PhoneName.getText());
                     props.setProperty("regdate",((Long) result.get("regdate")).toString());
-                    props.store(new FileOutputStream(location.getPath()+"/../../properties.properties"), "");
+                    props.store(new FileOutputStream("properties.properties"), "");
                     AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
                     MainPane.getChildren().setAll(pane);
                 }else{
@@ -95,6 +95,7 @@ public class RegDevice {
                 alert.setContentText(e.toString());
                 alert.setOnCloseRequest(event -> Platform.exit());
                 alert.show();
+                e.printStackTrace();
             }
         };
         Thread t = new Thread(r);

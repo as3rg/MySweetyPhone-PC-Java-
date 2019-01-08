@@ -8,7 +8,11 @@
     -fx-background-radius: 28;
 }
 
-.text-area, .text-area .content {
+.label{
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, #d53369, #cbad6d);
+}
+
+.text-area, .text-area .content, .text-field, .text-field .content{
     -fx-text-fill: #ffffff;
     -fx-background-color: #303030;
 }
@@ -27,4 +31,8 @@
 
 .table-view .column-header .label {
     -fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, #d53369, #cbad6d);
+}
+
+.text-area{
+
 }

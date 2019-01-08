@@ -11,6 +11,7 @@ import sample.Anims.Shake;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -42,14 +43,13 @@ public class Login {
     private AnchorPane MainPane;
 
     @FXML
-    void initialize() throws IOException {
-        File file = new File(location.getPath()+"/../../properties.properties");
+    void initialize() throws IOException, URISyntaxException {
+        File file = new File("properties.properties");
         if (file.exists()) {
             FileInputStream propFile = new FileInputStream(file);
             Properties props = new Properties();
             props.load(propFile);
             propFile.close();
-
             int id = Integer.parseInt((String) props.getOrDefault("id", "-1"));
             int regdate = Integer.parseInt((String) props.getOrDefault("regdate", "-1"));
             String login = (String) props.getOrDefault("login", "");
@@ -59,7 +59,6 @@ public class Login {
                 Runnable r = () -> {
                     try {
                         URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate="+regdate+"&Login=" + login + "&Id=" + id + "&Name=" + name);
-
                         HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                         connection.setRequestMethod("GET");
 
@@ -91,6 +90,7 @@ public class Login {
                         alert.setContentText(e.toString());
                         alert.setOnCloseRequest(event -> Platform.exit());
                         alert.show();
+                        e.printStackTrace();
                     }
                 };
                 Thread t = new Thread(r);
@@ -127,7 +127,6 @@ public class Login {
                 }
                 in.close();
 
-
                 JSONObject result = (JSONObject) JSONValue.parse(response.toString());
                 Long i = (Long) result.getOrDefault("code", 2);
                 Shake onErrorShake = new Shake(IsLogin ? LoginButton : RegButton);
@@ -140,8 +139,9 @@ public class Login {
                     Error.setText(IsLogin ? "Ошибка! Неверное имя или пароль" : "Ошибка! Это имя уже используется");
                     onErrorShake.play();
                 } else if (i.equals(0L)) {
-                    File file = new File(location.getPath()+"/../../properties.properties");
-                    file.createNewFile();
+                    File file = new File("properties.properties");
+                    if(!file.exists())
+                        file.createNewFile();
                     FileOutputStream propFile = new FileOutputStream(file);
                     Properties props = new Properties();
                     props.setProperty("login",Nick.getText());
@@ -151,7 +151,8 @@ public class Login {
 
                     AnchorPane pane = FXMLLoader.load(getClass().getResource("RegDevice.fxml"));
                     MainPane.getChildren().setAll(pane);
-
+                }else {
+                    throw new Exception("Ошибка приложения!");
                 }
             }catch (Exception e){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -160,6 +161,7 @@ public class Login {
                 alert.setContentText(e.toString());
                 alert.setOnCloseRequest(event -> Platform.exit());
                 alert.show();
+                e.printStackTrace();
             }
         };
         Thread t = new Thread(r);

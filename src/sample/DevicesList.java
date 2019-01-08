@@ -79,7 +79,7 @@ public class DevicesList {
     @FXML
     public void initialize() throws IOException {
         devices = FXCollections.observableArrayList();
-        FileInputStream propFile = new FileInputStream(location.getPath()+"/../../properties.properties");
+        FileInputStream propFile = new FileInputStream("properties.properties");
         Properties props = new Properties();
         props.load(propFile);
         propFile.close();
@@ -136,6 +136,7 @@ public class DevicesList {
                 alert2.setContentText(e.getMessage());
                 alert2.setOnCloseRequest(event -> Platform.exit());
                 alert2.show();
+                e.printStackTrace();
             }
         };
         Thread t = new Thread(r);
@@ -182,6 +183,7 @@ public class DevicesList {
                                     alert.setContentText(e.toString());
                                     alert.setOnCloseRequest(event2 -> Platform.exit());
                                     alert.show();
+                                    e.printStackTrace();
                                 }
                             };
                             Thread t = new Thread(r);

@@ -70,7 +70,7 @@ public class Saved {
         Messages.getChildren().clear();
         Runnable r = () -> {
             try {
-                FileInputStream propFile = new FileInputStream(location.getPath() + "/../../properties.properties");
+                FileInputStream propFile = new FileInputStream("properties.properties");
                 Properties props = new Properties();
                 props.load(propFile);
                 propFile.close();
@@ -120,6 +120,7 @@ public class Saved {
                 alert.setContentText(e.toString());
                 alert.setOnCloseRequest(event -> Platform.exit());
                 alert.show();
+                e.printStackTrace();
             }
         };
         Thread t = new Thread(r);
@@ -169,6 +170,7 @@ public class Saved {
                         alert.setContentText(e.toString());
                         alert.setOnCloseRequest(event2 -> Platform.exit());
                         alert.show();
+                        e.printStackTrace();
                     }
                 };
                 Thread t = new Thread(r);
@@ -224,6 +226,7 @@ public class Saved {
                     alert.setContentText(e.toString());
                     alert.setOnCloseRequest(event2 -> Platform.exit());
                     alert.show();
+                    e.printStackTrace();
                 }
             };
             Thread t = new Thread(r);
@@ -281,6 +284,7 @@ public class Saved {
                 alert.setContentText(e.toString());
                 alert.setOnCloseRequest(event -> Platform.exit());
                 alert.show();
+                e.printStackTrace();
             }
         };
         Thread t = new Thread(r);
@@ -329,6 +333,7 @@ public class Saved {
                     alert.setOnCloseRequest(event -> Platform.exit());
                     alert.show();
                     alert.show();
+                    e.printStackTrace();
                 }
             };
             Thread t = new Thread(r);
