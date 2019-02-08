@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -35,6 +36,9 @@ public class MainActivity {
     private AnchorPane ReplaceToSaved;
 
     @FXML
+    private AnchorPane ReplaceToSessions;
+
+    @FXML
     private AnchorPane ReplaceToBlockSite;
 
     @FXML
@@ -45,12 +49,15 @@ public class MainActivity {
         FXMLLoader DevicesList = new FXMLLoader(getClass().getResource("DevicesList.fxml"));
         FXMLLoader Saved = new FXMLLoader(getClass().getResource("Saved.fxml"));
         FXMLLoader BlockSite = new FXMLLoader(getClass().getResource("BlockSite.fxml"));
-        AnchorPane pane = DevicesList.load();
+        FXMLLoader Sessions = new FXMLLoader(getClass().getResource("Sessions.fxml"));
+        Pane pane = DevicesList.load();
         ReplaceToDevicesList.getChildren().setAll(pane);
         pane = Saved.load();
         ReplaceToSaved.getChildren().setAll(pane);
         pane = BlockSite.load();
         ReplaceToBlockSite.getChildren().setAll(pane);
+        pane = Sessions.load();
+        ReplaceToSessions.getChildren().setAll(pane);
         Timeline timeline = new Timeline(new KeyFrame(new Duration(300000), ev -> {
             switch (TabPane.getSelectionModel().getSelectedItem().getText()){
                 case "Устройства":

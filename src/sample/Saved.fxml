@@ -6,6 +6,8 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="MainPane" prefHeight="610.0" prefWidth="1280.0" style="-fx-background-color: #202020;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Saved">
@@ -15,7 +17,18 @@
             <VBox fx:id="Messages" fillWidth="false" prefHeight="522.0" prefWidth="1280.0" style="-fx-background-color: #202020;">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding></VBox>
+               </padding>
+               <children>
+                  <Button alignment="TOP_CENTER" mnemonicParsing="false" onAction="#LoadMore" prefHeight="25.0" prefWidth="1280.0" style="-fx-background-color: #ffffff;" text="Загрузить еще...">
+                     <textFill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop color="#FC354C" />
+                              <Stop color="#0ABFBC" offset="1.0" />
+                           </stops>
+                        </LinearGradient>
+                     </textFill></Button>
+               </children></VBox>
          </content>
       </ScrollPane>
       <TextArea fx:id="MessageText" layoutX="11.0" layoutY="531.0" prefHeight="56.0" prefWidth="1047.0" promptText="Сообщение" />

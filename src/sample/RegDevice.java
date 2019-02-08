@@ -44,6 +44,8 @@ public class RegDevice {
 
     @FXML
     private void onNextClick() throws IOException {
+        Next.setDisable(true);
+        PhoneName.setDisable(true);
         FileInputStream propFile = new FileInputStream("properties.properties");
         Properties props = new Properties();
         props.load(propFile);
@@ -88,6 +90,8 @@ public class RegDevice {
                     Error.setText("Ошибка приложения!");
                     System.out.println(result.toString());
                 }
+                Next.setDisable(false);
+                PhoneName.setDisable(false);
             }catch (Exception e){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Ошибка");

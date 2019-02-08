@@ -1,58 +1,31 @@
 package sample;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import javafx.animation.AnimationTimer;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.util.Callback;
-import javafx.util.Duration;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
+import java.awt.*;
+import java.awt.event.InputEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.ArrayList;
+import java.net.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicReference;
 
-public class BlockSite {
-
-    public static class Site{
-        private String Name;
-        private Button Unlock;
-        private Button Remove;
-
-        public Site(String name) {
-            Name = name;
-            Unlock = new Button();
-            Remove = new Button();
-        }
-
-        public Button getUnlock(){
-            return Unlock;
-        }
-
-        public void setUnlock(Button b){
-            Unlock = b;
-        }
-
-        public String getName(){
-            return Name;
-        }
-
-        public Button getRemove(){
-            return Remove;
-        }
-
-        public void setRemove(Button b){
-            Remove = b;
-        }
-    }
+public class Sessions {
 
     @FXML
     private ResourceBundle resources;
@@ -61,186 +34,141 @@ public class BlockSite {
     private URL location;
 
     @FXML
-    private AnchorPane MainPane;
+    private ImageView test;
 
     @FXML
-    private TableColumn<Site, Void> Unlock;
+    private Button TouchPad;
 
     @FXML
-    private TableColumn<Site, String> Name;
+    public void initialize(){
 
-    @FXML
-    private TableView Table;
+    }
 
-    @FXML
-    private TableColumn<Site, Void> Remove;
+    private Socket socket;
 
-    private String name;
-    private String login;
-    private int id;
-    private int regdate;
+    public void TouchPadSession(){
+        TouchPad.setDisable(true);
+        StackPane pane = new StackPane();
+        ImageView imageView = new ImageView();
 
-    ObservableList<Site> sites;
+        pane.getChildren().add(imageView);
+        Scene scene = new Scene(pane, 400, 400);
+        Stage win = new Stage();
+        win.setResizable(false);
 
-    @FXML
-    public void initialize() throws IOException {
-        sites = FXCollections.observableArrayList();
-        sites.addAll(GetBlockedSites());
-
-        Name.setCellValueFactory(new PropertyValueFactory<Site, String>("Name"));
-
-        Callback<TableColumn<Site, Void>, TableCell<Site, Void>> removeCellFactory = new Callback<TableColumn<Site, Void>, TableCell<Site, Void>>() {
+        AnimationTimer hide=new AnimationTimer() {
             @Override
-            public TableCell<Site, Void> call(TableColumn<Site, Void> param) {
-                final TableCell<Site, Void> cell = new TableCell<Site, Void>(){
-                    javafx.scene.control.Button button = new javafx.scene.control.Button("Удалить");
-                    @Override
-                    public void updateItem(Void item, boolean empty) {
-                        button.setOnMouseClicked(event -> {
-                            try {
-                                UnblockSite(Name.getCellData(getIndex()));
-                                sites.remove(getIndex());
-                            }catch (Exception e){
-                                Alert alert = new Alert(Alert.AlertType.ERROR);
-                                alert.setTitle("Ошибка");
-                                alert.setHeaderText(null);
-                                alert.setContentText(e.toString());
-                                alert.setOnCloseRequest(event2 -> Platform.exit());
-                                alert.show();
-                                e.printStackTrace();
-                            }
-                        });
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            setGraphic(button);
-                        }
-                    }
-                };
-                return cell;
+            public void handle(long now) {
+                win.hide();
+            }
+        };
+        AnimationTimer close=new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                TouchPad.setDisable(false);
+                win.close();
             }
         };
 
-        Callback<TableColumn<Site, Void>, TableCell<Site, Void>> unlockCellFactory = new Callback<TableColumn<Site, Void>, TableCell<Site, Void>>() {
-            @Override
-            public TableCell<Site, Void> call(TableColumn<Site, Void> param) {
-                final TableCell<Site, Void> cell = new TableCell<Site, Void>(){
-                    Button button = new javafx.scene.control.Button("Разблокировать");
-                    @Override
-                    public void updateItem(Void item, boolean empty) {
-                        button.setOnMouseClicked(event -> {
-                            try {
-                                if(UnblockSite(Name.getCellData(getIndex()))) {
-                                    button.setDisable(true);
-                                    sites.get(getIndex()).getRemove().setDisable(true);
-                                    AtomicReference<Long> time = new AtomicReference<>(9L);
-                                    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), arg0 -> {
-                                        try {
-                                            time.set(time.get() - 1);
-                                            button.setText(Long.toString(time.get() / 60) + ':' + Long.toString(time.get() % 60));
-                                            if (time.get().equals(0L) && Name.getCellData(getIndex()) != null) {
-                                                if (!BlockSite(Name.getCellData(getIndex()))) {
-                                                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                                                    alert.setTitle("Ошибка");
-                                                    alert.setHeaderText(null);
-                                                    alert.setContentText("Нужно Ваше разрешение для завершения процесса");
-                                                    alert.setOnCloseRequest(event2 -> {
-                                                        try {
-                                                            BlockSite(Name.getCellData(getIndex()));
-                                                        } catch (Exception e) {
-                                                            alert.setTitle("Ошибка");
-                                                            alert.setHeaderText(null);
-                                                            alert.setContentText(e.toString());
-                                                            alert.setOnCloseRequest(event4 -> Platform.exit());
-                                                            alert.show();
-                                                            e.printStackTrace();
-                                                        }
-                                                    });
-                                                    alert.show();
-                                                    button.setText("Разблокировать");
-                                                    button.setDisable(false);
-                                                }
-                                            }
-                                        } catch (Exception e) {
-                                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                                            alert.setTitle("Ошибка");
-                                            alert.setHeaderText(null);
-                                            alert.setContentText(e.toString());
-                                            alert.setOnCloseRequest(event2 -> Platform.exit());
-                                            alert.show();
-                                            e.printStackTrace();
-                                        }
-                                    }));
-                                    timeline.setCycleCount(time.get().intValue());
-                                    timeline.play();
-                                }else{
-                                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                                    alert.setTitle("Ошибка");
-                                    alert.setHeaderText(null);
-                                    alert.setContentText("Нужно Ваше разрешение");
-                                    alert.show();
+        Runnable run = () -> {
+            ServerSocket s = null;
+            try {
+                s = new ServerSocket(0);
+                String qrCodeData = InetAddress.getLocalHost().getHostAddress() + ":" + s.getLocalPort();
+                String charset = "UTF-8";
+                Map<EncodeHintType, ErrorCorrectionLevel> hintMap = new HashMap<EncodeHintType, ErrorCorrectionLevel>();
+                hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+                BitMatrix matrix = new MultiFormatWriter().encode(
+                        new String(qrCodeData.getBytes(charset), charset),
+                        BarcodeFormat.QR_CODE, 200, 200, hintMap);
+                MatrixToImageWriter.toBufferedImage(matrix);
+                imageView.setImage(SwingFXUtils.toFXImage(MatrixToImageWriter.toBufferedImage(matrix), null));
+                s.setSoTimeout(600000);
+                Socket socket = s.accept();
+                s.close();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                hide.start();
+                Robot r = new Robot();
+                int x = GetX();
+                int y = GetY();
+                int X = 0, Y = 0;
+                String line = "null";
+                while(socket != null && line != null) {
+                    line = reader.readLine();
+                    if (line != null) {
+                        switch (line.split(" ")[0]) {
+                            case "M":
+                                if (Integer.parseInt(line.split(" ")[1]) == 0 && Integer.parseInt(line.split(" ")[2]) == 0) {
+                                    x = GetX();
+                                    y = GetY();
+                                    X = 0;
+                                    Y = 0;
+                                } else {
+                                    X = Integer.parseInt(line.split(" ")[1]);
+                                    Y = Integer.parseInt(line.split(" ")[2]);
+                                    r.mouseMove(x + X, y + Y);
                                 }
-                            }catch (Exception e){
-                                Alert alert = new Alert(Alert.AlertType.ERROR);
-                                alert.setTitle("Ошибка");
-                                alert.setHeaderText(null);
-                                alert.setContentText(e.toString());
-                                alert.setOnCloseRequest(event2 -> Platform.exit());
-                                alert.show();
-                                e.printStackTrace();
-                            }
-                        });
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            setGraphic(button);
+                                break;
+                            case "L":
+                                r.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+                                r.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+                                break;
+                            case "L-":
+                                r.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+                                break;
+                            case "L+":
+                                r.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+                                break;
+                            case "R":
+                                r.mousePress(InputEvent.BUTTON3_DOWN_MASK);
+                                r.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
+                                break;
                         }
                     }
-                };
-                return cell;
+                }
+                socket.close();
+                close.start();
+            } catch (SocketTimeoutException e) {
+                try {s.close();} catch (IOException e1) {e1.printStackTrace();}
+                close.start();
+            } catch (Exception e) {
+                try {s.close();} catch (IOException e1) {e1.printStackTrace();}
+                e.printStackTrace();
+                close.start();
             }
         };
+        Thread t = new Thread(run);
+        t.setDaemon(true);
 
-        Remove.setCellFactory(removeCellFactory);
-        Unlock.setCellFactory(unlockCellFactory);
 
-        Table.setItems(sites);
+        win.setOnShown(event -> {
+            t.start();
+        });
+        win.setOnCloseRequest(event -> {
+                    try {
+                        if(this.socket != null) this.socket.close();
+                        t.interrupt();
+                        TouchPad.setDisable(false);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+        win.setHeight(200);
+        win.setWidth(200);
+        win.setScene(scene);
+        win.show();
     }
 
-    private static boolean UnblockSite(String url) throws IOException, InterruptedException {
-        ProcessBuilder builder = new ProcessBuilder("powershell.exe", "/c",
-                "Start-Process java -ArgumentList '-cp " + System.getProperty("user.dir").replace("\\", "\\\\") + " BlockSiteClass --UnblockSite "+url+"' -Verb RunAs");
-        builder.redirectErrorStream(true);
-        Process p = builder.start();
-        p.waitFor();
-        return p.exitValue() == 0;
+    static public int GetX(){
+        Point a = MouseInfo.getPointerInfo().getLocation();
+        Point b = a.getLocation();
+        return (int)b.getX();
     }
 
-    private static boolean BlockSite(String url) throws IOException, InterruptedException {
-        ProcessBuilder builder = new ProcessBuilder("powershell.exe", "/c",
-                "Start-Process java -ArgumentList '-cp " + System.getProperty("user.dir").replace("\\", "\\\\") + " BlockSiteClass --BlockSite "+url+"' -Verb RunAs");
-        builder.redirectErrorStream(true);
-        Process p = builder.start();
-        p.waitFor();
-        return p.exitValue() == 0;
+    static public int GetY(){
+        Point a = MouseInfo.getPointerInfo().getLocation();
+        Point b = a.getLocation();
+        return (int)b.getY();
     }
 
-    private static ArrayList<Site> GetBlockedSites() throws IOException {
-        ProcessBuilder builder = new ProcessBuilder("powershell.exe", "/c",
-                "java -cp " + System.getProperty("user.dir").replace("\\", "\\\\") + " BlockSiteClass --GetBlockedSites");
-        builder.redirectErrorStream(true);
-        Process p = builder.start();
-        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        String line;
-        ArrayList<Site> lines = new ArrayList<Site>();
-        while (true) {
-            line = r.readLine();
-            if (line == null) {
-                break;
-            }
-            if (!line.contains("#"))
-                lines.add(new Site(line.split(" ")[1]));
-        }
-        return lines;
-    }
 }

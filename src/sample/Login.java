@@ -44,6 +44,10 @@ public class Login {
 
     @FXML
     void initialize() throws IOException, URISyntaxException {
+        RegButton.setDisable(true);
+        LoginButton.setDisable(true);
+        Nick.setDisable(true);
+        Pass.setDisable(true);
         File file = new File("properties.properties");
         if (file.exists()) {
             FileInputStream propFile = new FileInputStream(file);
@@ -83,6 +87,10 @@ public class Login {
                                 MainPane.getChildren().setAll(pane);
                             }
                         }
+                        RegButton.setDisable(false);
+                        LoginButton.setDisable(false);
+                        Nick.setDisable(false);
+                        Pass.setDisable(false);
                     } catch (Exception e) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Ошибка");

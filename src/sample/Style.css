@@ -8,6 +8,10 @@
     -fx-background-radius: 28;
 }
 
+.button:pressed{
+    -fx-opacity: 0.5;
+}
+
 .label{
     -fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, #d53369, #cbad6d);
 }
