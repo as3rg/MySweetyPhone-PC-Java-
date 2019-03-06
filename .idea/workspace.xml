@@ -2,26 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/commons_codec_1_10.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/commons_codec_1_10.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Login.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Login.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/MainActivity.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/MainActivity.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/MainActivity.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/MainActivity.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/RegDevice.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/RegDevice.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Saved.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Saved.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Saved.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Saved.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Style.css" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Login.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/MainActivity.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/MainActivity.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Saved$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/properties.properties" beforeDir="false" afterPath="$PROJECT_DIR$/properties.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/sample/RegDevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/RegDevice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Saved.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Saved.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/sample/Saved.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Saved.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Sessions.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Sessions.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Sessions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Sessions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Style.css" afterDir="false" />
     </list>
     <ignored path="JavaFxApplication.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -94,8 +79,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sample/Saved.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="380">
-              <caret line="160" column="25" selection-start-line="160" selection-start-column="25" selection-end-line="160" selection-end-column="25" />
+            <state relative-caret-position="217">
+              <caret line="104" column="33" lean-forward="true" selection-start-line="104" selection-start-column="33" selection-end-line="104" selection-end-column="33" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -106,7 +91,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/DevicesList.class">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1921">
+            <state relative-caret-position="1904">
               <caret line="143" column="28" selection-start-line="143" selection-start-column="28" selection-end-line="144" selection-end-column="82" />
             </state>
           </provider>
@@ -124,7 +109,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sample/BlockSite.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1683">
+            <state relative-caret-position="1598">
               <caret line="127" column="67" selection-start-line="127" selection-start-column="40" selection-end-line="127" selection-end-column="67" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -164,8 +149,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sample/RegDevice.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1156">
-              <caret line="83" column="38" selection-start-line="83" selection-start-column="38" selection-end-line="83" selection-end-column="38" />
+            <state relative-caret-position="1243">
+              <caret line="89" column="56" selection-start-line="89" selection-start-column="56" selection-end-line="89" selection-end-column="56" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -204,6 +189,7 @@
       <find>properties&quot;</find>
       <find>Exception e</find>
       <find>Anc</find>
+      <find>System.o</find>
     </findStrings>
     <replaceStrings>
       <replace>202020</replace>
@@ -252,10 +238,10 @@
         <option value="$PROJECT_DIR$/src/sample/MainActivity.java" />
         <option value="$PROJECT_DIR$/src/sample/Sessions.fxml" />
         <option value="$PROJECT_DIR$/src/sample/Login.java" />
-        <option value="$PROJECT_DIR$/src/sample/RegDevice.java" />
         <option value="$PROJECT_DIR$/src/sample/Saved.fxml" />
-        <option value="$PROJECT_DIR$/src/sample/Saved.java" />
         <option value="$PROJECT_DIR$/src/sample/Style.css" />
+        <option value="$PROJECT_DIR$/src/sample/Saved.java" />
+        <option value="$PROJECT_DIR$/src/sample/RegDevice.java" />
       </list>
     </option>
   </component>
@@ -573,17 +559,19 @@
       <workItem from="1549125634128" duration="5080000" />
       <workItem from="1549183749744" duration="7494000" />
       <workItem from="1549478777635" duration="598000" />
+      <workItem from="1550387896952" duration="103000" />
+      <workItem from="1550419521435" duration="1190000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="184193000" />
+    <option name="totallyTimeSpent" value="185486000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.24413647" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.24946696" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" weight="0.32954547" />
       <window_info id="Designer" order="3" />
@@ -674,14 +662,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor />
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/information.jpg" />
     <entry file="file://$PROJECT_DIR$/src/sample/Anims/test.java" />
     <entry file="file://$PROJECT_DIR$/mysweetyphone-pc.properties">
@@ -766,12 +746,12 @@
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/Login.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
           <caret line="14" column="148" selection-start-line="14" selection-start-column="56" selection-end-line="14" selection-end-column="148" />
         </state>
       </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/javafx-src.zip!/javafx/fxml/FXMLLoader.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -791,20 +771,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../MyCode/Server.java" />
     <entry file="file://$PROJECT_DIR$/src/sample/MainActivity.fxml">
-      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
       <provider editor-type-id="text-editor">
         <state relative-caret-position="272">
           <caret line="16" column="19" selection-start-line="16" selection-start-column="19" selection-end-line="16" selection-end-column="19" />
         </state>
       </provider>
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/BlockSite.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="11" column="31" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="31" />
         </state>
       </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/DevicesList.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -817,12 +797,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/DevicesList.fxml">
-      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
       <provider editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="11" column="49" selection-start-line="11" selection-start-column="49" selection-end-line="11" selection-end-column="49" />
         </state>
       </provider>
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/Sessions.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -857,24 +837,24 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/MainActivity.fxml">
-      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
       <provider editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/RegDevice.fxml">
-      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
       <provider editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="11" column="113" selection-start-line="11" selection-start-column="113" selection-end-line="11" selection-end-column="113" />
         </state>
       </provider>
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/Sessions.fxml">
-      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
       <provider editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
         </state>
       </provider>
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/Anims/Create.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -896,16 +876,16 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/Saved.fxml">
-      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
       <provider editor-type-id="text-editor">
         <state relative-caret-position="357">
           <caret line="21" column="130" selection-start-line="21" selection-start-column="130" selection-end-line="21" selection-end-column="130" />
         </state>
       </provider>
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="file://$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/DevicesList.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1921">
+        <state relative-caret-position="1904">
           <caret line="143" column="28" selection-start-line="143" selection-start-column="28" selection-end-line="144" selection-end-column="82" />
         </state>
       </provider>
@@ -919,7 +899,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/BlockSite.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1683">
+        <state relative-caret-position="1598">
           <caret line="127" column="67" selection-start-line="127" selection-start-column="40" selection-end-line="127" selection-end-column="67" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -951,10 +931,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/BlockSiteClass.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="402">
+          <caret line="105" column="12" selection-start-line="105" selection-start-column="12" selection-end-line="105" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/RegDevice.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1156">
-          <caret line="83" column="38" selection-start-line="83" selection-start-column="38" selection-end-line="83" selection-end-column="38" />
+        <state relative-caret-position="1243">
+          <caret line="89" column="56" selection-start-line="89" selection-start-column="56" selection-end-line="89" selection-end-column="56" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -963,14 +950,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/Saved.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="160" column="25" selection-start-line="160" selection-start-column="25" selection-end-line="160" selection-end-column="25" />
+        <state relative-caret-position="217">
+          <caret line="104" column="33" lean-forward="true" selection-start-line="104" selection-start-column="33" selection-end-line="104" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1821#1822#0" expanded="true" />
-            <element signature="e#1847#1848#0" expanded="true" />
-            <element signature="e#1990#1991#0" expanded="true" />
-            <element signature="e#2016#2017#0" expanded="true" />
           </folding>
         </state>
       </provider>

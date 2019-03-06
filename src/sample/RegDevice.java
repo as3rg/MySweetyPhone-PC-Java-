@@ -88,7 +88,6 @@ public class RegDevice {
                 }else{
                     Error.setVisible(true);
                     Error.setText("Ошибка приложения!");
-                    System.out.println(result.toString());
                 }
                 Next.setDisable(false);
                 PhoneName.setDisable(false);

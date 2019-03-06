@@ -76,64 +76,60 @@ public class Saved {
     }
 
     private void LoadMore(int Count){
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    FileInputStream propFile = new FileInputStream("properties.properties");
-                    Properties props = new Properties();
-                    props.load(propFile);
-                    propFile.close();
-                    id = Integer.parseInt((String) props.getOrDefault("id", "-1"));
-                    regdate = Integer.parseInt((String)props.getOrDefault("regdate","-1"));
-                    login = (String) props.getOrDefault("login", "");
-                    name = (String) props.getOrDefault("name", "");
+        Runnable r = () -> {
+            try {
+                FileInputStream propFile = new FileInputStream("properties.properties");
+                Properties props = new Properties();
+                props.load(propFile);
+                propFile.close();
+                id = Integer.parseInt((String) props.getOrDefault("id", "-1"));
+                regdate = Integer.parseInt((String)props.getOrDefault("regdate","-1"));
+                login = (String) props.getOrDefault("login", "");
+                name = (String) props.getOrDefault("name", "");
 
-                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=GetMessages&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&From="+Messages.getChildren().size()+"&Count="+Count);
+                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=GetMessages&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&From="+(Messages.getChildren().size()-1)+"&Count="+Count);
 
-                    HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
-                    connection.setRequestMethod("GET");
+                HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+                connection.setRequestMethod("GET");
 
-                    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                    String inputLine;
-                    StringBuffer response = new StringBuffer();
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
 
-                    while ((inputLine = in.readLine()) != null) {
-                        response.append(inputLine);
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+                JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                Long i = (Long) result.getOrDefault("code", 2);
+                if(i.equals(2L)){
+                    throw new Exception("Ошибка приложения!");
+                }else if(i.equals(1L)){
+                    throw new Exception("Неверные данные");
+                }else if(i.equals(0L)){
+                    Object[] messages = ((JSONArray)result.get("messages")).toArray();
+                    for(int j = 0; j < messages.length; j++){
+                        JSONObject message = (JSONObject)messages[j];
+                        DrawMessage(((String)(message).get("msg")).replace("\\n","\n"),(Long)(message).get("date"),(String)(message).get("sender"), ((String)(message).get("type")).equals("File"));
                     }
-                    in.close();
-
-                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
-                    Long i = (Long) result.getOrDefault("code", 2);
-                    if(i.equals(2L)){
-                        throw new Exception("Ошибка приложения!");
-                    }else if(i.equals(1L)){
-                        throw new Exception("Неверные данные");
-                    }else if(i.equals(0L)){
-                        Object[] messages = ((JSONArray)result.get("messages")).toArray();
-                        for(int j = 0; j < messages.length; j++){
-                            JSONObject message = (JSONObject)messages[j];
-                            DrawMessage(((String)(message).get("msg")).replace("\\n","\n"),(Long)(message).get("date"),(String)(message).get("sender"), ((String)(message).get("type")).equals("File"));
-                        }
-                    }else if(i.equals(4L)){
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Ошибка");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Ваше устройство не зарегистрировано!");
-                        alert.setOnCloseRequest(event -> Platform.exit());
-                        alert.show();
-                    }else{
-                        throw new Exception("Ошибка приложения!");
-                    }
-                }catch (Exception e){
+                }else if(i.equals(4L)){
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Ошибка");
                     alert.setHeaderText(null);
-                    alert.setContentText(e.toString());
+                    alert.setContentText("Ваше устройство не зарегистрировано!");
                     alert.setOnCloseRequest(event -> Platform.exit());
                     alert.show();
-                    e.printStackTrace();
+                }else{
+                    throw new Exception("Ошибка приложения!");
                 }
+            }catch (Exception e){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Ошибка");
+                alert.setHeaderText(null);
+                alert.setContentText(e.toString());
+                alert.setOnCloseRequest(event -> Platform.exit());
+                alert.show();
+                e.printStackTrace();
             }
         };
         Thread t = new Thread(r);
