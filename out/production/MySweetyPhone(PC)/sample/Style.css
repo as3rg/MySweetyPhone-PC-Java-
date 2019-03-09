@@ -1,4 +1,4 @@
-.root, .scroll-pane, .scroll-bar, .tab-pane, .text-area, .tab-pane .content, .tab-pane > .tab-header-area > .tab-header-background{
+.root, .pane, .anchor-pane, .scroll-pane, .scroll-bar, .tab-pane, .text-area, .tab-pane .content, .tab-pane > .tab-header-area > .tab-header-background{
     -fx-background-color: #202020;
     -fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, #d53369, #cbad6d);
 }
@@ -12,7 +12,7 @@
     -fx-opacity: 0.5;
 }
 
-.label{
+.label, .radio-button{
     -fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, #d53369, #cbad6d);
 }
 
@@ -39,4 +39,8 @@
 
 .text-area{
 
+}
+
+.check-box{
+    -fx-background-color: #ff0000;
 }

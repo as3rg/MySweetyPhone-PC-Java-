@@ -193,7 +193,7 @@ public class Saved {
         MenuItem delete = new MenuItem("Удалить");
         contextMenu.getItems().addAll(delete);
         delete.setOnAction(event -> {
-            Runnable r = () -> {
+            EventHandler r = (event1) -> {
                 try {
                     URL obj = new URL("https://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
 
@@ -226,8 +226,7 @@ public class Saved {
                     }else{
                         throw new Exception("Ошибка приложения!");
                     }
-                    Destroy anim = new Destroy(vBox, Messages);
-                    anim.play();
+                    Messages.getChildren().remove(vBox);
                     if(Messages.getChildren().size() < 10)
                         LoadMore(10 - Messages.getChildren().size());
                 }catch (Exception e){
@@ -240,8 +239,8 @@ public class Saved {
                     e.printStackTrace();
                 }
             };
-            Thread t = new Thread(r);
-            t.run();
+            Destroy anim = new Destroy(vBox);
+            anim.play(r);
         });
         vBox.setOnContextMenuRequested((EventHandler<Event>) event -> contextMenu.show(vBox, MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y));
         if(needsAnim)

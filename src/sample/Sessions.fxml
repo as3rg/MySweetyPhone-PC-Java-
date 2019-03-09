@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<VBox prefHeight="610.0" prefWidth="1280.0" style="-fx-background-color: #202020;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Sessions">
+<AnchorPane prefHeight="610.0" prefWidth="1280.0" style="-fx-background-color: #202020;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Sessions">
    <children>
-      <Button fx:id="TouchPad" mnemonicParsing="false" onAction="#TouchPadSession" prefHeight="85.0" prefWidth="202.0" text="Сенсорная панель">
-         <font>
-            <Font size="20.0" />
-         </font></Button>
+      <ChoiceBox fx:id="SessionType" layoutX="865.0" layoutY="186.0" prefHeight="44.0" prefWidth="171.0" style="-fx-background-color: #303030;" />
+      <Button fx:id="NewSession" layoutX="865.0" layoutY="305.0" mnemonicParsing="false" prefHeight="82.0" prefWidth="171.0" text="Начать сессию" />
+      <ScrollPane fitToWidth="true" layoutY="42.0" prefHeight="568.0" prefWidth="640.0" style="-fx-background-color: #202020; -fx-border-color: #ffffff; -fx-border-width: 0 1 0 0;">
+         <content>
+            <VBox fx:id="ConnectToSession" disable="true" minHeight="608.0" style="-fx-background-color: #202020;" />
+         </content>
+      </ScrollPane>
+      <Button layoutX="294.0" layoutY="14.0" mnemonicParsing="false" onAction="#Search" text="Поиск...." />
    </children>
-   <padding>
-      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
-   </padding>
-</VBox>
+</AnchorPane>

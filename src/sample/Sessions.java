@@ -1,31 +1,19 @@
 package sample;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-import javafx.animation.AnimationTimer;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 
-import java.awt.*;
-import java.awt.event.InputEvent;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.*;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 public class Sessions {
+
+    int port = 9000;
 
     @FXML
     private ResourceBundle resources;
@@ -34,45 +22,81 @@ public class Sessions {
     private URL location;
 
     @FXML
-    private ImageView test;
+    private VBox ConnectToSession;
 
     @FXML
-    private Button TouchPad;
+    private Button NewSession;
+
+    @FXML
+    private ChoiceBox<String> SessionType;
 
     @FXML
     public void initialize(){
-
+        SessionType.getItems().add("Эмуляция мыши");
+        NewSession.setOnMouseClicked(this::OpenSession);
     }
 
-    private Socket socket;
+    @FXML
+    public void Search(){
+        try {
+            byte buf[] = new byte[100];
+            DatagramSocket s = new DatagramSocket(port);
+            s.setBroadcast(true);
+            DatagramPacket p = new DatagramPacket(buf, buf.length);
+            while (s.isConnected()) {
+                s.receive(p);
+                System.out.println(new String(p.getData(),0, p.getLength()));
+            }
+            s.close();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    public void OpenSession(MouseEvent e){
+        try{
+            if (SessionType.getValue() == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Ошибка");
+                alert.setHeaderText(null);
+                alert.setContentText("Выберите тип сеанса");
+                alert.show();
+            } else {
+                ConnectToSession.setDisable(true);
+                NewSession.setOnMouseClicked(this::CloseSession);
+                NewSession.setText("Закрыть сессию");
+                DatagramSocket s = new DatagramSocket(port);
+                s.setBroadcast(true);
+                byte buf[] = new byte[100];
+                for(int i = 0; i < SessionType.getValue().getBytes().length; i++){
+                    buf[i] = SessionType.getValue().getBytes()[i];
+                }
+                DatagramPacket packet = new DatagramPacket(buf, buf.length, Inet4Address.getLocalHost(), port);
+                s.send(packet);
+                s.close();
+            }
+        } catch (IOException err){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Ошибка");
+            alert.setHeaderText(null);
+            alert.setContentText(err.toString());
+            alert.show();
+            err.printStackTrace();
+        }
+    }
+
+    public void CloseSession(MouseEvent e){
+        ConnectToSession.setDisable(false);
+        NewSession.setOnMouseClicked(this::OpenSession);
+        NewSession.setText("Открыть сессию");
+    }
 
     public void TouchPadSession(){
-        TouchPad.setDisable(true);
-        StackPane pane = new StackPane();
-        ImageView imageView = new ImageView();
-
-        pane.getChildren().add(imageView);
-        Scene scene = new Scene(pane, 400, 400);
-        Stage win = new Stage();
-        win.setResizable(false);
-
-        AnimationTimer hide=new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                win.hide();
-            }
-        };
-        AnimationTimer close=new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                TouchPad.setDisable(false);
-                win.close();
-            }
-        };
-
+        /*
         Runnable run = () -> {
             ServerSocket s = null;
             try {
+                System.out.println("OK");
                 s = new ServerSocket(0);
                 String qrCodeData = InetAddress.getLocalHost().getHostAddress() + ":" + s.getLocalPort();
                 String charset = "UTF-8";
@@ -82,12 +106,11 @@ public class Sessions {
                         new String(qrCodeData.getBytes(charset), charset),
                         BarcodeFormat.QR_CODE, 200, 200, hintMap);
                 MatrixToImageWriter.toBufferedImage(matrix);
-                imageView.setImage(SwingFXUtils.toFXImage(MatrixToImageWriter.toBufferedImage(matrix), null));
+                QRCode.setImage(SwingFXUtils.toFXImage(MatrixToImageWriter.toBufferedImage(matrix), null));
                 s.setSoTimeout(600000);
                 Socket socket = s.accept();
                 s.close();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                hide.start();
                 Robot r = new Robot();
                 int x = GetX();
                 int y = GetY();
@@ -127,36 +150,15 @@ public class Sessions {
                     }
                 }
                 socket.close();
-                close.start();
             } catch (SocketTimeoutException e) {
                 try {s.close();} catch (IOException e1) {e1.printStackTrace();}
-                close.start();
             } catch (Exception e) {
                 try {s.close();} catch (IOException e1) {e1.printStackTrace();}
                 e.printStackTrace();
-                close.start();
             }
         };
         Thread t = new Thread(run);
-        t.setDaemon(true);
-
-
-        win.setOnShown(event -> {
-            t.start();
-        });
-        win.setOnCloseRequest(event -> {
-                    try {
-                        if(this.socket != null) this.socket.close();
-                        t.interrupt();
-                        TouchPad.setDisable(false);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-        win.setHeight(200);
-        win.setWidth(200);
-        win.setScene(scene);
-        win.show();
+        t.start();
     }
 
     static public int GetX(){
@@ -168,7 +170,7 @@ public class Sessions {
     static public int GetY(){
         Point a = MouseInfo.getPointerInfo().getLocation();
         Point b = a.getLocation();
-        return (int)b.getY();
+        return (int)b.getY();*/
     }
 
 }
