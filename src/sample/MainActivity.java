@@ -54,8 +54,8 @@ public class MainActivity {
         ReplaceToDevicesList.getChildren().setAll(pane);
         pane = Saved.load();
         ReplaceToSaved.getChildren().setAll(pane);
-        pane = BlockSite.load();
-        ReplaceToBlockSite.getChildren().setAll(pane);
+        /*pane = BlockSite.load();
+        ReplaceToBlockSite.getChildren().setAll(pane);*/
         pane = Sessions.load();
         ReplaceToSessions.getChildren().setAll(pane);
         Timeline timeline = new Timeline(new KeyFrame(new Duration(300000), ev -> {

@@ -208,7 +208,7 @@ public class BlockSite {
     }
 
     private static boolean UnblockSite(String url) throws IOException, InterruptedException {
-        ProcessBuilder builder = new ProcessBuilder("powershell.exe", "/c",
+        ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",
                 "Start-Process java -ArgumentList '-cp " + System.getProperty("user.dir").replace("\\", "\\\\") + " BlockSiteClass --UnblockSite "+url+"' -Verb RunAs");
         builder.redirectErrorStream(true);
         Process p = builder.start();

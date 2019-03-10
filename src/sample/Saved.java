@@ -257,7 +257,7 @@ public class Saved {
     private void onSendClick(){
         Runnable r = () -> {
             try {
-                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=SendMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&MsgType=Text&Msg="+MessageText.getText().replace(" ","%20").replace("\n","\\n"));
+                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=SendMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Msg="+MessageText.getText().replace(" ","%20").replace("\n","\\n"));
 
                 HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                 connection.setRequestMethod("GET");
@@ -327,7 +327,7 @@ public class Saved {
             Runnable r = () -> {
                 try {
                     HttpClient client = new DefaultHttpClient();
-                    HttpPost post = new HttpPost("http://mysweetyphone.herokuapp.com/?Type=UploadFile&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&MsgType=Text");
+                    HttpPost post = new HttpPost("http://mysweetyphone.herokuapp.com/?Type=UploadFile&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id);
                     MultipartEntity entity = new MultipartEntity();
                     entity.addPart("fileToUpload", new FileBody(file));
                     entity.addPart("submit", new StringBody(""));
@@ -345,6 +345,8 @@ public class Saved {
                         alert.setContentText("Ваше устройство не зарегистрировано!");
                         alert.setOnCloseRequest(event -> Platform.exit());
                         alert.show();
+                    }else if(i.equals(3L)){
+                        throw new Exception("Файл не отправлен!");
                     }else{
                         throw new Exception("Ошибка приложения!");
                     }
@@ -357,6 +359,7 @@ public class Saved {
             };
             Thread t = new Thread(r);
             t.run();
+
         }
     }
 }
