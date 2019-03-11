@@ -44,12 +44,12 @@ public class Login {
 
     @FXML
     void initialize() throws IOException, URISyntaxException {
-        RegButton.setDisable(true);
-        LoginButton.setDisable(true);
-        Nick.setDisable(true);
-        Pass.setDisable(true);
         File file = new File("properties.properties");
         if (file.exists()) {
+            RegButton.setDisable(true);
+            LoginButton.setDisable(true);
+            Nick.setDisable(true);
+            Pass.setDisable(true);
             FileInputStream propFile = new FileInputStream(file);
             Properties props = new Properties();
             props.load(propFile);

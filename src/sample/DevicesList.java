@@ -161,6 +161,9 @@ public class DevicesList {
                             if (name.equals(devices.get(getIndex()).getName())){
                                 button.setTextFill(Paint.valueOf("linear-gradient(from 0% 0% to 100% 100%, #FC354C, #0ABFBC)"));
                                 button.setStyle("-fx-background-color: #ffffff");
+                            }else{
+                                button.setTextFill(Paint.valueOf("#ffffff"));
+                                button.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #d53369, #cbad6d)");
                             }
                         button.setOnMouseClicked(event -> {
                             Runnable r = () -> {

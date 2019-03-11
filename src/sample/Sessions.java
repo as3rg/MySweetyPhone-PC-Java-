@@ -43,6 +43,7 @@ public class Sessions {
             DatagramSocket s = new DatagramSocket(port);
             s.setBroadcast(true);
             DatagramPacket p = new DatagramPacket(buf, buf.length);
+            System.out.println(s.isConnected());
             while (s.isConnected()) {
                 s.receive(p);
                 System.out.println(new String(p.getData(),0, p.getLength()));
@@ -71,9 +72,11 @@ public class Sessions {
                 for(int i = 0; i < SessionType.getValue().getBytes().length; i++){
                     buf[i] = SessionType.getValue().getBytes()[i];
                 }
-                DatagramPacket packet = new DatagramPacket(buf, buf.length, Inet4Address.getLocalHost(), port);
-                s.send(packet);
-                s.close();
+                DatagramPacket packet = new DatagramPacket(buf, buf.length, Inet4Address.getByName("255.255.255.255"), port);
+                while(true) {
+                    s.send(packet);
+                    Thread.sleep(100);
+                }
             }
         } catch (IOException err){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -82,6 +85,8 @@ public class Sessions {
             alert.setContentText(err.toString());
             alert.show();
             err.printStackTrace();
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
         }
     }
 
