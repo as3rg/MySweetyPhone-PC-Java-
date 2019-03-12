@@ -4,12 +4,68 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import org.json.simple.JSONObject;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.*;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
+
+class Session{
+    Socket socket;
+    Inet4Address address;
+    int port;
+    int type;
+    Thread t;
+    boolean isServer;
+
+    Session(Inet4Address address, int port, int type) throws IOException {
+        isServer = false;
+        this.address = address;
+        this.port = port;
+        socket = new Socket(address, port);
+        this.type = type;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        Runnable r = ()->{
+            try {
+                while (true) {
+                    System.out.println(reader.readLine());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        };
+        t = new Thread(r);
+    }
+
+    Session(int port, int type) throws IOException {
+        isServer = true;
+        this.address = address;
+        this.port = port;
+        socket = (new ServerSocket(port)).accept();
+        this.type = type;
+        PrintWriter writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+        Runnable r = () -> {
+            writer.println("test");
+        };
+        t = new Thread(r);
+    }
+
+    public void Start(){
+        t.run();
+    }
+
+    public void Stop(){
+        t.interrupt();
+    }
+
+    public boolean isServer(){
+        return isServer;
+    }
+}
 
 public class Sessions {
 
@@ -28,7 +84,14 @@ public class Sessions {
     private Button NewSession;
 
     @FXML
+    private Button SearchSessions;
+
+    @FXML
     private ChoiceBox<String> SessionType;
+
+    /*Типы подключения
+        1 = эмуляция мыши
+     */
 
     @FXML
     public void initialize(){
@@ -37,21 +100,31 @@ public class Sessions {
     }
 
     @FXML
-    public void Search(){
+    public void Search() throws UnknownHostException {
         try {
-            byte buf[] = new byte[100];
+            NewSession.setDisable(true);
+            SearchSessions.setDisable(true);
+            JSONObject message = new JSONObject();
+            byte buf[] = new byte[1];
             DatagramSocket s = new DatagramSocket(port);
             s.setBroadcast(true);
             DatagramPacket p = new DatagramPacket(buf, buf.length);
-            System.out.println(s.isConnected());
-            while (s.isConnected()) {
-                s.receive(p);
-                System.out.println(new String(p.getData(),0, p.getLength()));
-            }
-            s.close();
-        } catch (IOException e1) {
-            e1.printStackTrace();
+            long time = LocalDateTime.now().getSecond();
+            Thread t = new Thread(() -> {
+                try {
+                    while (LocalDateTime.now().getSecond() - time > 60) {
+                        s.receive(p);
+                        ConnectToSession.getChildren().add(new TextField(new String(p.getData())));
+                    }
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            });
+            t.run();
+        } catch (SocketException e) {
+            e.printStackTrace();
         }
+
     }
 
     public void OpenSession(MouseEvent e){
@@ -68,15 +141,11 @@ public class Sessions {
                 NewSession.setText("Закрыть сессию");
                 DatagramSocket s = new DatagramSocket(port);
                 s.setBroadcast(true);
-                byte buf[] = new byte[100];
-                for(int i = 0; i < SessionType.getValue().getBytes().length; i++){
-                    buf[i] = SessionType.getValue().getBytes()[i];
-                }
+                byte buf[] = new byte[1];
+                buf[0] = ((byte) SessionType.getValue().indexOf(SessionType.getValue()));
                 DatagramPacket packet = new DatagramPacket(buf, buf.length, Inet4Address.getByName("255.255.255.255"), port);
-                while(true) {
-                    s.send(packet);
-                    Thread.sleep(100);
-                }
+                s.send(packet);
+                s.close();
             }
         } catch (IOException err){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -85,8 +154,6 @@ public class Sessions {
             alert.setContentText(err.toString());
             alert.show();
             err.printStackTrace();
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
         }
     }
 

@@ -12,9 +12,9 @@
       <Button fx:id="NewSession" layoutX="865.0" layoutY="305.0" mnemonicParsing="false" prefHeight="82.0" prefWidth="171.0" text="Начать сессию" />
       <ScrollPane fitToWidth="true" layoutY="42.0" prefHeight="568.0" prefWidth="640.0" style="-fx-background-color: #202020; -fx-border-color: #ffffff; -fx-border-width: 0 1 0 0;">
          <content>
-            <VBox fx:id="ConnectToSession" disable="true" minHeight="608.0" style="-fx-background-color: #202020;" />
+            <VBox fx:id="ConnectToSession" disable="true" minHeight="565.0" prefHeight="566.0" prefWidth="637.0" style="-fx-background-color: #202020;" />
          </content>
       </ScrollPane>
-      <Button layoutX="294.0" layoutY="14.0" mnemonicParsing="false" onAction="#Search" text="Поиск...." />
+      <Button fx:id="SearchSessions" layoutX="294.0" layoutY="14.0" mnemonicParsing="false" onAction="#Search" text="Поиск...." />
    </children>
 </AnchorPane>
