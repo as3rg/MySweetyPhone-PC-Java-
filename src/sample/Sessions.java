@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -115,7 +116,7 @@ public class Sessions {
                     while (/*LocalDateTime.now().getSecond() - time > 60*/ true) {
                         s.receive(p);
                         System.out.println(p.getData());
-                        ConnectToSession.getChildren().add(new TextField(new String(p.getData())));
+                        Platform.runLater( ()->ConnectToSession.getChildren().add(new TextField(new String(p.getData()))));
                     }
                 }catch (IOException e){
                     e.printStackTrace();

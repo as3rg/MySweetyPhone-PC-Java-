@@ -169,9 +169,9 @@ public class Saved {
                     try {
                         URL website = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text + "&Date=" + date);
                         ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-                        File out2 = new File(out,"\\MySweetyPhone\\");
+                        File out2 = new File(out,"MySweetyPhone");
                         out2.mkdirs();
-                        FileOutputStream fos = new FileOutputStream(out2.getPath()+'\\'+text);
+                        FileOutputStream fos = new FileOutputStream(new File(out2, text));
                         fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
                         fos.close();
                     } catch (Exception e) {
