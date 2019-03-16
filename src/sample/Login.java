@@ -3,7 +3,10 @@ package sample;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -80,11 +83,24 @@ public class Login {
                         if (i.equals(0L)) {
                             i = (Long) result.getOrDefault("result", 0);
                             if (i.equals(2L)) {
-                                AnchorPane pane = FXMLLoader.load(getClass().getResource("RegDevice.fxml"));
-                                MainPane.getChildren().setAll(pane);
+                                Platform.runLater(() -> {
+                                    try {
+                                        AnchorPane pane = FXMLLoader.load(getClass().getResource("RegDevice.fxml"));
+                                        MainPane.getChildren().setAll(pane);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                });
                             } else if (i.equals(1L)) {
-                                AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
-                                MainPane.getChildren().setAll(pane);
+                                Platform.runLater(() ->{
+                                    try {
+                                        AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
+                                        MainPane.getChildren().setAll(pane);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                });
+
                             }
                         }
                         RegButton.setDisable(false);
@@ -92,17 +108,11 @@ public class Login {
                         Nick.setDisable(false);
                         Pass.setDisable(false);
                     } catch (Exception e) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Ошибка");
-                        alert.setHeaderText(null);
-                        alert.setContentText(e.toString());
-                        alert.setOnCloseRequest(event -> Platform.exit());
-                        alert.show();
                         e.printStackTrace();
                     }
                 };
                 Thread t = new Thread(r);
-                t.run();
+                t.start();
             }
         }
     }
@@ -163,16 +173,10 @@ public class Login {
                     throw new Exception("Ошибка приложения!");
                 }
             }catch (Exception e){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Ошибка");
-                alert.setHeaderText(null);
-                alert.setContentText(e.toString());
-                alert.setOnCloseRequest(event -> Platform.exit());
-                alert.show();
                 e.printStackTrace();
             }
         };
         Thread t = new Thread(r);
-        t.run();
+        t.start();
     }
 }

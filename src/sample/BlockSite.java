@@ -101,12 +101,6 @@ public class BlockSite {
                                 UnblockSite(Name.getCellData(getIndex()));
                                 sites.remove(getIndex());
                             }catch (Exception e){
-                                Alert alert = new Alert(Alert.AlertType.ERROR);
-                                alert.setTitle("Ошибка");
-                                alert.setHeaderText(null);
-                                alert.setContentText(e.toString());
-                                alert.setOnCloseRequest(event2 -> Platform.exit());
-                                alert.show();
                                 e.printStackTrace();
                             }
                         });
@@ -162,12 +156,6 @@ public class BlockSite {
                                                 }
                                             }
                                         } catch (Exception e) {
-                                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                                            alert.setTitle("Ошибка");
-                                            alert.setHeaderText(null);
-                                            alert.setContentText(e.toString());
-                                            alert.setOnCloseRequest(event2 -> Platform.exit());
-                                            alert.show();
                                             e.printStackTrace();
                                         }
                                     }));
@@ -181,12 +169,6 @@ public class BlockSite {
                                     alert.show();
                                 }
                             }catch (Exception e){
-                                Alert alert = new Alert(Alert.AlertType.ERROR);
-                                alert.setTitle("Ошибка");
-                                alert.setHeaderText(null);
-                                alert.setContentText(e.toString());
-                                alert.setOnCloseRequest(event2 -> Platform.exit());
-                                alert.show();
                                 e.printStackTrace();
                             }
                         });

@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -113,27 +114,24 @@ public class Saved {
                         DrawMessage(((String)(message).get("msg")).replace("\\n","\n"),(Long)(message).get("date"),(String)(message).get("sender"), ((String)(message).get("type")).equals("File"));
                     }
                 }else if(i.equals(4L)){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Ошибка");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Ваше устройство не зарегистрировано!");
-                    alert.setOnCloseRequest(event -> Platform.exit());
-                    alert.show();
+                    Platform.runLater(() ->{
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Ошибка");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Ваше устройство не зарегистрировано!");
+                        alert.setOnCloseRequest(event -> Platform.exit());
+                        alert.show();
+                    });
+
                 }else{
                     throw new Exception("Ошибка приложения!");
                 }
             }catch (Exception e){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Ошибка");
-                alert.setHeaderText(null);
-                alert.setContentText(e.toString());
-                alert.setOnCloseRequest(event -> Platform.exit());
-                alert.show();
                 e.printStackTrace();
             }
         };
         Thread t = new Thread(r);
-        t.run();
+        t.start();
     }
 
     private void DrawMessage(String text, Long date, String sender, Boolean isFile) {
@@ -163,27 +161,25 @@ public class Saved {
             Download.setFitHeight(150);
             //TextLabel.setMaxWidth(150);
             Download.setOnMouseClicked(event -> {
+                DirectoryChooser fc = new DirectoryChooser();
+                fc.setTitle("Выберите папку для сохранения");
+                final File out = fc.showDialog(null);
+                if (file == null) return;
                 Runnable r = () -> {
                     try {
                         URL website = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text + "&Date=" + date);
                         ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-                        File out = new File("C:\\Users\\Alex\\Downloads\\MySweetyPhone\\");
-                        out.mkdirs();
-                        FileOutputStream fos = new FileOutputStream(out.getPath()+'\\'+text);
+                        File out2 = new File(out,"\\MySweetyPhone\\");
+                        out2.mkdirs();
+                        FileOutputStream fos = new FileOutputStream(out2.getPath()+'\\'+text);
                         fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
                         fos.close();
                     } catch (Exception e) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Ошибка");
-                        alert.setHeaderText(null);
-                        alert.setContentText(e.toString());
-                        alert.setOnCloseRequest(event2 -> Platform.exit());
-                        alert.show();
                         e.printStackTrace();
                     }
                 };
                 Thread t = new Thread(r);
-                t.run();
+                t.start();
             });
             vBox.getChildren().add(0,Download);
         }
@@ -230,12 +226,6 @@ public class Saved {
                     if(Messages.getChildren().size() < 10)
                         LoadMore(10 - Messages.getChildren().size());
                 }catch (Exception e){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Ошибка");
-                    alert.setHeaderText(null);
-                    alert.setContentText(e.toString());
-                    alert.setOnCloseRequest(event2 -> Platform.exit());
-                    alert.show();
                     e.printStackTrace();
                 }
             };
@@ -244,9 +234,13 @@ public class Saved {
         });
         vBox.setOnContextMenuRequested((EventHandler<Event>) event -> contextMenu.show(vBox, MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y));
         if(needsAnim)
-            Messages.getChildren().add(vBox);
+            Platform.runLater(() -> {
+                Messages.getChildren().add(vBox);
+            });
         else
-            Messages.getChildren().add(1,vBox);
+            Platform.runLater(() -> {
+                Messages.getChildren().add(1, vBox);
+            });
         if (needsAnim) {
             Create anim = new Create(vBox);
             anim.play();
@@ -280,27 +274,23 @@ public class Saved {
                 }else if(i.equals(0L)){
                     DrawMessage(MessageText.getText(), (Long) result.getOrDefault("time", 2), name, false, true);
                 }else if(i.equals(4L)){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Ошибка");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Ваше устройство не зарегистрировано!");
-                    alert.setOnCloseRequest(event -> Platform.exit());
-                    alert.show();
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Ошибка");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Ваше устройство не зарегистрировано!");
+                        alert.setOnCloseRequest(event -> Platform.exit());
+                        alert.show();
+                    });
                 }else{
                     throw new Exception("Ошибка приложения!");
                 }
             }catch (Exception e){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Ошибка");
-                alert.setHeaderText(null);
-                alert.setContentText(e.toString());
-                alert.setOnCloseRequest(event -> Platform.exit());
-                alert.show();
                 e.printStackTrace();
             }
         };
         Thread t = new Thread(r);
-        t.run();
+        t.start();
         MessageText.setText("");
     }
 
@@ -358,7 +348,7 @@ public class Saved {
                 }
             };
             Thread t = new Thread(r);
-            t.run();
+            t.start();
 
         }
     }

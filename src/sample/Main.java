@@ -17,7 +17,7 @@ public class Main extends Application {
         Scene scene = new Scene(root,1270,720 );
         scene.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
         primaryStage.setScene(scene);
-        //primaryStage.setResizable(false);
+        primaryStage.setResizable(false);
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("Images/Icon.png")));
         primaryStage.setOnCloseRequest(event -> Platform.exit());
         primaryStage.show();

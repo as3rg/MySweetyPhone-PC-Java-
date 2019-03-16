@@ -1,10 +1,12 @@
 package sample;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
@@ -130,17 +132,11 @@ public class DevicesList {
                     throw new Exception("Ваше устройство не зарегистрировано!");
                 }
             } catch (Exception e) {
-                Alert alert2 = new Alert(Alert.AlertType.ERROR);
-                alert2.setTitle("Ошибка");
-                alert2.setHeaderText(null);
-                alert2.setContentText(e.getMessage());
-                alert2.setOnCloseRequest(event -> Platform.exit());
-                alert2.show();
                 e.printStackTrace();
             }
         };
         Thread t = new Thread(r);
-        t.run();
+        t.start();
 
 
         Type.setCellValueFactory(new PropertyValueFactory<Device, String>("Type"));
@@ -180,17 +176,11 @@ public class DevicesList {
                                     devices.remove(getIndex());
 
                                 } catch (Exception e) {
-                                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                                    alert.setTitle("Ошибка");
-                                    alert.setHeaderText(null);
-                                    alert.setContentText(e.toString());
-                                    alert.setOnCloseRequest(event2 -> Platform.exit());
-                                    alert.show();
                                     e.printStackTrace();
                                 }
                             };
                             Thread t = new Thread(r);
-                            t.run();
+                            t.start();
                         });
                         if (empty) {
                             setGraphic(null);

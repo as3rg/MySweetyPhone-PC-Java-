@@ -55,7 +55,7 @@ class Session{
     }
 
     public void Start(){
-        t.run();
+        t.start();
     }
 
     public void Stop(){
@@ -112,15 +112,16 @@ public class Sessions {
             long time = LocalDateTime.now().getSecond();
             Thread t = new Thread(() -> {
                 try {
-                    while (LocalDateTime.now().getSecond() - time > 60) {
+                    while (/*LocalDateTime.now().getSecond() - time > 60*/ true) {
                         s.receive(p);
+                        System.out.println(p.getData());
                         ConnectToSession.getChildren().add(new TextField(new String(p.getData())));
                     }
                 }catch (IOException e){
                     e.printStackTrace();
                 }
             });
-            t.run();
+            t.start();
         } catch (SocketException e) {
             e.printStackTrace();
         }
@@ -139,20 +140,25 @@ public class Sessions {
                 ConnectToSession.setDisable(true);
                 NewSession.setOnMouseClicked(this::CloseSession);
                 NewSession.setText("Закрыть сессию");
-                DatagramSocket s = new DatagramSocket(port);
+                DatagramSocket s = new DatagramSocket();
                 s.setBroadcast(true);
                 byte buf[] = new byte[1];
                 buf[0] = ((byte) SessionType.getValue().indexOf(SessionType.getValue()));
                 DatagramPacket packet = new DatagramPacket(buf, buf.length, Inet4Address.getByName("255.255.255.255"), port);
-                s.send(packet);
-                s.close();
+                Runnable r = ()-> {
+                    try {
+                        while (true) {
+                            s.send(packet);
+                        }
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                };
+                Thread t = new Thread(r);
+                t.start();
+                //s.close();
             }
         } catch (IOException err){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Ошибка");
-            alert.setHeaderText(null);
-            alert.setContentText(err.toString());
-            alert.show();
             err.printStackTrace();
         }
     }
