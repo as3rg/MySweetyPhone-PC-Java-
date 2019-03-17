@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -31,7 +32,9 @@ import org.json.simple.JSONValue;
 import sample.Anims.Create;
 import sample.Anims.Destroy;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -159,7 +162,22 @@ public class Saved {
             ImageView Download = new ImageView(image);
             Download.setFitWidth(150);
             Download.setFitHeight(150);
-            //TextLabel.setMaxWidth(150);
+
+            (new Thread(() -> {
+                try {
+                    URL website = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text + "&Date=" + date);
+                    ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+                    if(text.contains("jpg")) {
+                        BufferedImage image1 = ImageIO.read(website.openStream());
+                        Platform.runLater(()->{
+                            Download.setImage(SwingFXUtils.toFXImage(image1, null));
+                        });
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            })).start();
+
             Download.setOnMouseClicked(event -> {
                 DirectoryChooser fc = new DirectoryChooser();
                 fc.setTitle("Выберите папку для сохранения");
@@ -303,7 +321,7 @@ public class Saved {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Ошибка");
         alert.setHeaderText(null);
-        if (file.length() > 1*1024*1024){
+        if (file.length() > 1024 * 1024){
             alert.setContentText("Размер файла превышает допустимые размеры");
             alert.show();
             return;

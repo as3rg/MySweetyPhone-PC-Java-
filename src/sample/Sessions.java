@@ -94,7 +94,7 @@ class SessionServer extends Session{
 
         switch (type) {
             case TEST:
-                t = new Thread(() -> {          //Сменить для каждого режима
+                t = new Thread(() -> {
                     try {
                         socket = ss.accept();
                         this.type = type;
@@ -172,7 +172,7 @@ class SessionClient extends Session{
 
         switch (type) {
             case TEST:
-                t = new Thread(() -> {/*Сменить для каждого режима*/});
+                t = new Thread(() -> {});
                 break;
             default:
                 throw new Exception("Неизвестный тип сессии");
