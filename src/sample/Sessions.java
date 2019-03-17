@@ -7,34 +7,188 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 import java.io.*;
 import java.net.*;
-import java.time.LocalDateTime;
-import java.util.ResourceBundle;
+import java.util.*;
 
-class Session{
+abstract class Session{
+    InetAddress address;
     Socket socket;
-    Inet4Address address;
     int port;
-    int type;
+    Type type;
     Thread t;
-    boolean isServer;
+    Timer broadcasting;
+    static int BroadCastingPort = 9000;
 
-    Session(Inet4Address address, int port, int type) throws IOException {
-        isServer = false;
+    enum Type{
+        TEST,
+        MOUSE
+    }
+
+    static ArrayList<Session> sessions;
+
+    static {
+        sessions=new ArrayList<>(10);
+    }
+
+    public Session(){
+        sessions.add(this);
+    }
+
+    public void Start(){
+        t.start();
+    }
+
+    public void Stop() throws IOException {
+        broadcasting.cancel();
+        t.interrupt();
+        if(socket!=null) socket.close();
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public InetAddress getAddress() {
+        return address;
+    }
+
+    public abstract boolean isServer();
+
+}
+
+class SessionServer extends Session{
+
+    SessionServer(Type type) throws Exception {
+        ServerSocket ss = new ServerSocket(0);
+        this.port = ss.getLocalPort();
+        JSONObject message = new JSONObject();
+        message.put("port", port);
+        message.put("type", type);
+        byte[] buf = String.format("%-30s", message.toJSONString()).getBytes();
+        System.out.println(new String(buf));
+        DatagramSocket s = new DatagramSocket();
+        s.setBroadcast(true);
+        DatagramPacket packet = new DatagramPacket(buf, buf.length, Inet4Address.getByName("255.255.255.255"), BroadCastingPort);
+
+        broadcasting = new Timer();
+        broadcasting.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    s.send(packet);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 0, 10000);
+
+        switch (type) {
+            case TEST:
+                t = new Thread(() -> {          //Сменить для каждого режима
+                    try {
+                        socket = ss.accept();
+                        this.type = type;
+                        PrintWriter writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+                        broadcasting.cancel();
+                        while (true)
+                            writer.println("test");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                break;
+            default:
+                throw new Exception("Неизвестный тип сессии");
+        }
+    }
+
+    public boolean isServer(){
+        return true;
+    }
+}
+
+class SessionClient extends Session{
+
+    static ArrayList<SessionClient> servers;
+    static ArrayList<InetAddress> ips;
+    static boolean isSearching;
+
+    static{
+        isSearching = false;
+    }
+
+    static void Search(Pane v, Thread onFinishSearching) throws SocketException {
+        if(isSearching) {
+            System.err.println("Поиск уже запущен");
+            return;
+        }
+        servers = new ArrayList<>();
+        ips = new ArrayList<>();
+        isSearching = true;
+        DatagramSocket s = new DatagramSocket(BroadCastingPort);
+        s.setBroadcast(true);
+        s.setSoTimeout(60000);
+        byte[] buf = new byte[30];
+        DatagramPacket p = new DatagramPacket(buf, buf.length);
+        long time = (new Date()).getTime();
+        Thread t = new Thread(() -> {
+            try {
+                while ((new Date()).getTime() - time <= 60000) {
+                    s.receive(p);
+                    JSONObject ans = (JSONObject) JSONValue.parse(new String(p.getData()));
+                    if (ips.contains(p.getAddress())) {
+                        ips.add(p.getAddress());
+                        servers.add(new SessionClient(p.getAddress(), (int) ans.get("port"), (Type) ans.get("type")));
+                        Platform.runLater(() -> {
+                            v.getChildren().add(new TextField(p.getAddress().getHostAddress()));
+                        });
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            isSearching = false;
+            s.close();
+            Platform.runLater(onFinishSearching);
+        });
+        t.start();
+    }
+
+    SessionClient(InetAddress address, int port, Type type) throws Exception {
         this.address = address;
         this.port = port;
-        socket = new Socket(address, port);
-        this.type = type;
-        BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        Runnable r = ()->{
+
+        switch (type) {
+            case TEST:
+                t = new Thread(() -> {/*Сменить для каждого режима*/});
+                break;
+            default:
+                throw new Exception("Неизвестный тип сессии");
+        }
+
+        Runnable r = () -> {
             try {
-                while (true) {
+                socket = new Socket(address, port);
+                socket.setSoTimeout(60000);
+                this.type = type;
+                BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                broadcasting.cancel();
+                while (true)
                     System.out.println(reader.readLine());
-                }
+            }catch (SocketException e){
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -42,35 +196,13 @@ class Session{
         t = new Thread(r);
     }
 
-    Session(int port, int type) throws IOException {
-        isServer = true;
-        this.address = address;
-        this.port = port;
-        socket = (new ServerSocket(port)).accept();
-        this.type = type;
-        PrintWriter writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-        Runnable r = () -> {
-            writer.println("test");
-        };
-        t = new Thread(r);
-    }
-
-    public void Start(){
-        t.start();
-    }
-
-    public void Stop(){
-        t.interrupt();
-    }
-
     public boolean isServer(){
-        return isServer;
+        return false;
     }
 }
 
 public class Sessions {
 
-    int port = 9000;
 
     @FXML
     private ResourceBundle resources;
@@ -90,9 +222,7 @@ public class Sessions {
     @FXML
     private ChoiceBox<String> SessionType;
 
-    /*Типы подключения
-        1 = эмуляция мыши
-     */
+    private ArrayList<Session> sessions;
 
     @FXML
     public void initialize(){
@@ -101,32 +231,16 @@ public class Sessions {
     }
 
     @FXML
-    public void Search() throws UnknownHostException {
-        try {
-            NewSession.setDisable(true);
-            SearchSessions.setDisable(true);
-            JSONObject message = new JSONObject();
-            byte buf[] = new byte[1];
-            DatagramSocket s = new DatagramSocket(port);
-            s.setBroadcast(true);
-            DatagramPacket p = new DatagramPacket(buf, buf.length);
-            long time = LocalDateTime.now().getSecond();
-            Thread t = new Thread(() -> {
-                try {
-                    while (/*LocalDateTime.now().getSecond() - time > 60*/ true) {
-                        s.receive(p);
-                        System.out.println(p.getData());
-                        Platform.runLater( ()->ConnectToSession.getChildren().add(new TextField(new String(p.getData()))));
-                    }
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
-            });
-            t.start();
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
+    public void Search() throws SocketException {
 
+        NewSession.setDisable(true);
+        SessionType.setDisable(true);
+        SearchSessions.setDisable(true);
+        SessionClient.Search(ConnectToSession, new Thread(()->{
+            NewSession.setDisable(false);
+            SessionType.setDisable(false);
+            SearchSessions.setDisable(false);
+        }));
     }
 
     public void OpenSession(MouseEvent e){
@@ -141,33 +255,27 @@ public class Sessions {
                 ConnectToSession.setDisable(true);
                 NewSession.setOnMouseClicked(this::CloseSession);
                 NewSession.setText("Закрыть сессию");
-                DatagramSocket s = new DatagramSocket();
-                s.setBroadcast(true);
-                byte buf[] = new byte[1];
-                buf[0] = ((byte) SessionType.getValue().indexOf(SessionType.getValue()));
-                DatagramPacket packet = new DatagramPacket(buf, buf.length, Inet4Address.getByName("255.255.255.255"), port);
-                Runnable r = ()-> {
-                    try {
-                        while (true) {
-                            s.send(packet);
-                        }
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                };
-                Thread t = new Thread(r);
-                t.start();
+                SessionServer test = new SessionServer(Session.Type.TEST);
+                test.Start();
                 //s.close();
             }
         } catch (IOException err){
             err.printStackTrace();
+        } catch (Exception e1) {
+            e1.printStackTrace();
         }
     }
 
-    public void CloseSession(MouseEvent e){
-        ConnectToSession.setDisable(false);
-        NewSession.setOnMouseClicked(this::OpenSession);
-        NewSession.setText("Открыть сессию");
+    public void CloseSession(MouseEvent e) {
+        try {
+            ConnectToSession.setDisable(false);
+            NewSession.setOnMouseClicked(this::OpenSession);
+            NewSession.setText("Открыть сессию");
+            Session.sessions.get(Session.sessions.size() - 1).Stop();
+            Session.sessions.remove(Session.sessions.size() - 1);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
     }
 
     public void TouchPadSession(){
