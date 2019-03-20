@@ -15,6 +15,6 @@
             <VBox fx:id="ConnectToSession" disable="true" minHeight="565.0" prefHeight="566.0" prefWidth="637.0" style="-fx-background-color: #202020;" />
          </content>
       </ScrollPane>
-      <Button fx:id="SearchSessions" layoutX="294.0" layoutY="14.0" mnemonicParsing="false" onAction="#Search" text="Поиск...." />
+      <Button fx:id="SearchSessions" layoutX="294.0" layoutY="14.0" mnemonicParsing="false" text="Поиск...." />
    </children>
 </AnchorPane>

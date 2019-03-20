@@ -125,12 +125,15 @@ class SessionClient extends Session{
     static ArrayList<SessionClient> servers;
     static ArrayList<InetAddress> ips;
     static boolean isSearching;
+    static Thread searching;
+    static DatagramSocket s;
 
     static{
         isSearching = false;
     }
 
     static void Search(Pane v, Thread onFinishSearching) throws SocketException {
+        v.getChildren().clear();
         if(isSearching) {
             System.err.println("Поиск уже запущен");
             return;
@@ -138,27 +141,32 @@ class SessionClient extends Session{
         servers = new ArrayList<>();
         ips = new ArrayList<>();
         isSearching = true;
-        DatagramSocket s = new DatagramSocket(BroadCastingPort);
+        s = new DatagramSocket(BroadCastingPort);
         s.setBroadcast(true);
         s.setSoTimeout(60000);
         byte[] buf = new byte[30];
         DatagramPacket p = new DatagramPacket(buf, buf.length);
         long time = (new Date()).getTime();
-        Thread t = new Thread(() -> {
+        searching = new Thread(() -> {
             try {
                 while ((new Date()).getTime() - time <= 60000) {
                     s.receive(p);
                     JSONObject ans = (JSONObject) JSONValue.parse(new String(p.getData()));
                     if (!ips.contains(p.getAddress())) {
                         ips.add(p.getAddress());
+                        servers.add(new SessionClient(p.getAddress(),(int)ans.get("port"), (Type)ans.get("type")));
                         Platform.runLater(() -> {
                             Text ip = new Text(p.getAddress().getHostAddress());
                             ip.setFill(Paint.valueOf("#F0F0F0"));
                             ip.setStroke(Paint.valueOf("#F0F0F0"));
+                            ip.setOnMouseClicked(event->{
+                                servers.get(v.getChildren().indexOf(ip)).Start();
+                            });
                             v.getChildren().add(ip);
                         });
                     }
                 }
+            } catch (SocketException e){
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (Exception e) {
@@ -168,7 +176,13 @@ class SessionClient extends Session{
             s.close();
             Platform.runLater(onFinishSearching);
         });
-        t.start();
+        searching.start();
+    }
+
+    static void StopSearching() {
+        searching.interrupt();
+        isSearching=false;
+        s.close();
     }
 
     SessionClient(InetAddress address, int port, Type type) throws Exception {
@@ -233,18 +247,31 @@ public class Sessions {
     public void initialize(){
         SessionType.getItems().add("Эмуляция мыши");
         NewSession.setOnMouseClicked(this::OpenSession);
+        SearchSessions.setOnMouseClicked(this::Search);
     }
 
     @FXML
-    public void Search() throws SocketException {
-        NewSession.setDisable(true);
-        SessionType.setDisable(true);
-        SearchSessions.setDisable(true);
-        SessionClient.Search(ConnectToSession, new Thread(()->{
-            NewSession.setDisable(false);
-            SessionType.setDisable(false);
-            SearchSessions.setDisable(false);
-        }));
+    public void Search(MouseEvent mouseEvent) {
+        try {
+            NewSession.setDisable(true);
+            SessionType.setDisable(true);
+            SearchSessions.setOnMouseClicked(this::StopSearching);
+            SearchSessions.setText("Остановить поиск");
+            SessionClient.Search(ConnectToSession, new Thread(() -> {
+                NewSession.setDisable(false);
+                SessionType.setDisable(false);
+                SearchSessions.setOnMouseClicked(this::Search);
+                SearchSessions.setText("Поиск...");
+            }));
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void StopSearching(MouseEvent mouseEvent) {
+        SearchSessions.setText("Поиск...");
+        SearchSessions.setOnMouseClicked(this::Search);
+        SessionClient.StopSearching();
     }
 
     public void OpenSession(MouseEvent e){
