@@ -9,7 +9,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
-import javafx.scene.text.Text;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
@@ -74,9 +73,8 @@ class SessionServer extends Session{
         this.port = ss.getLocalPort();
         JSONObject message = new JSONObject();
         message.put("port", port);
-        message.put("type", type);
+        message.put("type", type.ordinal());
         byte[] buf = String.format("%-30s", message.toJSONString()).getBytes();
-        System.out.println(new String(buf));
         DatagramSocket s = new DatagramSocket();
         s.setBroadcast(true);
         DatagramPacket packet = new DatagramPacket(buf, buf.length, Inet4Address.getByName("255.255.255.255"), BroadCastingPort);
@@ -86,7 +84,6 @@ class SessionServer extends Session{
             @Override
             public void run() {
                 try {
-                    System.out.println(new String(packet.getData()));
                     s.send(packet);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -154,14 +151,14 @@ class SessionClient extends Session{
                     JSONObject ans = (JSONObject) JSONValue.parse(new String(p.getData()));
                     if (!ips.contains(p.getAddress())) {
                         ips.add(p.getAddress());
-                        servers.add(new SessionClient(p.getAddress(),(int)ans.get("port"), (Type)ans.get("type")));
+                        servers.add(new SessionClient(p.getAddress(),((Long)ans.get("port")).intValue(), Type.values()[((Long)ans.get("type")).intValue()]));
                         Platform.runLater(() -> {
-                            Text ip = new Text(p.getAddress().getHostAddress());
-                            ip.setFill(Paint.valueOf("#F0F0F0"));
-                            ip.setStroke(Paint.valueOf("#F0F0F0"));
+                            Button ip = new Button(p.getAddress().getHostAddress());
+                            ip.setTextFill(Paint.valueOf("#F0F0F0"));
                             ip.setOnMouseClicked(event->{
                                 servers.get(v.getChildren().indexOf(ip)).Start();
                             });
+                            v.setDisable(false);
                             v.getChildren().add(ip);
                         });
                     }
@@ -191,28 +188,25 @@ class SessionClient extends Session{
 
         switch (type) {
             case TEST:
-                t = new Thread(() -> {});
+                t = new Thread(() -> {
+                    try {
+                        socket = new Socket(address, port);
+                        socket.setSoTimeout(60000);
+                        this.type = type;
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                        searching.interrupt();
+                        while (true)
+                            System.out.println(reader.readLine());
+                    }catch (SocketException e){
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
                 break;
             default:
                 throw new Exception("Неизвестный тип сессии");
         }
-
-        Runnable r = () -> {
-            try {
-                socket = new Socket(address, port);
-                socket.setSoTimeout(60000);
-                this.type = type;
-                BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                broadcasting.cancel();
-                while (true)
-                    System.out.println(reader.readLine());
-            }catch (SocketException e){
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        };
-        t = new Thread(r);
     }
 
     public boolean isServer(){
@@ -289,7 +283,6 @@ public class Sessions {
                 NewSession.setText("Закрыть сессию");
                 SessionServer test = new SessionServer(Session.Type.TEST);
                 test.Start();
-                //s.close();
             }
         } catch (IOException err){
             err.printStackTrace();
