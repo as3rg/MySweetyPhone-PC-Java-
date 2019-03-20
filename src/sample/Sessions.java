@@ -5,10 +5,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Text;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
@@ -81,16 +82,18 @@ class SessionServer extends Session{
         DatagramPacket packet = new DatagramPacket(buf, buf.length, Inet4Address.getByName("255.255.255.255"), BroadCastingPort);
 
         broadcasting = new Timer();
-        broadcasting.scheduleAtFixedRate(new TimerTask() {
+        TimerTask broadcastingTask = new TimerTask() {
             @Override
             public void run() {
                 try {
+                    System.out.println(new String(packet.getData()));
                     s.send(packet);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        }, 0, 10000);
+        };
+        broadcasting.schedule(broadcastingTask, 2000, 2000);
 
         switch (type) {
             case TEST:
@@ -146,11 +149,13 @@ class SessionClient extends Session{
                 while ((new Date()).getTime() - time <= 60000) {
                     s.receive(p);
                     JSONObject ans = (JSONObject) JSONValue.parse(new String(p.getData()));
-                    if (ips.contains(p.getAddress())) {
+                    if (!ips.contains(p.getAddress())) {
                         ips.add(p.getAddress());
-                        servers.add(new SessionClient(p.getAddress(), (int) ans.get("port"), (Type) ans.get("type")));
                         Platform.runLater(() -> {
-                            v.getChildren().add(new TextField(p.getAddress().getHostAddress()));
+                            Text ip = new Text(p.getAddress().getHostAddress());
+                            ip.setFill(Paint.valueOf("#F0F0F0"));
+                            ip.setStroke(Paint.valueOf("#F0F0F0"));
+                            v.getChildren().add(ip);
                         });
                     }
                 }
@@ -232,7 +237,6 @@ public class Sessions {
 
     @FXML
     public void Search() throws SocketException {
-
         NewSession.setDisable(true);
         SessionType.setDisable(true);
         SearchSessions.setDisable(true);
@@ -252,6 +256,7 @@ public class Sessions {
                 alert.setContentText("Выберите тип сеанса");
                 alert.show();
             } else {
+                SearchSessions.setDisable(true);
                 ConnectToSession.setDisable(true);
                 NewSession.setOnMouseClicked(this::CloseSession);
                 NewSession.setText("Закрыть сессию");
@@ -268,6 +273,7 @@ public class Sessions {
 
     public void CloseSession(MouseEvent e) {
         try {
+            SearchSessions.setDisable(false);
             ConnectToSession.setDisable(false);
             NewSession.setOnMouseClicked(this::OpenSession);
             NewSession.setText("Открыть сессию");
