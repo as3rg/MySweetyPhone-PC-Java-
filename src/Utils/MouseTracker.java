@@ -116,11 +116,14 @@ public class MouseTracker extends Frame implements MouseListener, MouseMotionLis
                 ss.Stop();
             }else if(e.isAltDown() && e.getKeyCode() == KeyEvent.VK_S) {
                 msg.put("Type", "swap");
-                Thread.sleep(100);
+                outputStream.println(msg.toJSONString());
+                ss.socket.close();
+                Thread.sleep(1000);
                 SessionClient sc = new SessionClient(ss.address,ss.port,ss.type);
-                Session.sessions.remove(this);
                 Session.sessions.add(sc);
+                Session.sessions.remove(this);
                 sc.Start();
+                f.dispose();
             }else{
                 msg.put("Type", "keyPressed");
                 msg.put("value", e.getKeyCode());

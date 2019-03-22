@@ -3,17 +3,14 @@ package Utils;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.Inet4Address;
-import java.net.ServerSocket;
+import java.net.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class SessionServer extends Session{
 
-    public SessionServer(Type type) throws Exception {
-        ServerSocket ss = new ServerSocket(0);
+    public SessionServer(Type type, int port) throws Exception {
+        ServerSocket ss = new ServerSocket(port);
         this.port = ss.getLocalPort();
         JSONObject message = new JSONObject();
         message.put("port", port);
@@ -56,6 +53,7 @@ public class SessionServer extends Session{
                     try {
                         socket = ss.accept();
                         this.type = type;
+                        this.address = ((InetSocketAddress)(socket.getRemoteSocketAddress())).getAddress();
                         broadcasting.cancel();
                         MouseTracker mt = new MouseTracker(this);
                     } catch (IOException e) {

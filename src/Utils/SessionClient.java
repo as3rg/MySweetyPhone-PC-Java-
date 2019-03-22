@@ -110,7 +110,7 @@ public class SessionClient extends Session{
                         socket = new Socket(address, port);
                         socket.setSoTimeout(60000);
                         BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                        searching.interrupt();
+                        if(searching != null) searching.interrupt();
                         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                         double width = screenSize.getWidth();
                         double height = screenSize.getHeight();
@@ -137,9 +137,9 @@ public class SessionClient extends Session{
                                     r.keyPress(((Long)msg.get("value")).intValue());
                                     break;
                                 case "swap":
-                                    SessionServer ss = new SessionServer(type);
-                                    Session.sessions.remove(this);
+                                    SessionServer ss = new SessionServer(type,port);
                                     Session.sessions.add(ss);
+                                    Session.sessions.remove(this);
                                     ss.Start();
                                     return;
                                 case "finish":
