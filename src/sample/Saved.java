@@ -96,7 +96,7 @@ public class Saved {
                 login = (String) props.getOrDefault("login", "");
                 name = (String) props.getOrDefault("name", "");
 
-                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=GetMessages&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&From="+(Messages.getChildren().size()-1)+"&Count="+Count);
+                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=GetMessages&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Count="+(Messages.getChildren().size()-1+Count));
 
                 HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                 connection.setRequestMethod("GET");
@@ -116,11 +116,18 @@ public class Saved {
                 }else if(i.equals(1L)){
                     throw new Exception("Неверные данные");
                 }else if(i.equals(0L)){
-                    Object[] messages = ((JSONArray)result.get("messages")).toArray();
-                    for(int j = 0; j < messages.length; j++){
-                        JSONObject message = (JSONObject)messages[j];
-                        Draw(((String)(message).get("msg")).replace("\\n","\n"),(Long)(message).get("date"),(String)(message).get("sender"), ((String)(message).get("type")).equals("File"), false);
-                    }
+                    Platform.runLater(()-> {
+                        try{
+                            Object[] messages = ((JSONArray) result.get("messages")).toArray();
+                            Messages.getChildren().remove(1,Messages.getChildren().size());
+                            for (int j = 0; j < messages.length; j++) {
+                                JSONObject message = (JSONObject) messages[j];
+                                Draw(((String) (message).get("msg")).replace("\\n", "\n"), (Long) (message).get("date"), (String) (message).get("sender"), ((String) (message).get("type")).equals("File"),  j == 0);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
                 }else if(i.equals(4L)){
                     Platform.runLater(() ->{
                         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -210,8 +217,6 @@ public class Saved {
                         throw new Exception("Ошибка приложения!");
                     }
                     Messages.getChildren().remove(vBox);
-                    if(Messages.getChildren().size() < 10)
-                        LoadMore(10 - Messages.getChildren().size());
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -220,14 +225,9 @@ public class Saved {
             anim.play(r);
         });
         vBox.setOnContextMenuRequested((EventHandler<Event>) event -> contextMenu.show(vBox, MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y));
-        if(needsAnim)
-            Platform.runLater(() -> {
-                Messages.getChildren().add(vBox);
-            });
-        else
-            Platform.runLater(() -> {
-                Messages.getChildren().add(1, vBox);
-            });
+        Platform.runLater(() -> {
+            Messages.getChildren().add(1, vBox);
+        });
         if (needsAnim) {
             Create anim = new Create(vBox);
             anim.play();
@@ -345,14 +345,9 @@ public class Saved {
         });
 
         vBox.setOnContextMenuRequested((EventHandler<Event>) event -> contextMenu.show(vBox, MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y));
-        if(needsAnim)
-            Platform.runLater(() -> {
-                Messages.getChildren().add(vBox);
-            });
-        else
-            Platform.runLater(() -> {
-                Messages.getChildren().add(1, vBox);
-            });
+        Platform.runLater(() -> {
+            Messages.getChildren().add(1, vBox);
+        });
         if (needsAnim) {
             Create anim = new Create(vBox);
             anim.play();
@@ -470,14 +465,9 @@ public class Saved {
         });
 
         vBox.setOnContextMenuRequested((EventHandler<Event>) event -> contextMenu.show(vBox, MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y));
-        if(needsAnim)
-            Platform.runLater(() -> {
-                Messages.getChildren().add(vBox);
-            });
-        else
-            Platform.runLater(() -> {
-                Messages.getChildren().add(1, vBox);
-            });
+        Platform.runLater(() -> {
+            Messages.getChildren().add(1, vBox);
+        });
         if (needsAnim) {
             Create anim = new Create(vBox);
             anim.play();
@@ -625,14 +615,9 @@ public class Saved {
         });
 
         vBox.setOnContextMenuRequested((EventHandler<Event>) event -> contextMenu.show(vBox, MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y));
-        if(needsAnim)
-            Platform.runLater(() -> {
-                Messages.getChildren().add(vBox);
-            });
-        else
-            Platform.runLater(() -> {
-                Messages.getChildren().add(1, vBox);
-            });
+        Platform.runLater(() -> {
+            Messages.getChildren().add(1, vBox);
+        });
         if (needsAnim) {
             Create anim = new Create(vBox);
             anim.play();
@@ -784,14 +769,9 @@ public class Saved {
         });
 
         vBox.setOnContextMenuRequested((EventHandler<Event>) event -> contextMenu.show(vBox, MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y));
-        if(needsAnim)
-            Platform.runLater(() -> {
-                Messages.getChildren().add(vBox);
-            });
-        else
-            Platform.runLater(() -> {
-                Messages.getChildren().add(1, vBox);
-            });
+        Platform.runLater(() -> {
+            Messages.getChildren().add(1, vBox);
+        });
         if (needsAnim) {
             Create anim = new Create(vBox);
             anim.play();

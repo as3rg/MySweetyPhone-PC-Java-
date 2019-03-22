@@ -13,9 +13,7 @@ import org.json.simple.JSONValue;
 import sample.Anims.Shake;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.net.*;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -65,7 +63,7 @@ public class Login {
 
                 Runnable r = () -> {
                     try {
-                        URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate="+regdate+"&Login=" + login + "&Id=" + id + "&Name=" + name);
+                        URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate=" + regdate + "&Login=" + login + "&Id=" + id + "&Name=" + name);
                         HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                         connection.setRequestMethod("GET");
 
@@ -92,7 +90,7 @@ public class Login {
                                     }
                                 });
                             } else if (i.equals(1L)) {
-                                Platform.runLater(() ->{
+                                Platform.runLater(() -> {
                                     try {
                                         AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
                                         MainPane.getChildren().setAll(pane);
@@ -107,9 +105,7 @@ public class Login {
                         LoginButton.setDisable(false);
                         Nick.setDisable(false);
                         Pass.setDisable(false);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    } catch (ProtocolException e) {} catch (MalformedURLException e) {} catch (IOException e) {}
                 };
                 Thread t = new Thread(r);
                 t.start();

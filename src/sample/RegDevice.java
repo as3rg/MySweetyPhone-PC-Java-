@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -78,11 +79,19 @@ public class RegDevice {
                     Error.setVisible(true);
                     Error.setText("Вы уже используете это имя!");
                 }else if(i.equals(0L)){
-                    props.setProperty("name",PhoneName.getText());
-                    props.setProperty("regdate",((Long) result.get("regdate")).toString());
-                    props.store(new FileOutputStream("properties.properties"), "");
-                    AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
-                    MainPane.getChildren().setAll(pane);
+                    Platform.runLater(()-> {
+                        try {
+                            props.setProperty("name", PhoneName.getText());
+                            props.setProperty("regdate", ((Long) result.get("regdate")).toString());
+                            props.store(new FileOutputStream("properties.properties"), "");
+                            AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
+                            MainPane.getChildren().setAll(pane);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
                 }else{
                     Error.setVisible(true);
                     Error.setText("Ошибка приложения!");

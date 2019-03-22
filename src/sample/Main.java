@@ -26,12 +26,11 @@ public class Main extends Application {
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("Images/Icon.png")));
         primaryStage.setOnCloseRequest(event -> Platform.exit());
         primaryStage.show();
-
     }
 
     @Override
     public void stop() throws Exception{
-        for(File f : tempfiles){
+        for(File f : tempfiles) {
             f.deleteOnExit();
         }
     }
