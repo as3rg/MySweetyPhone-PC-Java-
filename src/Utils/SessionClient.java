@@ -9,6 +9,7 @@ import org.json.simple.JSONValue;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -144,6 +145,7 @@ public class SessionClient extends Session{
                                     ss.Start();
                                     return;
                                 case "finish":
+                                    r.keyRelease(KeyEvent.VK_ALT);
                                     Stop();
                                     return;
                             }

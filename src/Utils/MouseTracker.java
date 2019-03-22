@@ -118,6 +118,7 @@ public class MouseTracker extends Frame implements MouseListener, MouseMotionLis
                 msg.put("Type", "swap");
                 outputStream.println(msg.toJSONString());
                 ss.socket.close();
+                ss.ss.close();
                 Thread.sleep(1000);
                 SessionClient sc = new SessionClient(ss.address,ss.port,ss.type);
                 Session.sessions.add(sc);
