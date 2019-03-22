@@ -40,8 +40,8 @@ public class MouseTracker extends Frame implements MouseListener, MouseMotionLis
     {
         JSONObject msg = new JSONObject();
         msg.put("Type","pressed");
-        msg.put("X",e.getX()/height);
-        msg.put("Y",e.getY()/width);
+        msg.put("X",e.getX()/width);
+        msg.put("Y",e.getY()/height);
         msg.put("Key",e.getButton());
         outputStream.println(msg.toJSONString());
     }
@@ -50,8 +50,8 @@ public class MouseTracker extends Frame implements MouseListener, MouseMotionLis
     {
         JSONObject msg = new JSONObject();
         msg.put("Type","released");
-        msg.put("X",e.getX()/height);
-        msg.put("Y",e.getY()/width);
+        msg.put("X",e.getX()/width);
+        msg.put("Y",e.getY()/height);
         msg.put("Key",e.getButton());
         outputStream.println(msg.toJSONString());
     }
@@ -65,10 +65,16 @@ public class MouseTracker extends Frame implements MouseListener, MouseMotionLis
     public void mouseMoved(MouseEvent e){
         JSONObject msg = new JSONObject();
         msg.put("Type","moved");
-        msg.put("X",e.getX()/height);
-        msg.put("Y",e.getY()/width);
+        msg.put("X",e.getX()/width);
+        msg.put("Y",e.getY()/height);
         outputStream.println(msg.toJSONString());
     }
 
-    public void mouseDragged(MouseEvent e){}
+    public void mouseDragged(MouseEvent e){
+        JSONObject msg = new JSONObject();
+        msg.put("Type","moved");
+        msg.put("X",e.getX()/width);
+        msg.put("Y",e.getY()/height);
+        outputStream.println(msg.toJSONString());
+    }
 } 
