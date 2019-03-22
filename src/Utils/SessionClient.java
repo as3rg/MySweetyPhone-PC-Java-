@@ -138,6 +138,7 @@ public class SessionClient extends Session{
                                     break;
                                 case "swap":
                                     SessionServer ss = new SessionServer(type,port);
+                                    socket.close();
                                     Session.sessions.add(ss);
                                     Session.sessions.remove(this);
                                     ss.Start();

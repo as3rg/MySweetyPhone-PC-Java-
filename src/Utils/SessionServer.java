@@ -9,8 +9,8 @@ import java.util.TimerTask;
 
 public class SessionServer extends Session{
 
-    public SessionServer(Type type, int port) throws Exception {
-        ServerSocket ss = new ServerSocket(port);
+    public SessionServer(Type type, int initPort) throws Exception {
+        ServerSocket ss = new ServerSocket(initPort);
         this.port = ss.getLocalPort();
         JSONObject message = new JSONObject();
         message.put("port", port);
