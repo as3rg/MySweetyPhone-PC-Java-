@@ -4,15 +4,13 @@ import org.json.simple.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
-public class MouseTracker extends Frame implements MouseListener, MouseMotionListener {
+public class MouseTracker extends Frame implements MouseListener, MouseMotionListener, MouseWheelListener {
 
     PrintWriter outputStream;
     double width;
@@ -75,6 +73,13 @@ public class MouseTracker extends Frame implements MouseListener, MouseMotionLis
         msg.put("Type","moved");
         msg.put("X",e.getX()/width);
         msg.put("Y",e.getY()/height);
+        outputStream.println(msg.toJSONString());
+    }
+
+    public void mouseWheelMoved(MouseWheelEvent e){
+        JSONObject msg = new JSONObject();
+        msg.put("Type","wheel");
+        msg.put("value",e.getWheelRotation());
         outputStream.println(msg.toJSONString());
     }
 } 

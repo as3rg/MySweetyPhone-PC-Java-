@@ -126,8 +126,10 @@ public class SessionClient extends Session{
                                     r.mouseRelease(InputEvent.getMaskForButton(((Long) msg.get("Key")).intValue()));
                                     break;
                                 case "pressed":
-                                    System.out.println(msg.toJSONString());
                                     r.mousePress(InputEvent.getMaskForButton(((Long) msg.get("Key")).intValue()));
+                                    break;
+                                case "wheel":
+                                    r.mouseWheel(((Long)msg.get("value")).intValue());
                                     break;
                             }
 
