@@ -85,7 +85,7 @@ public class SessionClient extends Session{
     public SessionClient(InetAddress address, int port, Type type) throws Exception {
         this.address = address;
         this.port = port;
-
+        this.type = type;
         switch (type) {
 //            case TEST:
 //                t = new Thread(() -> {
@@ -109,7 +109,6 @@ public class SessionClient extends Session{
                     try {
                         socket = new Socket(address, port);
                         socket.setSoTimeout(60000);
-                        this.type = type;
                         BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                         searching.interrupt();
                         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -137,6 +136,15 @@ public class SessionClient extends Session{
                                 case "keyPressed":
                                     r.keyPress(((Long)msg.get("value")).intValue());
                                     break;
+                                case "swap":
+                                    SessionServer ss = new SessionServer(type);
+                                    Session.sessions.remove(this);
+                                    Session.sessions.add(ss);
+                                    ss.Start();
+                                    return;
+                                case "finish":
+                                    Stop();
+                                    return;
                             }
 
                         }
@@ -145,6 +153,8 @@ public class SessionClient extends Session{
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (AWTException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
