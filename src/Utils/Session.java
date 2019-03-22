@@ -16,7 +16,6 @@ public abstract class Session{
     static int BroadCastingPort = 9000;
 
     public enum Type{
-        TEST,
         MOUSE
     }
 

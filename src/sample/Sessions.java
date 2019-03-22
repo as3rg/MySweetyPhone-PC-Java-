@@ -83,7 +83,7 @@ public class Sessions {
                 ConnectToSession.setDisable(true);
                 NewSession.setOnMouseClicked(this::CloseSession);
                 NewSession.setText("Закрыть сессию");
-                SessionServer test = new SessionServer(Session.Type.TEST);
+                SessionServer test = new SessionServer(Session.Type.values()[SessionType.getItems().indexOf(SessionType.getValue())]);
                 test.Start();
             }
         } catch (IOException err){

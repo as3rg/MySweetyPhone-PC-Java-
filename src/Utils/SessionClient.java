@@ -7,6 +7,7 @@ import javafx.scene.paint.Paint;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -54,6 +55,7 @@ public class SessionClient extends Session{
                             ip.setTextFill(Paint.valueOf("#F0F0F0"));
                             ip.setOnMouseClicked(event->{
                                 servers.get(v.getChildren().indexOf(ip)).Start();
+                                v.getChildren().remove(ip);
                             });
                             v.setDisable(false);
                             v.getChildren().add(ip);
@@ -84,23 +86,23 @@ public class SessionClient extends Session{
         this.port = port;
 
         switch (type) {
-            case TEST:
-                t = new Thread(() -> {
-                    try {
-                        socket = new Socket(address, port);
-                        socket.setSoTimeout(60000);
-                        this.type = type;
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                        searching.interrupt();
-                        while (true)
-                            System.out.println(reader.readLine());
-                    }catch (SocketException e){
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-                break;
+//            case TEST:
+//                t = new Thread(() -> {
+//                    try {
+//                        socket = new Socket(address, port);
+//                        socket.setSoTimeout(60000);
+//                        this.type = type;
+//                        BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//                        searching.interrupt();
+//                        while (true)
+//                            System.out.println(reader.readLine());
+//                    }catch (SocketException e){
+//
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                });
+//                break;
             case MOUSE:
                 t = new Thread(() -> {
                     try {
@@ -109,11 +111,19 @@ public class SessionClient extends Session{
                         this.type = type;
                         BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                         searching.interrupt();
-                        while (true)
-                            System.out.println(reader.readLine());
+                        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                        double width = screenSize.getWidth();
+                        double height = screenSize.getHeight();
+                        Robot r = new Robot();
+                        while (true) {
+                            JSONObject msg = (JSONObject)JSONValue.parse(reader.readLine());
+                            r.mouseMove((int)(((Double)msg.get("X")).doubleValue() * width), (int)(((Double)msg.get("Y")).doubleValue() * height));
+                        }
                     } catch (SocketException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (AWTException e) {
                         e.printStackTrace();
                     }
 
