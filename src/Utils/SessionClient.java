@@ -119,17 +119,23 @@ public class SessionClient extends Session{
                         while (true) {
                             JSONObject msg = (JSONObject)JSONValue.parse(reader.readLine());
                             switch ((String)msg.get("Type")){
-                                case "moved":
+                                case "mouseMoved":
                                     r.mouseMove((int)(((Double)msg.get("X")).doubleValue() * width), (int)(((Double)msg.get("Y")).doubleValue() * height));
                                     break;
-                                case "released":
+                                case "mouseReleased":
                                     r.mouseRelease(InputEvent.getMaskForButton(((Long) msg.get("Key")).intValue()));
                                     break;
-                                case "pressed":
+                                case "mousePressed":
                                     r.mousePress(InputEvent.getMaskForButton(((Long) msg.get("Key")).intValue()));
                                     break;
-                                case "wheel":
+                                case "mouseWheel":
                                     r.mouseWheel(((Long)msg.get("value")).intValue());
+                                    break;
+                                case "keyReleased":
+                                    r.keyRelease(((Long)msg.get("value")).intValue());
+                                    break;
+                                case "keyPressed":
+                                    r.keyPress(((Long)msg.get("value")).intValue());
                                     break;
                             }
 
