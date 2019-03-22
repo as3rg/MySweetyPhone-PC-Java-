@@ -8,6 +8,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import java.awt.*;
+import java.awt.event.InputEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -117,7 +118,19 @@ public class SessionClient extends Session{
                         Robot r = new Robot();
                         while (true) {
                             JSONObject msg = (JSONObject)JSONValue.parse(reader.readLine());
-                            r.mouseMove((int)(((Double)msg.get("X")).doubleValue() * width), (int)(((Double)msg.get("Y")).doubleValue() * height));
+                            switch ((String)msg.get("Type")){
+                                case "moved":
+                                    r.mouseMove((int)(((Double)msg.get("X")).doubleValue() * width), (int)(((Double)msg.get("Y")).doubleValue() * height));
+                                    break;
+                                case "released":
+                                    r.mouseRelease(InputEvent.getMaskForButton(((Long) msg.get("Key")).intValue()));
+                                    break;
+                                case "pressed":
+                                    System.out.println(msg.toJSONString());
+                                    r.mousePress(InputEvent.getMaskForButton(((Long) msg.get("Key")).intValue()));
+                                    break;
+                            }
+
                         }
                     } catch (SocketException e) {
                         e.printStackTrace();
