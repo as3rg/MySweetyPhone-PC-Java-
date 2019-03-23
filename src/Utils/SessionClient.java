@@ -88,30 +88,13 @@ public class SessionClient extends Session{
         this.port = port;
         this.type = type;
         switch (type) {
-//            case TEST:
-//                t = new Thread(() -> {
-//                    try {
-//                        socket = new Socket(address, port);
-//                        socket.setSoTimeout(60000);
-//                        this.type = type;
-//                        BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//                        searching.interrupt();
-//                        while (true)
-//                            System.out.println(reader.readLine());
-//                    }catch (SocketException e){
-//
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                });
-//                break;
             case MOUSE:
                 t = new Thread(() -> {
                     try {
                         socket = new Socket(address, port);
                         socket.setSoTimeout(60000);
                         BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                        if(searching != null) searching.interrupt();
+                        if(searching != null) StopSearching();
                         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                         double width = screenSize.getWidth();
                         double height = screenSize.getHeight();
@@ -138,7 +121,7 @@ public class SessionClient extends Session{
                                     r.keyPress(((Long)msg.get("value")).intValue());
                                     break;
                                 case "swap":
-                                    SessionServer ss = new SessionServer(type,port);
+                                    SessionServer ss = new SessionServer(type,port,()->{});
                                     socket.close();
                                     Session.sessions.add(ss);
                                     Session.sessions.remove(this);

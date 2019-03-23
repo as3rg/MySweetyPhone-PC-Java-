@@ -8,8 +8,59 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.util.ArrayList;
+
+class Listener implements MouseMotionListener, MouseListener{
+
+    int x = -1;
+    int y = -1;
+
+    JFrame j;
+
+    Listener(JFrame j){
+        this.j = j;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {}
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        x = e.getPoint().x;
+        y = e.getPoint().y;
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        j.setLocation(j.getLocation().x - x + e.getPoint().x, j.getLocation().y - y + e.getPoint().y);
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+
+    }
+}
 
 public class Main extends Application {
 
@@ -36,7 +87,29 @@ public class Main extends Application {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+        JFrame f = new JFrame("MouseListener");
+        f.setSize(50,65);
+        f.setAlwaysOnTop(true);
+        f.setUndecorated(true);
+        f.setVisible(true);
+        JPanel p = new JPanel();
+        Listener l = new Listener(f);
+        f.addMouseMotionListener(l);
+        f.addMouseListener(l);
+        JButton SwapButton = new JButton("Swap");
+        JButton FinishButton = new JButton("Finish");
+        GradientPaint gp = new GradientPaint(0, 0, Color.BLACK, 0, SwapButton.getHeight(), Color.WHITE);
+        p.add(SwapButton);
+        p.add(FinishButton);
+        p.setLayout(new FlowLayout());
+        f.setBackground(Color.getColor("#202020"));
+        f.add(p);
+        f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        f.show();
+
+
         launch(args);
     }
 }
