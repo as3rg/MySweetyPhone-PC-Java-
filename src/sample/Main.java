@@ -1,5 +1,6 @@
 package sample;
 
+import Utils.JGradientButton;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -97,9 +98,8 @@ public class Main extends Application {
         Listener l = new Listener(f);
         f.addMouseMotionListener(l);
         f.addMouseListener(l);
-        JButton SwapButton = new JButton("Swap");
+        JGradientButton SwapButton = new JGradientButton("Swap");
         JButton FinishButton = new JButton("Finish");
-        GradientPaint gp = new GradientPaint(0, 0, Color.BLACK, 0, SwapButton.getHeight(), Color.WHITE);
         p.add(SwapButton);
         p.add(FinishButton);
         p.setLayout(new FlowLayout());
@@ -108,8 +108,6 @@ public class Main extends Application {
         f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         f.show();
-
-
         launch(args);
     }
 }

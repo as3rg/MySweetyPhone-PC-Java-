@@ -58,7 +58,7 @@ public class MainActivity {
         ReplaceToBlockSite.getChildren().setAll(pane);*/
         pane = Sessions.load();
         ReplaceToSessions.getChildren().setAll(pane);
-        Timeline timeline = new Timeline(new KeyFrame(new Duration(10000), ev -> {
+        Timeline timeline = new Timeline(new KeyFrame(new Duration(60000), ev -> {
             switch (TabPane.getSelectionModel().getSelectedItem().getText()){
                 case "Устройства":
                     try {

@@ -122,7 +122,7 @@ public class Saved {
                             Messages.getChildren().remove(1,Messages.getChildren().size());
                             for (int j = 0; j < messages.length; j++) {
                                 JSONObject message = (JSONObject) messages[j];
-                                Draw(((String) (message).get("msg")).replace("\\n", "\n"), (Long) (message).get("date"), (String) (message).get("sender"), ((String) (message).get("type")).equals("File"),  j == 0);
+                                Draw(((String) (message).get("msg")).replace("\\n", "\n"), (Long) (message).get("date"), (String) (message).get("sender"), ((String) (message).get("type")).equals("File"),  false);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
