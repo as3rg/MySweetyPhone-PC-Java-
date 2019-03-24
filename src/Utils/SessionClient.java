@@ -13,10 +13,13 @@ import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.TimerTask;
 
 public class SessionClient extends Session{
 
@@ -170,14 +173,21 @@ public class SessionClient extends Session{
                         f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
                         f.show();
                         Robot r = new Robot();
+                        broadcasting.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                try {
+                                    BufferedImage bufferedWriter = ImageIO.read(socket.getInputStream());
 
-                        while (true) {
-                            BufferedImage bufferedWriter = ImageIO.read(socket.getInputStream());
-                            if(bufferedWriter != null) {
-                                ImageIcon ii = new ImageIcon(bufferedWriter);
-                                icon.setIcon(ii);
+                                    if(bufferedWriter != null) {
+                                        ImageIcon ii = new ImageIcon(bufferedWriter);
+                                        icon.setIcon(ii);
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        }
+                        }, 1, 1);
                     } catch (SocketException e) {
                         e.printStackTrace();
                     } catch (IOException e) {

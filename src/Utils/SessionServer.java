@@ -5,9 +5,7 @@ import org.json.simple.JSONObject;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.net.*;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -65,12 +63,28 @@ public class SessionServer extends Session{
                         this.address = ((InetSocketAddress) (socket.getRemoteSocketAddress())).getAddress();
                         broadcasting.cancel();
                         Robot r = new Robot();
-                        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-                        while (true) {
-                            BufferedImage image = r.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
-                            System.out.println(ImageIO.write(image, "png", socket.getOutputStream()));
-                            socket.getOutputStream().flush();
-                        }
+                        broadcasting.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                try {
+                                    BufferedImage bufferedWriter = ImageIO.read(socket.getInputStream());
+
+                                    if(bufferedWriter != null) {
+                                        BufferedImage image = r.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
+                                        System.out.println(ImageIO.write(image, "png", socket.getOutputStream()));
+                                        socket.getOutputStream().flush();
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, 1, 1);
+//                        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+//                        while (true) {
+//                            BufferedImage image = r.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
+//                            System.out.println(ImageIO.write(image, "png", socket.getOutputStream()));
+//                            socket.getOutputStream().flush();
+//                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (AWTException e) {
