@@ -171,21 +171,12 @@ public class SessionClient extends Session{
                         f.show();
                         Robot r = new Robot();
 
-                        BufferedImage image = r.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
-                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                        ImageIO.write(image, "png", baos);
-                        baos.flush();
-                        final int PacketSize = baos.toByteArray().length;
-
                         while (true) {
-                            byte[] bytes = new byte[PacketSize];
-                            socket.getInputStream().read(bytes);
-                            baos = new ByteArrayOutputStream();
-                            ImageIO.write(image, "png", baos);
-                            baos.flush();
-                            byte[] b = baos.toByteArray();
-                            ByteArrayInputStream bais = new ByteArrayInputStream(b);
-                            icon.setIcon(new ImageIcon(ImageIO.read(bais)));
+                            BufferedImage bufferedWriter = ImageIO.read(socket.getInputStream());
+                            if(bufferedWriter != null) {
+                                ImageIcon ii = new ImageIcon(bufferedWriter);
+                                icon.setIcon(ii);
+                            }
                         }
                     } catch (SocketException e) {
                         e.printStackTrace();
