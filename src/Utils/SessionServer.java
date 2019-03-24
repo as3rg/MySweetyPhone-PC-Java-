@@ -63,7 +63,8 @@ public class SessionServer extends Session{
                         this.address = ((InetSocketAddress) (socket.getRemoteSocketAddress())).getAddress();
                         broadcasting.cancel();
                         Robot r = new Robot();
-                        broadcasting.schedule(new TimerTask() {
+                        Timer timer = new Timer(true);
+                        timer.schedule(new TimerTask() {
                             @Override
                             public void run() {
                                 try {
