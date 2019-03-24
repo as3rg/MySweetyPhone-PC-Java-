@@ -67,7 +67,7 @@ public class SessionServer extends Session{
                         while (true) {
                             BufferedImage image = r.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                            ImageIO.write(image, "jpg", baos);
+                            ImageIO.write(image, "png", baos);
                             baos.flush();
                             socket.getOutputStream().write(baos.toByteArray());
                         }

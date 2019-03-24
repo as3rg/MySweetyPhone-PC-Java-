@@ -170,16 +170,22 @@ public class SessionClient extends Session{
                         f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
                         f.show();
                         Robot r = new Robot();
+
+                        BufferedImage image = r.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        ImageIO.write(image, "png", baos);
+                        baos.flush();
+                        final int PacketSize = baos.toByteArray().length;
+
                         while (true) {
-                            BufferedImage image = r.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
-                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                            ImageIO.write(image, "jpg", baos);
+                            byte[] bytes = new byte[PacketSize];
+                            socket.getInputStream().read(bytes);
+                            baos = new ByteArrayOutputStream();
+                            ImageIO.write(image, "png", baos);
                             baos.flush();
                             byte[] b = baos.toByteArray();
                             ByteArrayInputStream bais = new ByteArrayInputStream(b);
                             icon.setIcon(new ImageIcon(ImageIO.read(bais)));
-                                    //break;
-                            //}
                         }
                     } catch (SocketException e) {
                         e.printStackTrace();
