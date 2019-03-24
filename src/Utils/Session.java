@@ -16,7 +16,8 @@ public abstract class Session{
     static int BroadCastingPort = 9000;
 
     public enum Type{
-        MOUSE
+        MOUSE,
+        SCREENMIRRORING
     }
 
     public static ArrayList<Session> sessions;

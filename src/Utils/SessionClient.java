@@ -7,12 +7,13 @@ import javafx.scene.paint.Paint;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -139,6 +140,50 @@ public class SessionClient extends Session{
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (AWTException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                });
+                break;
+            case SCREENMIRRORING:
+                t = new Thread(() -> {
+                    try {
+                        socket = new Socket(address, port);
+                        socket.setSoTimeout(60000);
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                        if(searching != null) StopSearching();
+                        JFrame f = new JFrame("MouseListener");
+                        f.setSize(600, 100);
+                        f.setAlwaysOnTop(true);
+                        f.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                        f.setUndecorated(true);
+                        f.setVisible(true);
+                        JPanel p = new JPanel();
+                        p.setLayout(new FlowLayout());
+                        JLabel icon = new JLabel();
+                        p.add(icon);
+                        icon.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+                        f.setBackground(Color.getColor("#202020"));
+                        f.add(p);
+                        f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                        f.show();
+                        Robot r = new Robot();
+                        while (true) {
+                            BufferedImage image = r.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            ImageIO.write(image, "jpg", baos);
+                            baos.flush();
+                            byte[] b = baos.toByteArray();
+                            ByteArrayInputStream bais = new ByteArrayInputStream(b);
+                            icon.setIcon(new ImageIcon(ImageIO.read(bais)));
+                                    //break;
+                            //}
+                        }
+                    } catch (SocketException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
                         e.printStackTrace();
                     } catch (Exception e) {
                         e.printStackTrace();

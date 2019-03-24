@@ -2,7 +2,10 @@ package Utils;
 
 import org.json.simple.JSONObject;
 
-import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.net.*;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -47,6 +50,30 @@ public class SessionServer extends Session{
                         broadcasting.cancel();
                         MouseTracker mt = new MouseTracker(this);
                     } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                break;
+            case SCREENMIRRORING:
+                t = new Thread(() -> {
+                    try {
+                        socket = ss.accept();
+                        if (onStop != null) onStop.run();
+                        this.type = type;
+                        this.address = ((InetSocketAddress) (socket.getRemoteSocketAddress())).getAddress();
+                        broadcasting.cancel();
+                        Robot r = new Robot();
+                        PrintWriter writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+                        while (true) {
+                            BufferedImage image = r.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            ImageIO.write(image, "jpg", baos);
+                            baos.flush();
+                            socket.getOutputStream().write(baos.toByteArray());
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (AWTException e) {
                         e.printStackTrace();
                     }
                 });

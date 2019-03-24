@@ -42,6 +42,7 @@ public class Sessions {
     @FXML
     public void initialize(){
         SessionType.getItems().add("Эмуляция мыши");
+        SessionType.getItems().add("Отражение экрана");
         NewSession.setOnMouseClicked(this::OpenSession);
         SearchSessions.setOnMouseClicked(this::Search);
     }
