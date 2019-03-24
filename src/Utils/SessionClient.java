@@ -19,6 +19,7 @@ import java.io.InputStreamReader;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Timer;
 import java.util.TimerTask;
 
 public class SessionClient extends Session{
@@ -173,7 +174,8 @@ public class SessionClient extends Session{
                         f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
                         f.show();
                         Robot r = new Robot();
-                        broadcasting.schedule(new TimerTask() {
+                        Timer timer = new Timer(true);
+                        timer.scheduleAtFixedRate(new TimerTask() {
                             @Override
                             public void run() {
                                 try {
