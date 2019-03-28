@@ -50,6 +50,7 @@ public class DevicesList {
             return Remove;
         }
     }
+
     @FXML
     private ResourceBundle resources;
 
@@ -80,6 +81,18 @@ public class DevicesList {
 
     @FXML
     public void initialize() throws IOException {
+        Thread Resize = new Thread(()->{
+            try {
+                while (MainPane.getScene() == null) Thread.sleep(100);
+                Type.prefWidthProperty().bind(MainPane.getScene().getWindow().widthProperty().divide(5));
+                Remove.prefWidthProperty().bind(MainPane.getScene().getWindow().widthProperty().divide(5));
+                Name.prefWidthProperty().bind(MainPane.getScene().getWindow().widthProperty().divide(5).multiply(3));
+                Table.prefHeightProperty().bind(MainPane.getScene().getWindow().heightProperty());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        Resize.start();
         devices = FXCollections.observableArrayList();
         FileInputStream propFile = new FileInputStream("properties.properties");
         Properties props = new Properties();

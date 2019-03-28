@@ -1,8 +1,11 @@
 package sample.Anims;
 
 import javafx.animation.ScaleTransition;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.util.Duration;
+
+
 
 public class Create {
     private ScaleTransition tt;
@@ -17,5 +20,9 @@ public class Create {
 
     public void play(){
         tt.playFromStart();
+    }
+
+    public void setOnFinished(EventHandler eventHandler){
+        tt.setOnFinished(eventHandler);
     }
 }

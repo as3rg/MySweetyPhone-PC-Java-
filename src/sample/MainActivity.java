@@ -7,7 +7,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
@@ -24,7 +27,16 @@ public class MainActivity {
     private URL location;
 
     @FXML
-    private AnchorPane MainPane;
+    private FlowPane MainPane;
+
+    @FXML
+    private FlowPane Header;
+
+    @FXML
+    private javafx.scene.control.Label Label;
+
+    @FXML
+    private ImageView Logo;
 
     @FXML
     private Tab Devices;
@@ -33,7 +45,7 @@ public class MainActivity {
     private AnchorPane ReplaceToDevicesList;
 
     @FXML
-    private AnchorPane ReplaceToSaved;
+    private BorderPane ReplaceToSaved;
 
     @FXML
     private AnchorPane ReplaceToSessions;
@@ -76,5 +88,21 @@ public class MainActivity {
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
+
+        Thread Resize = new Thread(()->{
+            try {
+                while (MainPane.getScene() == null) Thread.sleep(100);
+                MainPane.prefWidthProperty().bind(MainPane.getScene().getWindow().widthProperty());
+                MainPane.prefHeightProperty().bind(MainPane.getScene().getWindow().heightProperty());
+                TabPane.prefWidthProperty().bind(MainPane.getScene().getWindow().widthProperty());
+                TabPane.prefHeightProperty().bind(MainPane.getScene().getWindow().heightProperty().subtract(Header.heightProperty()).subtract(10));
+                Header.prefWidthProperty().bind(MainPane.getScene().getWindow().widthProperty());
+                ReplaceToDevicesList.prefHeightProperty().bind(TabPane.heightProperty());
+                TabPane.prefHeightProperty().bind(MainPane.getScene().getWindow().heightProperty());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        Resize.start();
     }
 }

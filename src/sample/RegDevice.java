@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
@@ -84,7 +85,7 @@ public class RegDevice {
                             props.setProperty("name", PhoneName.getText());
                             props.setProperty("regdate", ((Long) result.get("regdate")).toString());
                             props.store(new FileOutputStream("properties.properties"), "");
-                            AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
+                            FlowPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
                             MainPane.getChildren().setAll(pane);
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();

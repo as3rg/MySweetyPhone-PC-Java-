@@ -6,6 +6,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
@@ -13,12 +14,17 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -47,9 +53,8 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Properties;
-import java.util.ResourceBundle;
+import java.util.List;
+import java.util.*;
 
 
 public class Saved {
@@ -61,10 +66,19 @@ public class Saved {
     private URL location;
 
     @FXML
+    private Button SendButton, FileButton, LoadButton;
+
+    @FXML
+    private FlowPane SendBar;
+
+    @FXML
     private VBox Messages;
 
     @FXML
     private ScrollPane scrollPane;
+
+    @FXML
+    private BorderPane MainPane;
 
     @FXML
     private TextArea MessageText;
@@ -76,6 +90,23 @@ public class Saved {
 
     @FXML
     void initialize() {
+        Thread Resize = new Thread(()->{
+            try {
+                while (Messages.getScene() == null) Thread.sleep(100);
+                scrollPane.prefWidthProperty().bind(Messages.getScene().getWindow().widthProperty());
+                Messages.prefWidthProperty().bind(Messages.getScene().getWindow().widthProperty());
+                MessageText.prefWidthProperty().bind(Messages.getScene().getWindow().widthProperty().divide(10).multiply(8).subtract(50));
+                SendButton.prefWidthProperty().bind(Messages.getScene().getWindow().widthProperty().divide(10));
+                FileButton.prefWidthProperty().bind(Messages.getScene().getWindow().widthProperty().divide(10));
+                LoadButton.prefWidthProperty().bind(Messages.getScene().getWindow().widthProperty().divide(5).multiply(2));
+                SendBar.prefWidthProperty().bind(Messages.getScene().getWindow().widthProperty());
+                MainPane.prefWidthProperty().bind(Messages.getScene().getWindow().widthProperty());
+                scrollPane.prefHeightProperty().bind(MainPane.getScene().getWindow().heightProperty().subtract(265));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        Resize.start();
         LoadMore();
     }
 
@@ -96,7 +127,7 @@ public class Saved {
                 login = (String) props.getOrDefault("login", "");
                 name = (String) props.getOrDefault("name", "");
 
-                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=GetMessages&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Count="+(Messages.getChildren().size()-1+Count));
+                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=GetMessages&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Count="+(Messages.getChildren().size()-2+Count));
 
                 HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                 connection.setRequestMethod("GET");
@@ -119,8 +150,8 @@ public class Saved {
                     Platform.runLater(()-> {
                         try{
                             Object[] messages = ((JSONArray) result.get("messages")).toArray();
-                            Messages.getChildren().remove(1,Messages.getChildren().size());
-                            for (int j = 0; j < messages.length; j++) {
+                            Messages.getChildren().remove(0,Messages.getChildren().size());
+                            for (int j = messages.length-1; j >= 0; j--) {
                                 JSONObject message = (JSONObject) messages[j];
                                 Draw(((String) (message).get("msg")).replace("\\n", "\n"), (Long) (message).get("date"), (String) (message).get("sender"), ((String) (message).get("type")).equals("File"),  false);
                             }
@@ -149,7 +180,7 @@ public class Saved {
         t.start();
     }
 
-    private void Draw(String text, Long date, String sender, boolean isFile, Boolean needsAnim) throws Exception {
+    private void Draw(String text, Long date, String sender, boolean isFile, Boolean needsAnim) {
         if(isFile)
             DrawFile(text, date, sender, needsAnim);
         else
@@ -171,8 +202,8 @@ public class Saved {
         TextLabel.setFont(Font.font(15));
         if(text.isEmpty()){
             TextLabel.setText("Пустое сообщение");
-            TextLabel.setStyle("-fx-font-style: italic;");
             TextLabel.setFill(Paint.valueOf("#404040"));
+            TextLabel.setFont(Font.font(TextLabel.getFont().getFamily(), FontPosture.ITALIC, TextLabel.getFont().getSize()));
         }
         vBox.setPadding(new Insets(10, 10, 10, 10));
         vBox.getChildren().add(TextLabel);
@@ -217,6 +248,8 @@ public class Saved {
                         throw new Exception("Ошибка приложения!");
                     }
                     Messages.getChildren().remove(vBox);
+                    if(Messages.getChildren().size() < 10)
+                        LoadMore(10 - Messages.getChildren().size() + 1);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -226,12 +259,13 @@ public class Saved {
         });
         vBox.setOnContextMenuRequested((EventHandler<Event>) event -> contextMenu.show(vBox, MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y));
         Platform.runLater(() -> {
-            Messages.getChildren().add(1, vBox);
+            Messages.getChildren().add(vBox);
+            if (needsAnim) {
+                Create anim = new Create(vBox);
+                anim.play();
+                scrollPane.vvalueProperty().bind(vBox.heightProperty().divide(vBox.heightProperty()));
+            }
         });
-        if (needsAnim) {
-            Create anim = new Create(vBox);
-            anim.play();
-        }
     }
 
     private void DrawFile(String text, Long date, String sender, Boolean needsAnim) {
@@ -313,7 +347,7 @@ public class Saved {
                     }
                     Messages.getChildren().remove(vBox);
                     if(Messages.getChildren().size() < 10)
-                        LoadMore(10 - Messages.getChildren().size());
+                        LoadMore(10 - Messages.getChildren().size() + 1);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -346,12 +380,13 @@ public class Saved {
 
         vBox.setOnContextMenuRequested((EventHandler<Event>) event -> contextMenu.show(vBox, MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y));
         Platform.runLater(() -> {
-            Messages.getChildren().add(1, vBox);
+            Messages.getChildren().add(vBox);
+            if (needsAnim) {
+                Create anim = new Create(vBox);
+                anim.play();
+                scrollPane.vvalueProperty().bind(vBox.heightProperty().divide(vBox.heightProperty()));
+            }
         });
-        if (needsAnim) {
-            Create anim = new Create(vBox);
-            anim.play();
-        }
     }
 
     private void DrawImage(String text, Long date, String sender, Boolean needsAnim) {
@@ -435,7 +470,7 @@ public class Saved {
                     }
                     Messages.getChildren().remove(vBox);
                     if(Messages.getChildren().size() < 10)
-                        LoadMore(10 - Messages.getChildren().size());
+                        LoadMore(10 - Messages.getChildren().size() + 1);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -466,12 +501,13 @@ public class Saved {
 
         vBox.setOnContextMenuRequested((EventHandler<Event>) event -> contextMenu.show(vBox, MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y));
         Platform.runLater(() -> {
-            Messages.getChildren().add(1, vBox);
+            Messages.getChildren().add(vBox);
+            if (needsAnim) {
+                Create anim = new Create(vBox);
+                anim.play();
+                scrollPane.vvalueProperty().bind(vBox.heightProperty().divide(vBox.heightProperty()));
+            }
         });
-        if (needsAnim) {
-            Create anim = new Create(vBox);
-            anim.play();
-        }
     }
 
     private void DrawVideo(String text, Long date, String sender, Boolean needsAnim) {
@@ -549,7 +585,7 @@ public class Saved {
         contextMenu.getItems().addAll(delete);
         contextMenu.getItems().add(save);
         delete.setOnAction(event -> {
-            Video.getMediaPlayer().stop();
+            if(Video.getMediaPlayer() != null) Video.getMediaPlayer().stop();
             EventHandler r = (event1) -> {
                 try {
                     URL obj = new URL("https://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
@@ -585,7 +621,7 @@ public class Saved {
                     }
                     Messages.getChildren().remove(vBox);
                     if(Messages.getChildren().size() < 10)
-                        LoadMore(10 - Messages.getChildren().size());
+                        LoadMore(10 - Messages.getChildren().size() + 1);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -616,12 +652,13 @@ public class Saved {
 
         vBox.setOnContextMenuRequested((EventHandler<Event>) event -> contextMenu.show(vBox, MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y));
         Platform.runLater(() -> {
-            Messages.getChildren().add(1, vBox);
+            Messages.getChildren().add(vBox);
+            if (needsAnim) {
+                Create anim = new Create(vBox);
+                anim.play();
+                scrollPane.vvalueProperty().bind(vBox.heightProperty().divide(vBox.heightProperty()));
+            }
         });
-        if (needsAnim) {
-            Create anim = new Create(vBox);
-            anim.play();
-        }
     }
 
     private void DrawAudio(String text, Long date, String sender, Boolean needsAnim) {
@@ -739,7 +776,7 @@ public class Saved {
                     }
                     Messages.getChildren().remove(vBox);
                     if(Messages.getChildren().size() < 10)
-                        LoadMore(10 - Messages.getChildren().size());
+                        LoadMore(10 - Messages.getChildren().size() + 1);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -770,12 +807,13 @@ public class Saved {
 
         vBox.setOnContextMenuRequested((EventHandler<Event>) event -> contextMenu.show(vBox, MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y));
         Platform.runLater(() -> {
-            Messages.getChildren().add(1, vBox);
+            Messages.getChildren().add(vBox);
+            if (needsAnim) {
+                Create anim = new Create(vBox);
+                anim.play();
+                scrollPane.vvalueProperty().bind(vBox.heightProperty().divide(vBox.heightProperty()));
+            }
         });
-        if (needsAnim) {
-            Create anim = new Create(vBox);
-            anim.play();
-        }
     }
 
     @FXML
@@ -826,58 +864,90 @@ public class Saved {
     }
 
     @FXML
-    private void onFileClicked(){
+    private void onFileClicked() {
         FileChooser fc = new FileChooser();
         fc.setTitle("Выберите файл для отправки");
-        File file = fc.showOpenDialog(null);
-        if (file == null) return;
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Ошибка");
-        alert.setHeaderText(null);
-        if (file.length() >= 1100000){
-            alert.setContentText("Размер файла превышает допустимые размеры");
-            alert.show();
-            return;
-        }
-        if(!Charset.forName("US-ASCII").newEncoder().canEncode(file.getName())){
-            alert.setContentText("Имя файла содержит недопустимые символы");
-            alert.show();
-            return;
-        }
-        if (file != null){
-            Runnable r = () -> {
-                try {
-                    HttpClient client = new DefaultHttpClient();
-                    HttpPost post = new HttpPost("http://mysweetyphone.herokuapp.com/?Type=UploadFile&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id);
-                    MultipartEntity entity = new MultipartEntity();
-                    entity.addPart("fileToUpload", new FileBody(file));
-                    entity.addPart("submit", new StringBody(""));
-                    post.setEntity(entity);
-                    HttpResponse response = client.execute(post);
-                    JSONObject result = (JSONObject) JSONValue.parse(EntityUtils.toString(response.getEntity(), "UTF-8"));
-                    Long i = (Long) result.getOrDefault("code", 2);
-                    if(i.equals(2L)){
-                        throw new Exception("Ошибка приложения!");
-                    }else if(i.equals(1L)){
-                        throw new Exception("Неверные данные");
-                    }else if(i.equals(0L)){
-                        Draw(file.getName(), (Long) result.getOrDefault("time", 2), name, true, true);
-                    }else if(i.equals(4L)){
-                        alert.setContentText("Ваше устройство не зарегистрировано!");
-                        alert.setOnCloseRequest(event -> Platform.exit());
-                        alert.show();
-                    }else if(i.equals(3L)){
-                        throw new Exception("Файл не отправлен!");
-                    }else{
-                        throw new Exception("Ошибка приложения!");
+        List files = fc.showOpenMultipleDialog(null);
+        ArrayList<String> tooBig = new ArrayList<>();
+        ArrayList<String> badName = new ArrayList<>();
+        if (files == null) return;
+        for (Object f : files) {
+            File file = (File) f;
+            if (file.length() >= 1100000) {
+                tooBig.add(file.getName());
+                continue;
+            }
+            if (!Charset.forName("US-ASCII").newEncoder().canEncode(file.getName())) {
+                badName.add(file.getName());
+                continue;
+            }
+            if (file != null) {
+                Runnable r = () -> {
+                    try {
+                        HttpClient client = new DefaultHttpClient();
+                        HttpPost post = new HttpPost("http://mysweetyphone.herokuapp.com/?Type=UploadFile&RegDate=" + regdate + "&MyName=" + name + "&Login=" + login + "&Id=" + id);
+                        MultipartEntity entity = new MultipartEntity();
+                        entity.addPart("fileToUpload", new FileBody(file));
+                        entity.addPart("submit", new StringBody(""));
+                        post.setEntity(entity);
+                        HttpResponse response = client.execute(post);
+                        JSONObject result = (JSONObject) JSONValue.parse(EntityUtils.toString(response.getEntity(), "UTF-8"));
+                        Long i = (Long) result.getOrDefault("code", 2);
+                        if (i.equals(2L)) {
+                            throw new Exception("Ошибка приложения!");
+                        } else if (i.equals(1L)) {
+                            throw new Exception("Неверные данные");
+                        } else if (i.equals(0L)) {
+                            Draw(file.getName(), (Long) result.getOrDefault("time", 2), name, true, true);
+                        } else if (i.equals(4L)) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Ошибка");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Ваше устройство не зарегистрировано!");
+                            alert.setOnCloseRequest(event -> Platform.exit());
+                            alert.show();
+                        } else if (i.equals(3L)) {
+                            throw new Exception("Файл не отправлен!");
+                        } else {
+                            throw new Exception("Ошибка приложения!");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            };
-            Thread t = new Thread(r);
-            t.start();
+                };
+                Thread t = new Thread(r);
+                t.start();
 
+            }
+        }
+        String message = "";
+        if(!tooBig.isEmpty()){
+            message+="Размер файлов (";
+            for(String str : tooBig)
+                message+=str+", ";
+            message=message.substring(0,message.length()-2);
+            message+=") превышает допустимые значения!\n";
+        }
+        if(!badName.isEmpty()){
+            message+="Имена файлов (";
+            for(String str : badName)
+                message+=str+", ";
+            message=message.substring(0,message.length()-2);
+            message+=") содержат недопустимые символы!\n";
+        }
+        if(!message.isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Ошибка");
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.show();
+        }
+    }
+
+    @FXML
+    private void onKeyPressed(KeyEvent value){
+        if(value.isShiftDown() && value.getCode() == KeyCode.ENTER){
+            onSendClick();
         }
     }
 }

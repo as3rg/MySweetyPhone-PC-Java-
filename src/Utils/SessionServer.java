@@ -5,7 +5,9 @@ import org.json.simple.JSONObject;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.*;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -63,13 +65,12 @@ public class SessionServer extends Session{
                         this.address = ((InetSocketAddress) (socket.getRemoteSocketAddress())).getAddress();
                         broadcasting.cancel();
                         Robot r = new Robot();
-                        Timer timer = new Timer(true);
-                        timer.schedule(new TimerTask() {
+                        new Timer().scheduleAtFixedRate(new TimerTask() {
                             @Override
                             public void run() {
                                 try {
-                                    BufferedImage bufferedWriter = ImageIO.read(socket.getInputStream());
-
+                                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                                    System.out.println("test");
                                     if(bufferedWriter != null) {
                                         BufferedImage image = r.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
                                         System.out.println(ImageIO.write(image, "png", socket.getOutputStream()));

@@ -19,13 +19,15 @@ public class Main extends Application {
         tempfiles = new ArrayList<>();
         Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
         primaryStage.setTitle("MySweetyPhone");
-        Scene scene = new Scene(root,1270,720 );
+        Scene scene = new Scene(root);
         scene.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
         primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
+        primaryStage.setResizable(true);
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("Images/Icon.png")));
         primaryStage.setOnCloseRequest(event -> Platform.exit());
         primaryStage.show();
+        primaryStage.setMinHeight(400);
+        primaryStage.setMinWidth(500);
     }
 
     @Override

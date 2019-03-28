@@ -19,8 +19,8 @@ import java.io.InputStreamReader;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Timer;
 
 public class SessionClient extends Session{
 
@@ -174,8 +174,7 @@ public class SessionClient extends Session{
                         f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
                         f.show();
                         Robot r = new Robot();
-                        Timer timer = new Timer(true);
-                        timer.scheduleAtFixedRate(new TimerTask() {
+                        (new Timer()).scheduleAtFixedRate(new TimerTask() {
                             @Override
                             public void run() {
                                 try {
@@ -189,7 +188,7 @@ public class SessionClient extends Session{
                                     e.printStackTrace();
                                 }
                             }
-                        }, 1, 1);
+                        }, 1,1);
                     } catch (SocketException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
