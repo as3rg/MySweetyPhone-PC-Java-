@@ -16,7 +16,7 @@ public class SessionServer extends Session{
     ServerSocket ss;
     Thread onStop;
 
-    public SessionServer(Type type, int initPort, Runnable doOnStopSession) throws Exception {
+    public SessionServer(Type type, int initPort, Runnable doOnStopSession) throws IOException {
         onStop = new Thread(doOnStopSession);
         ss = new ServerSocket(initPort);
         this.port = ss.getLocalPort();
@@ -95,7 +95,7 @@ public class SessionServer extends Session{
                 });
                 break;
             default:
-                throw new Exception("Неизвестный тип сессии");
+                throw new RuntimeException("Неизвестный тип сессии");
         }
     }
 

@@ -7,7 +7,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.*;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import sample.Anims.Shake;
@@ -35,22 +37,62 @@ public class Login {
     private Label Error;
 
     @FXML
-    private Button RegButton;
-
-    @FXML
     private Button LoginButton;
 
     @FXML
     private AnchorPane MainPane;
 
     @FXML
+    private FlowPane Header;
+
+    @FXML
+    private BorderPane BodyPane;
+
+    @FXML
+    private VBox Container;
+
+    @FXML
+    private HBox Type;
+
+    @FXML
+    private void onKeyPressedOnPass(KeyEvent value) throws IOException {
+        if(value.getCode() == KeyCode.ENTER){
+            LoginButton.getOnMouseClicked().handle(null);
+        }
+    }
+
+    @FXML
+    private void onKeyPressedOnLogin(KeyEvent value) throws IOException {
+        if(value.getCode() == KeyCode.ENTER){
+            Pass.requestFocus();
+        }
+    }
+
+    @FXML
     void initialize() throws IOException, URISyntaxException {
+        Thread Resize = new Thread(()->{
+            try {
+                while (MainPane.getScene() == null) Thread.sleep(100);
+                MainPane.prefWidthProperty().bind(MainPane.getScene().widthProperty());
+                Header.prefWidthProperty().bind(MainPane.getScene().widthProperty());
+                BodyPane.prefHeightProperty().bind(MainPane.getScene().heightProperty().subtract(Header.heightProperty()));
+                BodyPane.prefWidthProperty().bind(MainPane.getScene().widthProperty());
+                Nick.prefHeightProperty().bind(MainPane.getScene().heightProperty().divide(10));
+                Pass.prefHeightProperty().bind(MainPane.getScene().heightProperty().divide(10));
+                LoginButton.prefHeightProperty().bind(MainPane.getScene().heightProperty().divide(10));
+                Nick.maxWidthProperty().bind(MainPane.getScene().widthProperty().subtract(10));
+                Pass.maxWidthProperty().bind(MainPane.getScene().widthProperty().subtract(10));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        Resize.start();
         File file = new File("properties.properties");
         if (file.exists()) {
-            RegButton.setDisable(true);
             LoginButton.setDisable(true);
             Nick.setDisable(true);
             Pass.setDisable(true);
+            Type.setDisable(true);
             FileInputStream propFile = new FileInputStream(file);
             Properties props = new Properties();
             props.load(propFile);
@@ -101,27 +143,31 @@ public class Login {
 
                             }
                         }
-                        RegButton.setDisable(false);
                         LoginButton.setDisable(false);
                         Nick.setDisable(false);
                         Pass.setDisable(false);
+                        Type.setDisable(false);
                     } catch (ProtocolException e) {} catch (MalformedURLException e) {} catch (IOException e) {}
                 };
                 Thread t = new Thread(r);
                 t.start();
             }
         }
+
+        LoginButton.setOnMouseClicked(event ->
+                RegOrLogin("https://mysweetyphone.herokuapp.com/?Type=Login&Login="+Nick.getText()+"&Pass="+Pass.getText(),true));
     }
 
     @FXML
-    void onLogin() throws Exception{
-
-        RegOrLogin("https://mysweetyphone.herokuapp.com/?Type=Login&Login="+Nick.getText()+"&Pass="+Pass.getText(),true);
+    void ChangeToReg(){
+        LoginButton.setText("Зарегистрироваться");
+        LoginButton.setOnMouseClicked(event -> RegOrLogin("https://mysweetyphone.herokuapp.com/?Type=Reg&Login="+Nick.getText()+"&Pass="+Pass.getText(), false));
     }
 
     @FXML
-    void onReg() throws Exception{
-        RegOrLogin("https://mysweetyphone.herokuapp.com/?Type=Reg&Login="+Nick.getText()+"&Pass="+Pass.getText(), false);
+    void ChangeToLogin(){
+        LoginButton.setText("Войти");
+        LoginButton.setOnMouseClicked(event -> RegOrLogin("https://mysweetyphone.herokuapp.com/?Type=Login&Login="+Nick.getText()+"&Pass="+Pass.getText(),true));
     }
 
     private void RegOrLogin(String url, boolean IsLogin){
@@ -141,40 +187,46 @@ public class Login {
                 }
                 in.close();
 
-                JSONObject result = (JSONObject) JSONValue.parse(response.toString());
-                Long i = (Long) result.getOrDefault("code", 2);
-                Shake onErrorShake = new Shake(IsLogin ? LoginButton : RegButton);
-                if (i.equals(3L)) {
-                    Error.setVisible(true);
-                    Error.setText("Имя и Пароль должны быть заполнены!");
-                    onErrorShake.play();
-                } else if (i.equals(1L)) {
-                    Error.setVisible(true);
-                    Error.setText(IsLogin ? "Ошибка! Неверное имя или пароль" : "Ошибка! Это имя уже используется");
-                    onErrorShake.play();
-                } else if (i.equals(0L)) {
-                    File file = new File("properties.properties");
-                    if(!file.exists())
-                        file.createNewFile();
-                    FileOutputStream propFile = new FileOutputStream(file);
-                    Properties props = new Properties();
-                    props.setProperty("login",Nick.getText());
-                    props.setProperty("id",result.get("id").toString());
-                    props.store(propFile, "login");
-                    propFile.close();
-                    
-                    Platform.runLater(()->{
-                        try {
+
+                Platform.runLater(()->{
+                    try{
+                        JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                        Long i = (Long) result.getOrDefault("code", 2);
+                        Shake onErrorShake = new Shake(LoginButton);
+                        if (i.equals(3L)) {
+                            Error.setVisible(true);
+                            Error.setText("Имя и Пароль должны быть заполнены!");
+                            onErrorShake.play();
+                        } else if (i.equals(1L)) {
+                            Error.setVisible(true);
+                            Error.setText(IsLogin ? "Ошибка! Неверное имя или пароль" : "Ошибка! Это имя уже используется");
+                            onErrorShake.play();
+                        } else if (i.equals(0L)) {
+                            File file = new File("properties.properties");
+                            if (!file.exists())
+                                file.createNewFile();
+                            FileOutputStream propFile = new FileOutputStream(file);
+                            Properties props = new Properties();
+                            props.setProperty("login", Nick.getText());
+                            props.setProperty("id", result.get("id").toString());
+                            props.store(propFile, "login");
+                            propFile.close();
                             AnchorPane pane = FXMLLoader.load(getClass().getResource("RegDevice.fxml"));
                             MainPane.getChildren().setAll(pane);
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        }else {
+                            throw new RuntimeException("Ошибка приложения!");
                         }
-                    });
-                }else {
-                    throw new Exception("Ошибка приложения!");
-                }
-            }catch (Exception e){
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         };

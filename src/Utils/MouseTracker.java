@@ -130,7 +130,9 @@ public class MouseTracker extends Frame implements MouseListener, MouseMotionLis
                 msg.put("value", e.getKeyCode());
                 outputStream.println(msg.toJSONString());
             }
-        } catch (Exception e1) {
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        } catch (IOException e1) {
             e1.printStackTrace();
         }
     }

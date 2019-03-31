@@ -72,8 +72,6 @@ public class SessionClient extends Session{
             } catch (SocketException e){
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace();
             }
             isSearching = false;
             s.close();
@@ -88,7 +86,7 @@ public class SessionClient extends Session{
         s.close();
     }
 
-    public SessionClient(InetAddress address, int port, Type type) throws Exception {
+    public SessionClient(InetAddress address, int port, Type type){
         this.address = address;
         this.port = port;
         this.type = type;
@@ -145,8 +143,6 @@ public class SessionClient extends Session{
                         e.printStackTrace();
                     } catch (AWTException e) {
                         e.printStackTrace();
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
 
                 });
@@ -193,14 +189,14 @@ public class SessionClient extends Session{
                         e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
-                    } catch (Exception e) {
+                    } catch (AWTException e) {
                         e.printStackTrace();
                     }
 
                 });
                 break;
             default:
-                throw new Exception("Неизвестный тип сессии");
+                throw new RuntimeException("Неизвестный тип сессии");
         }
     }
 

@@ -6,12 +6,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -25,7 +31,7 @@ public class RegDevice {
     private URL location;
 
     @FXML
-    private TextField PhoneName;
+    private TextField DeviceName;
 
     @FXML
     private Button Next;
@@ -37,14 +43,40 @@ public class RegDevice {
     private AnchorPane MainPane;
 
     @FXML
-    void initialize() {
+    private FlowPane Header;
 
+    @FXML
+    private BorderPane BodyPane;
+
+    @FXML
+    void initialize() {
+        Thread Resize = new Thread(()->{
+            try {
+                while (MainPane.getScene() == null) Thread.sleep(100);
+                MainPane.prefWidthProperty().bind(MainPane.getScene().widthProperty());
+                Header.prefWidthProperty().bind(MainPane.getScene().widthProperty());
+                BodyPane.prefHeightProperty().bind(MainPane.getScene().heightProperty().subtract(Header.heightProperty()));
+                BodyPane.prefWidthProperty().bind(MainPane.getScene().widthProperty());
+                DeviceName.prefHeightProperty().bind(MainPane.getScene().heightProperty().divide(10));
+                DeviceName.maxWidthProperty().bind(MainPane.getScene().widthProperty().subtract(10));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        Resize.start();
+    }
+
+    @FXML
+    private void onKeyPressed(KeyEvent value) throws IOException {
+        if(value.getCode() == KeyCode.ENTER){
+            onNextClick();
+        }
     }
 
     @FXML
     private void onNextClick() throws IOException {
         Next.setDisable(true);
-        PhoneName.setDisable(true);
+        DeviceName.setDisable(true);
         FileInputStream propFile = new FileInputStream("properties.properties");
         Properties props = new Properties();
         props.load(propFile);
@@ -52,7 +84,7 @@ public class RegDevice {
         String login = (String)props.getOrDefault("login","");
         Runnable r = () -> {
             try {
-                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=AddDevice&DeviceType=PC&Id="+id+"&Login="+login+"&Name="+PhoneName.getText());
+                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=AddDevice&DeviceType=PC&Id="+id+"&Login="+login+"&Name="+DeviceName.getText());
 
                 HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                 connection.setRequestMethod("GET");
@@ -82,7 +114,7 @@ public class RegDevice {
                             Error.setVisible(true);
                             Error.setText("Вы уже используете это имя!");
                         } else if (i.equals(0L)) {
-                            props.setProperty("name", PhoneName.getText());
+                            props.setProperty("name", DeviceName.getText());
                             props.setProperty("regdate", ((Long) result.get("regdate")).toString());
                             props.store(new FileOutputStream("properties.properties"), "");
                             AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
@@ -92,14 +124,18 @@ public class RegDevice {
                             Error.setText("Ошибка приложения!");
                         }
                         Next.setDisable(false);
-                        PhoneName.setDisable(false);
+                        DeviceName.setDisable(false);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 });
-            }catch (Exception e){
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         };

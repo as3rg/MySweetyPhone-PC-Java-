@@ -2,7 +2,6 @@ package sample;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -100,7 +99,9 @@ public class BlockSite {
                             try {
                                 UnblockSite(Name.getCellData(getIndex()));
                                 sites.remove(getIndex());
-                            }catch (Exception e){
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         });
@@ -141,12 +142,9 @@ public class BlockSite {
                                                     alert.setOnCloseRequest(event2 -> {
                                                         try {
                                                             BlockSite(Name.getCellData(getIndex()));
-                                                        } catch (Exception e) {
-                                                            alert.setTitle("Ошибка");
-                                                            alert.setHeaderText(null);
-                                                            alert.setContentText(e.toString());
-                                                            alert.setOnCloseRequest(event4 -> Platform.exit());
-                                                            alert.show();
+                                                        } catch (InterruptedException e) {
+                                                            e.printStackTrace();
+                                                        } catch (IOException e) {
                                                             e.printStackTrace();
                                                         }
                                                     });
@@ -155,7 +153,9 @@ public class BlockSite {
                                                     button.setDisable(false);
                                                 }
                                             }
-                                        } catch (Exception e) {
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        } catch (IOException e) {
                                             e.printStackTrace();
                                         }
                                     }));
@@ -168,7 +168,9 @@ public class BlockSite {
                                     alert.setContentText("Нужно Ваше разрешение");
                                     alert.show();
                                 }
-                            }catch (Exception e){
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         });

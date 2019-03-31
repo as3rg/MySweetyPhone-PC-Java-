@@ -19,6 +19,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -143,9 +145,13 @@ public class DevicesList {
                         devices.add(new Device(device, true));
                     }
                 }else if(i.equals(4L)){
-                    throw new Exception("Ваше устройство не зарегистрировано!");
+                    throw new RuntimeException("Ваше устройство не зарегистрировано!");
                 }
-            } catch (Exception e) {
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         };
@@ -185,11 +191,14 @@ public class DevicesList {
                                     connection.getInputStream();
                                     if (name.equals(devices.get(getIndex()).getName())){
                                         devices.remove(getIndex());
-                                        throw new Exception("Ваше устройство не зарегистрировано!");
+                                        throw new RuntimeException("Ваше устройство не зарегистрировано!");
                                     }
                                     devices.remove(getIndex());
-
-                                } catch (Exception e) {
+                                } catch (ProtocolException e) {
+                                    e.printStackTrace();
+                                } catch (MalformedURLException e) {
+                                    e.printStackTrace();
+                                } catch (IOException e) {
                                     e.printStackTrace();
                                 }
                             };

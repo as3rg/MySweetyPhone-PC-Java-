@@ -10,6 +10,8 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -45,6 +47,15 @@ public class Sessions {
     @FXML
     private ChoiceBox<String> SessionType;
 
+    @FXML
+    private BorderPane NewSessionMainPane;
+
+    @FXML
+    private VBox ConnectToSessionMainPane;
+
+    @FXML
+    private HBox PanesContainer;
+
     private ArrayList<Session> sessions;
 
     @FXML
@@ -52,9 +63,17 @@ public class Sessions {
         Thread Resize = new Thread(()->{
             try {
                 while (NewSession.getScene() == null) Thread.sleep(100);
+                MainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
+                MainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
+                PanesContainer.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
+                PanesContainer.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
+                NewSessionMainPane.prefHeightProperty().bind(MainPane.heightProperty());
+                NewSessionMainPane.prefWidthProperty().bind(MainPane.widthProperty().divide(2));
+                ConnectToSessionMainPane.prefHeightProperty().bind(MainPane.heightProperty());
+                ConnectToSessionMainPane.prefWidthProperty().bind(MainPane.widthProperty().divide(2));
                 ConnectToSessionScrollPane.prefWidthProperty().bind(NewSession.getScene().widthProperty().divide(2));
-                ConnectToSessionScrollPane.prefHeightProperty().bind(MainPane.prefHeightProperty().subtract(SearchSessions.heightProperty().subtract(265)));
-                ConnectToSession.minHeightProperty().bind(ConnectToSessionScrollPane.prefHeightProperty());
+                ConnectToSessionScrollPane.prefHeightProperty().bind(MainPane.prefHeightProperty().subtract(SearchSessions.heightProperty().subtract(10)));
+                ConnectToSession.minHeightProperty().bind(ConnectToSessionScrollPane.heightProperty());
                 MainPane.prefWidthProperty().bind(NewSession.getScene().widthProperty());
                 MainPane.prefHeightProperty().bind(NewSession.getScene().heightProperty());
             } catch (InterruptedException e) {
@@ -110,8 +129,6 @@ public class Sessions {
             }
         } catch (IOException err){
             err.printStackTrace();
-        } catch (Exception e1) {
-            e1.printStackTrace();
         }
     }
 
@@ -189,9 +206,6 @@ public class Sessions {
                 socket.close();
             } catch (SocketTimeoutException e) {
                 try {s.close();} catch (IOException e1) {e1.printStackTrace();}
-            } catch (Exception e) {
-                try {s.close();} catch (IOException e1) {e1.printStackTrace();}
-                e.printStackTrace();
             }
         };
         Thread t = new Thread(run);

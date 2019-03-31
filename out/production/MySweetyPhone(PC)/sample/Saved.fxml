@@ -12,10 +12,9 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane fx:id="RootPane" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Saved">
    <children>
-      <BorderPane fx:id="MainPane" style="-fx-background-color: #202020;">
+      <BorderPane fx:id="MainPane" minHeight="0.0" minWidth="0.0" style="-fx-background-color: #202020;">
          <top>
             <Button fx:id="LoadButton" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#LoadMore" prefHeight="25.0" style="-fx-background-color: #ffffff;" text="Загрузить еще..." BorderPane.alignment="CENTER">
                <textFill>

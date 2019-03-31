@@ -29,6 +29,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
@@ -47,6 +48,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
@@ -145,20 +148,16 @@ public class Saved {
                 JSONObject result = (JSONObject) JSONValue.parse(response.toString());
                 Long i = (Long) result.getOrDefault("code", 2);
                 if(i.equals(2L)){
-                    throw new Exception("Ошибка приложения!");
+                    throw new RuntimeException("Ошибка приложения!");
                 }else if(i.equals(1L)){
-                    throw new Exception("Неверные данные");
+                    throw new RuntimeException("Неверные данные");
                 }else if(i.equals(0L)){
                     Platform.runLater(()-> {
-                        try{
-                            Object[] messages = ((JSONArray) result.get("messages")).toArray();
-                            Messages.getChildren().remove(0,Messages.getChildren().size());
-                            for (int j = messages.length-1; j >= 0; j--) {
-                                JSONObject message = (JSONObject) messages[j];
-                                Draw(((String) (message).get("msg")).replace("\\n", "\n"), (Long) (message).get("date"), (String) (message).get("sender"), ((String) (message).get("type")).equals("File"),  false);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        Object[] messages = ((JSONArray) result.get("messages")).toArray();
+                        Messages.getChildren().remove(0,Messages.getChildren().size());
+                        for (int j = messages.length-1; j >= 0; j--) {
+                            JSONObject message = (JSONObject) messages[j];
+                            Draw(((String) (message).get("msg")).replace("\\n", "\n"), (Long) (message).get("date"), (String) (message).get("sender"), ((String) (message).get("type")).equals("File"),  false);
                         }
                     });
                 }else if(i.equals(4L)){
@@ -172,9 +171,15 @@ public class Saved {
                     });
 
                 }else{
-                    throw new Exception("Ошибка приложения!");
+                    throw new RuntimeException("Ошибка приложения!");
                 }
-            }catch (Exception e){
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         };
@@ -241,9 +246,9 @@ public class Saved {
                     JSONObject result = (JSONObject) JSONValue.parse(response.toString());
                     Long i = (Long) result.getOrDefault("code", 2);
                     if(i.equals(2L)){
-                        throw new Exception("Ошибка приложения!");
+                        throw new RuntimeException("Ошибка приложения!");
                     }else if(i.equals(1L)){
-                        throw new Exception("Неверные данные");
+                        throw new RuntimeException("Неверные данные");
                     }else if(i.equals(0L)){
                     }else if(i.equals(4L)){
                         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -253,12 +258,16 @@ public class Saved {
                         alert.setOnCloseRequest(event2 -> Platform.exit());
                         alert.show();
                     }else{
-                        throw new Exception("Ошибка приложения!");
+                        throw new RuntimeException("Ошибка приложения!");
                     }
                     Messages.getChildren().remove(vBox);
                     if(Messages.getChildren().size() < 10)
                         LoadMore(10 - Messages.getChildren().size() + 1);
-                }catch (Exception e){
+                } catch (ProtocolException e) {
+                    e.printStackTrace();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             };
@@ -344,9 +353,9 @@ public class Saved {
                     JSONObject result = (JSONObject) JSONValue.parse(response.toString());
                     Long i = (Long) result.getOrDefault("code", 2);
                     if(i.equals(2L)){
-                        throw new Exception("Ошибка приложения!");
+                        throw new RuntimeException("Ошибка приложения!");
                     }else if(i.equals(1L)){
-                        throw new Exception("Неверные данные");
+                        throw new RuntimeException("Неверные данные");
                     }else if(i.equals(0L)){
                     }else if(i.equals(4L)){
                         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -356,12 +365,16 @@ public class Saved {
                         alert.setOnCloseRequest(event2 -> Platform.exit());
                         alert.show();
                     }else{
-                        throw new Exception("Ошибка приложения!");
+                        throw new RuntimeException("Ошибка приложения!");
                     }
                     Messages.getChildren().remove(vBox);
                     if(Messages.getChildren().size() < 10)
                         LoadMore(10 - Messages.getChildren().size() + 1);
-                }catch (Exception e){
+                } catch (ProtocolException e) {
+                    e.printStackTrace();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             };
@@ -383,7 +396,11 @@ public class Saved {
                     FileOutputStream fos = new FileOutputStream(new File(out2, text));
                     fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
                     fos.close();
-                } catch (Exception e) {
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             };
@@ -437,7 +454,9 @@ public class Saved {
                     Image.setFitHeight(460*image.getHeight()/image.getWidth());
                     Image.setImage(SwingFXUtils.toFXImage(image, null));
                 });
-            } catch (Exception e) {
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         })).start();
@@ -471,9 +490,9 @@ public class Saved {
                     JSONObject result = (JSONObject) JSONValue.parse(response.toString());
                     Long i = (Long) result.getOrDefault("code", 2);
                     if(i.equals(2L)){
-                        throw new Exception("Ошибка приложения!");
+                        throw new RuntimeException("Ошибка приложения!");
                     }else if(i.equals(1L)){
-                        throw new Exception("Неверные данные");
+                        throw new RuntimeException("Неверные данные");
                     }else if(i.equals(0L)){
                     }else if(i.equals(4L)){
                         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -483,12 +502,16 @@ public class Saved {
                         alert.setOnCloseRequest(event2 -> Platform.exit());
                         alert.show();
                     }else{
-                        throw new Exception("Ошибка приложения!");
+                        throw new RuntimeException("Ошибка приложения!");
                     }
                     Messages.getChildren().remove(vBox);
                     if(Messages.getChildren().size() < 10)
                         LoadMore(10 - Messages.getChildren().size() + 1);
-                }catch (Exception e){
+                } catch (ProtocolException e) {
+                    e.printStackTrace();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             };
@@ -508,7 +531,11 @@ public class Saved {
                     FileOutputStream fos = new FileOutputStream(new File(out2, text));
                     fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
                     fos.close();
-                } catch (Exception e) {
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             };
@@ -585,7 +612,11 @@ public class Saved {
                     });
                     Video.getMediaPlayer().setOnReady(()->{});
                 });
-            } catch (Exception e) {
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }).start();
@@ -626,9 +657,9 @@ public class Saved {
                     JSONObject result = (JSONObject) JSONValue.parse(response.toString());
                     Long i = (Long) result.getOrDefault("code", 2);
                     if(i.equals(2L)){
-                        throw new Exception("Ошибка приложения!");
+                        throw new RuntimeException("Ошибка приложения!");
                     }else if(i.equals(1L)){
-                        throw new Exception("Неверные данные");
+                        throw new RuntimeException("Неверные данные");
                     }else if(i.equals(0L)){
                     }else if(i.equals(4L)){
                         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -638,12 +669,16 @@ public class Saved {
                         alert.setOnCloseRequest(event2 -> Platform.exit());
                         alert.show();
                     }else{
-                        throw new Exception("Ошибка приложения!");
+                        throw new RuntimeException("Ошибка приложения!");
                     }
                     Messages.getChildren().remove(vBox);
                     if(Messages.getChildren().size() < 10)
                         LoadMore(10 - Messages.getChildren().size() + 1);
-                }catch (Exception e){
+                } catch (ProtocolException e) {
+                    e.printStackTrace();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             };
@@ -663,7 +698,11 @@ public class Saved {
                     FileOutputStream fos = new FileOutputStream(new File(out2, text));
                     fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
                     fos.close();
-                } catch (Exception e) {
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             };
@@ -751,7 +790,11 @@ public class Saved {
                     });
                     Video.getMediaPlayer().setOnReady(()->{});
                 });
-            } catch (Exception e) {
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }).start();
@@ -785,9 +828,9 @@ public class Saved {
                     JSONObject result = (JSONObject) JSONValue.parse(response.toString());
                     Long i = (Long) result.getOrDefault("code", 2);
                     if(i.equals(2L)){
-                        throw new Exception("Ошибка приложения!");
+                        throw new RuntimeException("Ошибка приложения!");
                     }else if(i.equals(1L)){
-                        throw new Exception("Неверные данные");
+                        throw new RuntimeException("Неверные данные");
                     }else if(i.equals(0L)){
                     }else if(i.equals(4L)){
                         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -797,12 +840,16 @@ public class Saved {
                         alert.setOnCloseRequest(event2 -> Platform.exit());
                         alert.show();
                     }else{
-                        throw new Exception("Ошибка приложения!");
+                        throw new RuntimeException("Ошибка приложения!");
                     }
                     Messages.getChildren().remove(vBox);
                     if(Messages.getChildren().size() < 10)
                         LoadMore(10 - Messages.getChildren().size() + 1);
-                }catch (Exception e){
+                } catch (ProtocolException e) {
+                    e.printStackTrace();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             };
@@ -822,7 +869,11 @@ public class Saved {
                     FileOutputStream fos = new FileOutputStream(new File(out2, text));
                     fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
                     fos.close();
-                } catch (Exception e) {
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             };
@@ -843,7 +894,8 @@ public class Saved {
 
     @FXML
     private void onSendClick(){
-        Runnable r = () -> {
+        Runnable r;
+        r = () -> {
             try {
                 URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=SendMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Msg="+MessageText.getText().replace(" ","%20").replace("\n","\\n"));
                 HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
@@ -861,9 +913,9 @@ public class Saved {
                 JSONObject result = (JSONObject) JSONValue.parse(response.toString());
                 Long i = (Long) result.getOrDefault("code", 2);
                 if(i.equals(2L)){
-                    throw new Exception("Ошибка приложения!");
+                    throw new RuntimeException("Ошибка приложения!");
                 }else if(i.equals(1L)){
-                    throw new Exception("Неверные данные");
+                    throw new RuntimeException("Неверные данные");
                 }else if(i.equals(0L)){
                     Draw(MessageText.getText(), (Long) result.getOrDefault("time", 2), name, false, true);
                     MessageText.setText("");
@@ -877,11 +929,14 @@ public class Saved {
                         alert.show();
                     });
                 }else{
-                    throw new Exception("Ошибка приложения!");
+                    throw new RuntimeException("Ошибка приложения!");
                 }
-            }catch (Exception e){
+            } catch (ProtocolException e) {
                 e.printStackTrace();
-                MessageText.setText("");
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         };
         Thread t = new Thread(r);
@@ -919,9 +974,9 @@ public class Saved {
                         JSONObject result = (JSONObject) JSONValue.parse(EntityUtils.toString(response.getEntity(), "UTF-8"));
                         Long i = (Long) result.getOrDefault("code", 2);
                         if (i.equals(2L)) {
-                            throw new Exception("Ошибка приложения!");
+                            throw new RuntimeException("Ошибка приложения!");
                         } else if (i.equals(1L)) {
-                            throw new Exception("Неверные данные");
+                            throw new RuntimeException("Неверные данные");
                         } else if (i.equals(0L)) {
                             Draw(file.getName(), (Long) result.getOrDefault("time", 2), name, true, true);
                         } else if (i.equals(4L)) {
@@ -932,11 +987,15 @@ public class Saved {
                             alert.setOnCloseRequest(event -> Platform.exit());
                             alert.show();
                         } else if (i.equals(3L)) {
-                            throw new Exception("Файл не отправлен!");
+                            throw new RuntimeException("Файл не отправлен!");
                         } else {
-                            throw new Exception("Ошибка приложения!");
+                            throw new RuntimeException("Ошибка приложения!");
                         }
-                    } catch (Exception e) {
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    } catch (ClientProtocolException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                 };
