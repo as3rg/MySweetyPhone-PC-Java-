@@ -7,7 +7,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -18,6 +20,12 @@ import java.util.ResourceBundle;
 
 
 public class Sessions {
+
+    @FXML
+    private ScrollPane ConnectToSessionScrollPane;
+
+    @FXML
+    private AnchorPane MainPane;
 
     @FXML
     private ResourceBundle resources;
@@ -41,6 +49,19 @@ public class Sessions {
 
     @FXML
     public void initialize(){
+        Thread Resize = new Thread(()->{
+            try {
+                while (NewSession.getScene() == null) Thread.sleep(100);
+                ConnectToSessionScrollPane.prefWidthProperty().bind(NewSession.getScene().widthProperty().divide(2));
+                ConnectToSessionScrollPane.prefHeightProperty().bind(MainPane.prefHeightProperty().subtract(SearchSessions.heightProperty().subtract(265)));
+                ConnectToSession.minHeightProperty().bind(ConnectToSessionScrollPane.prefHeightProperty());
+                MainPane.prefWidthProperty().bind(NewSession.getScene().widthProperty());
+                MainPane.prefHeightProperty().bind(NewSession.getScene().heightProperty());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        Resize.start();
         SessionType.getItems().add("Эмуляция мыши");
         SessionType.getItems().add("Отражение экрана");
         NewSession.setOnMouseClicked(this::OpenSession);

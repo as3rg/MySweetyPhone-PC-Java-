@@ -6,11 +6,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="610.0" prefWidth="1280.0" style="-fx-background-color: #202020;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Sessions">
+<AnchorPane fx:id="MainPane" prefHeight="610.0" prefWidth="1280.0" style="-fx-background-color: #202020;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Sessions">
    <children>
       <ChoiceBox fx:id="SessionType" layoutX="865.0" layoutY="186.0" prefHeight="44.0" prefWidth="171.0" style="-fx-background-color: #303030;" />
       <Button fx:id="NewSession" layoutX="865.0" layoutY="305.0" mnemonicParsing="false" prefHeight="82.0" prefWidth="171.0" text="Начать сессию" />
-      <ScrollPane fitToWidth="true" layoutY="42.0" prefHeight="568.0" prefWidth="640.0" style="-fx-background-color: #202020; -fx-border-color: #ffffff; -fx-border-width: 0 1 0 0;">
+      <ScrollPane fx:id="ConnectToSessionScrollPane" fitToWidth="true" layoutY="42.0" prefHeight="568.0" prefWidth="640.0" style="-fx-background-color: #202020; -fx-border-color: #ffffff; -fx-border-width: 0 1 0 0;">
          <content>
             <VBox fx:id="ConnectToSession" disable="true" minHeight="565.0" prefHeight="566.0" prefWidth="637.0" style="-fx-background-color: #202020;" />
          </content>

@@ -162,9 +162,15 @@ public class Login {
                     props.setProperty("id",result.get("id").toString());
                     props.store(propFile, "login");
                     propFile.close();
-
-                    AnchorPane pane = FXMLLoader.load(getClass().getResource("RegDevice.fxml"));
-                    MainPane.getChildren().setAll(pane);
+                    
+                    Platform.runLater(()->{
+                        try {
+                            AnchorPane pane = FXMLLoader.load(getClass().getResource("RegDevice.fxml"));
+                            MainPane.getChildren().setAll(pane);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
                 }else {
                     throw new Exception("Ошибка приложения!");
                 }

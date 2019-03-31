@@ -72,6 +72,7 @@ public class DevicesList {
     @FXML
     private TableColumn<Device, Void> Remove;
 
+
     ObservableList<Device> devices;
 
     private String name;
@@ -84,10 +85,10 @@ public class DevicesList {
         Thread Resize = new Thread(()->{
             try {
                 while (MainPane.getScene() == null) Thread.sleep(100);
-                Type.prefWidthProperty().bind(MainPane.getScene().getWindow().widthProperty().divide(5));
-                Remove.prefWidthProperty().bind(MainPane.getScene().getWindow().widthProperty().divide(5));
-                Name.prefWidthProperty().bind(MainPane.getScene().getWindow().widthProperty().divide(5).multiply(3));
-                Table.prefHeightProperty().bind(MainPane.getScene().getWindow().heightProperty());
+                Type.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty().divide(5));
+                Remove.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty().divide(5));
+                Name.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty().divide(5).multiply(3));
+                Table.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

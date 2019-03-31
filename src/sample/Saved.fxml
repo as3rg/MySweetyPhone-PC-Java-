@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane style="-fx-background-color: #ff0000;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Saved">
+<AnchorPane fx:id="RootPane" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Saved">
    <children>
       <BorderPane fx:id="MainPane" style="-fx-background-color: #202020;">
          <top>

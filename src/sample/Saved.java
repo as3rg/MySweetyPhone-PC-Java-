@@ -16,16 +16,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
-import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
@@ -83,6 +82,9 @@ public class Saved {
     @FXML
     private TextArea MessageText;
 
+    @FXML
+    private AnchorPane RootPane;
+
     private String name;
     private String login;
     private int id;
@@ -93,21 +95,21 @@ public class Saved {
         Thread Resize = new Thread(()->{
             try {
                 while (Messages.getScene() == null) Thread.sleep(100);
-                scrollPane.prefWidthProperty().bind(Messages.getScene().getWindow().widthProperty());
-                Messages.prefWidthProperty().bind(Messages.getScene().getWindow().widthProperty());
-                MessageText.prefWidthProperty().bind(Messages.getScene().getWindow().widthProperty().divide(10).multiply(8).subtract(50));
-                SendButton.prefWidthProperty().bind(Messages.getScene().getWindow().widthProperty().divide(10));
-                FileButton.prefWidthProperty().bind(Messages.getScene().getWindow().widthProperty().divide(10));
-                LoadButton.prefWidthProperty().bind(Messages.getScene().getWindow().widthProperty().divide(5).multiply(2));
-                SendBar.prefWidthProperty().bind(Messages.getScene().getWindow().widthProperty());
-                MainPane.prefWidthProperty().bind(Messages.getScene().getWindow().widthProperty());
-                scrollPane.prefHeightProperty().bind(MainPane.getScene().getWindow().heightProperty().subtract(265));
+                scrollPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
+                MessageText.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty().divide(10).multiply(8).subtract(50));
+                SendButton.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty().divide(10));
+                FileButton.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty().divide(10));
+                LoadButton.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty().divide(5).multiply(2));
+                SendBar.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
+                MainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
+                MainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         });
         Resize.start();
         LoadMore();
+        Messages.setFillWidth(false);
     }
 
     @FXML
@@ -191,22 +193,28 @@ public class Saved {
         Date Date = new Date(date * 1000L);
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd.MM.yyyy");
         VBox vBox = new VBox();
-        Text TextLabel = new Text();
+        Label textLabel = new Label();
         Label DateLabel = new Label();
+        vBox.maxWidthProperty().bind(Messages.widthProperty().divide(2));
         vBox.setStyle("-fx-background-color: linear-gradient(from 0% 100% to 100% 0%, #d53369, #cbad6d); -fx-background-radius: 10;");
-        vBox.setMaxWidth(460);
         DateLabel.setStyle("-fx-text-fill: #ffffff;");
         DateLabel.setText(sdf.format(Date) + ", " + sender);
         DateLabel.setPadding(new Insets(0, 10, 0, 10));
-        TextLabel.setText(text);
-        TextLabel.setFont(Font.font(15));
+        textLabel.setText(text);
+        textLabel.setFont(Font.font(15));
+        textLabel.setStyle("-fx-text-fill: #ffffff;");
+        textLabel.setStyle("-fx-text-fill: #ffffff;");
+        textLabel.setStyle("-fx-text-fill: #ffffff;");
+        textLabel.setStyle("-fx-text-fill: #ffffff;");
+        textLabel.setWrapText(true);
+        textLabel.setStyle("-fx-text-fill: #ffffff;");
         if(text.isEmpty()){
-            TextLabel.setText("Пустое сообщение");
-            TextLabel.setFill(Paint.valueOf("#404040"));
-            TextLabel.setFont(Font.font(TextLabel.getFont().getFamily(), FontPosture.ITALIC, TextLabel.getFont().getSize()));
+            textLabel.setText("Пустое сообщение");
+            textLabel.setStyle("-fx-text-fill: grey;");
+            textLabel.setFont(Font.font(textLabel.getFont().getFamily(), FontPosture.ITALIC, textLabel.getFont().getSize()));
         }
         vBox.setPadding(new Insets(10, 10, 10, 10));
-        vBox.getChildren().add(TextLabel);
+        vBox.getChildren().add(textLabel);
         vBox.getChildren().add(DateLabel);
         VBox.setMargin(vBox, new Insets(5, 0, 0, 0));
 
@@ -284,17 +292,22 @@ public class Saved {
         Date Date = new java.util.Date(date * 1000L);
         SimpleDateFormat sdf = new java.text.SimpleDateFormat("HH:mm dd.MM.yyyy");
         VBox vBox = new VBox();
-        Text TextLabel = new Text();
+        Label textLabel = new Label();
         Label DateLabel = new Label();
         vBox.setStyle("-fx-background-color: linear-gradient(from 0% 100% to 100% 0%, #d53369, #cbad6d); -fx-background-radius: 10;");
-        vBox.setMaxWidth(460);
+        vBox.maxWidthProperty().bind(Messages.widthProperty().divide(2));
         DateLabel.setStyle("-fx-text-fill: #ffffff;");
         DateLabel.setText(sdf.format(Date) + ", " + sender);
         DateLabel.setPadding(new Insets(0, 10, 0, 10));
-        TextLabel.setText(text);
+        textLabel.setText(text);
         vBox.setPadding(new Insets(10, 10, 10, 10));
-        TextLabel.setFont(Font.font(15));
-        vBox.getChildren().add(TextLabel);
+        textLabel.setFont(Font.font(15));
+        textLabel.setStyle("-fx-text-fill: #ffffff;");
+        textLabel.setStyle("-fx-text-fill: #ffffff;");
+        textLabel.setStyle("-fx-text-fill: #ffffff;");
+        textLabel.setStyle("-fx-text-fill: #ffffff;");
+        textLabel.setStyle("-fx-text-fill: #ffffff;");
+        vBox.getChildren().add(textLabel);
         vBox.getChildren().add(DateLabel);
 
         File file = new File("src/sample/Images/Download.png");
@@ -394,7 +407,7 @@ public class Saved {
         SimpleDateFormat sdf = new java.text.SimpleDateFormat("HH:mm dd.MM.yyyy");
         VBox vBox = new VBox();
         VBox TextVBox = new VBox();
-        Text TextLabel = new Text();
+        Label textLabel = new Label();
         Label DateLabel = new Label();
         TextVBox.setStyle("-fx-background-color: linear-gradient(from 0% 100% to 100% 0%, #d53369, #cbad6d); -fx-background-radius: 0 0 10 10;");
         TextVBox.setMinWidth(300);
@@ -402,10 +415,14 @@ public class Saved {
         DateLabel.setStyle("-fx-text-fill: #ffffff;");
         DateLabel.setText(sdf.format(Date) + ", " + sender);
         DateLabel.setPadding(new Insets(0, 10, 0, 10));
-        TextLabel.setText(text);
+        textLabel.setText(text);
         TextVBox.setPadding(new Insets(5, 10, 10, 10));
-        TextLabel.setFont(Font.font(15));
-        TextVBox.getChildren().add(TextLabel);
+        textLabel.setFont(Font.font(15));
+        textLabel.setStyle("-fx-text-fill: #ffffff;");
+        textLabel.setStyle("-fx-text-fill: #ffffff;");
+        textLabel.setStyle("-fx-text-fill: #ffffff;");
+        textLabel.setStyle("-fx-text-fill: #ffffff;");
+        TextVBox.getChildren().add(textLabel);
         TextVBox.getChildren().add(DateLabel);
 
         ImageView Image = new ImageView();
@@ -515,20 +532,24 @@ public class Saved {
         SimpleDateFormat sdf = new java.text.SimpleDateFormat("HH:mm dd.MM.yyyy");
         VBox vBox = new VBox();
         VBox TextVBox = new VBox();
-        Text TextLabel = new Text();
+        Label textLabel = new Label();
         Label DateLabel = new Label();
         TextVBox.setStyle("-fx-background-color: linear-gradient(from 0% 100% to 100% 0%, #d53369, #cbad6d); -fx-background-radius: 0 0 10 10;");
         TextVBox.setMinWidth(300);
         TextVBox.setMaxWidth(460);
-        vBox.setMaxWidth(460);
+        vBox.maxWidthProperty().bind(Messages.widthProperty().divide(2));
         vBox.setMinWidth(300);
         DateLabel.setStyle("-fx-text-fill: #ffffff;");
         DateLabel.setText(sdf.format(Date) + ", " + sender);
         DateLabel.setPadding(new Insets(0, 10, 0, 10));
-        TextLabel.setText(text);
+        textLabel.setText(text);
         TextVBox.setPadding(new Insets(5, 10, 10, 10));
-        TextLabel.setFont(Font.font(15));
-        TextVBox.getChildren().add(TextLabel);
+        textLabel.setFont(Font.font(15));
+        textLabel.setStyle("-fx-text-fill: #ffffff;");
+        textLabel.setStyle("-fx-text-fill: #ffffff;");
+        textLabel.setStyle("-fx-text-fill: #ffffff;");
+        textLabel.setStyle("-fx-text-fill: #ffffff;");
+        TextVBox.getChildren().add(textLabel);
         TextVBox.getChildren().add(DateLabel);
 
         MediaView Video = new MediaView();
@@ -666,20 +687,24 @@ public class Saved {
         SimpleDateFormat sdf = new java.text.SimpleDateFormat("HH:mm dd.MM.yyyy");
         VBox vBox = new VBox();
         VBox TextVBox = new VBox();
-        Text TextLabel = new Text();
+        Label textLabel = new Label();
         Label DateLabel = new Label();
         TextVBox.setStyle("-fx-background-color: linear-gradient(from 0% 100% to 100% 0%, #d53369, #cbad6d); -fx-background-radius: 10 10 10 10;");
         TextVBox.setMinWidth(300);
         TextVBox.setMaxWidth(460);
-        vBox.setMaxWidth(460);
+        vBox.maxWidthProperty().bind(Messages.widthProperty().divide(2));
         vBox.setMinWidth(300);
         DateLabel.setStyle("-fx-text-fill: #ffffff;");
         DateLabel.setText(sdf.format(Date) + ", " + sender);
         DateLabel.setPadding(new Insets(0, 10, 0, 10));
-        TextLabel.setText(text);
+        textLabel.setText(text);
         TextVBox.setPadding(new Insets(5, 10, 10, 10));
-        TextLabel.setFont(Font.font(15));
-        TextVBox.getChildren().add(TextLabel);
+        textLabel.setFont(Font.font(15));
+        textLabel.setStyle("-fx-text-fill: #ffffff;");
+        textLabel.setStyle("-fx-text-fill: #ffffff;");
+        textLabel.setStyle("-fx-text-fill: #ffffff;");
+        textLabel.setStyle("-fx-text-fill: #ffffff;");
+        TextVBox.getChildren().add(textLabel);
         TextVBox.getChildren().add(DateLabel);
 
         MediaView Video = new MediaView();

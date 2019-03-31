@@ -6,7 +6,7 @@
 
 <AnchorPane fx:id="MainPane" prefHeight="610.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.DevicesList">
    <children>
-      <TableView fx:id="Table" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #202020; -fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, #d53369, #cbad6d);">
+      <TableView fx:id="Table" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #202020; -fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, #d53369, #cbad6d); -fx-border-color: #ffffff; -fx-border-width: 1 0 0 0;">
         <columns>
           <TableColumn fx:id="Type" prefWidth="150.0" resizable="false" styleClass=".table-column" text="Тип" />
           <TableColumn fx:id="Name" prefWidth="980.0" resizable="false" styleClass=".table-column" text="Имя" />

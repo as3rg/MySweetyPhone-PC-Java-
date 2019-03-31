@@ -1,18 +1,12 @@
 package sample;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import javafx.util.Duration;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,89 +14,76 @@ import java.util.ResourceBundle;
 
 public class MainActivity {
 
-    @FXML
-    private ResourceBundle resources;
+    public static MainActivity controller;
 
     @FXML
-    private URL location;
+    public ResourceBundle resources;
 
     @FXML
-    private FlowPane MainPane;
+    public URL location;
 
     @FXML
-    private FlowPane Header;
+    public FlowPane MainPane;
 
     @FXML
-    private javafx.scene.control.Label Label;
+    public FlowPane Header;
 
     @FXML
-    private ImageView Logo;
+    public javafx.scene.control.Label Label;
 
     @FXML
-    private Tab Devices;
+    public ImageView Logo;
 
     @FXML
-    private AnchorPane ReplaceToDevicesList;
+    public AnchorPane Replace;
 
     @FXML
-    private BorderPane ReplaceToSaved;
+    private VBox MenuPane;
 
     @FXML
-    private AnchorPane ReplaceToSessions;
-
-    @FXML
-    private AnchorPane ReplaceToBlockSite;
-
-    @FXML
-    private TabPane TabPane;
+    private Pane CallMenu;
 
     @FXML
     void initialize() throws IOException {
-        FXMLLoader DevicesList = new FXMLLoader(getClass().getResource("DevicesList.fxml"));
-        FXMLLoader Saved = new FXMLLoader(getClass().getResource("Saved.fxml"));
-        FXMLLoader BlockSite = new FXMLLoader(getClass().getResource("BlockSite.fxml"));
-        FXMLLoader Sessions = new FXMLLoader(getClass().getResource("Sessions.fxml"));
-        Pane pane = DevicesList.load();
-        ReplaceToDevicesList.getChildren().setAll(pane);
-        pane = Saved.load();
-        ReplaceToSaved.getChildren().setAll(pane);
-        /*pane = BlockSite.load();
-        ReplaceToBlockSite.getChildren().setAll(pane);*/
-        pane = Sessions.load();
-        ReplaceToSessions.getChildren().setAll(pane);
-        Timeline timeline = new Timeline(new KeyFrame(new Duration(60000), ev -> {
-            switch (TabPane.getSelectionModel().getSelectedItem().getText()){
-                case "Устройства":
-                    try {
-                        ((DevicesList)DevicesList.getController()).initialize();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case "Сохраненное":
-                    ((Saved)Saved.getController()).initialize();
-                    break;
-                default:
-                    break;
-            }
-        }));
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
-
+        controller = this;
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DevicesList.fxml"));
+        Pane pane = fxmlLoader.load();
+        Replace.getChildren().setAll(pane);
         Thread Resize = new Thread(()->{
             try {
                 while (MainPane.getScene() == null) Thread.sleep(100);
-                MainPane.prefWidthProperty().bind(MainPane.getScene().getWindow().widthProperty());
-                MainPane.prefHeightProperty().bind(MainPane.getScene().getWindow().heightProperty());
-                TabPane.prefWidthProperty().bind(MainPane.getScene().getWindow().widthProperty());
-                TabPane.prefHeightProperty().bind(MainPane.getScene().getWindow().heightProperty().subtract(Header.heightProperty()).subtract(10));
-                Header.prefWidthProperty().bind(MainPane.getScene().getWindow().widthProperty());
-                ReplaceToDevicesList.prefHeightProperty().bind(TabPane.heightProperty());
-                TabPane.prefHeightProperty().bind(MainPane.getScene().getWindow().heightProperty());
+                Replace.prefHeightProperty().bind(MainPane.getScene().heightProperty().subtract(Header.heightProperty()));
+                MenuPane.prefHeightProperty().bind(MainPane.getScene().heightProperty().subtract(Header.heightProperty()));
+                Replace.prefWidthProperty().bind(MainPane.getScene().widthProperty().subtract(CallMenu.widthProperty()));
+                MainPane.prefWidthProperty().bind(MainPane.getScene().widthProperty());
+                Header.prefWidthProperty().bind(MainPane.getScene().widthProperty());
+                MenuPane.visibleProperty().bind(CallMenu.hoverProperty().or(MenuPane.hoverProperty()));
+                Replace.disableProperty().bind(CallMenu.hoverProperty().or(MenuPane.hoverProperty()));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         });
         Resize.start();
+    }
+
+    @FXML
+    void DevicesList() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DevicesList.fxml"));
+        Pane pane = fxmlLoader.load();
+        Replace.getChildren().setAll(pane);
+    }
+
+    @FXML
+    void Saved() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Saved.fxml"));
+        Pane pane = fxmlLoader.load();
+        Replace.getChildren().setAll(pane);
+    }
+
+    @FXML
+    void Sessions() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Sessions.fxml"));
+        Pane pane = fxmlLoader.load();
+        Replace.getChildren().setAll(pane);
     }
 }
