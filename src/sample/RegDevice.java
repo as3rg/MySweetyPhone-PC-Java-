@@ -84,7 +84,7 @@ public class RegDevice {
         String login = (String)props.getOrDefault("login","");
         Runnable r = () -> {
             try {
-                URL obj = new URL("http://localhost:5000/?Type=AddDevice&DeviceType=PC&Id="+id+"&Login="+login+"&Name="+DeviceName.getText());
+                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=AddDevice&DeviceType=PC&Id="+id+"&Login="+login+"&Name="+DeviceName.getText());
 
                 HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                 connection.setRequestMethod("GET");
