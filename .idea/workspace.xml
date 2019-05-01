@@ -2,12 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MySweetyPhone(PC).iml" beforeDir="false" afterPath="$PROJECT_DIR$/MySweetyPhone(PC).iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/properties.properties" beforeDir="false" afterPath="$PROJECT_DIR$/properties.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/DevicesList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/DevicesList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Login.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/RegDevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/RegDevice.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/sample/Saved.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Saved.java" afterDir="false" />
     </list>
     <ignored path="JavaFxApplication.iws" />
@@ -93,8 +87,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sample/Saved.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="231" column="101" selection-start-line="231" selection-start-column="99" selection-end-line="231" selection-end-column="101" />
+            <state relative-caret-position="182">
+              <caret line="657" column="16" selection-start-line="657" selection-start-column="16" selection-end-line="657" selection-end-column="16" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -191,7 +185,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>MouseTracker</find>
       <find>paint</find>
       <find>paintComponent</find>
       <find>Messages.getChildren().add</find>
@@ -221,6 +214,7 @@
       <find>mysweetyphone.herokuapp.com</find>
       <find>Dow</find>
       <find>mysweetyphone</find>
+      <find>my</find>
     </findStrings>
     <replaceStrings>
       <replace>202020</replace>
@@ -375,7 +369,7 @@
     <property name="full.screen.before.presentation.mode" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.20229885" />
     <property name="recentsLimit" value="5" />
@@ -615,7 +609,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="417731000" />
+    <option name="totallyTimeSpent" value="421601000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
@@ -959,8 +953,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/Saved.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="231" column="101" selection-start-line="231" selection-start-column="99" selection-end-line="231" selection-end-column="101" />
+        <state relative-caret-position="182">
+          <caret line="657" column="16" selection-start-line="657" selection-start-column="16" selection-end-line="657" selection-end-column="16" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -996,7 +990,7 @@
       </state>
       <state key="GlobalLibrariesConfigurable.UI">
         <settings>
-          <last-edited>lib</last-edited>
+          <last-edited>libs</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1008,7 +1002,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>1.8</last-edited>
+          <last-edited>11.0.2</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1025,7 +1019,6 @@
             <option name="proportions">
               <list>
                 <option value="0.20229885" />
-                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>

@@ -28,6 +28,8 @@ import javafx.scene.text.FontPosture;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -51,8 +53,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -389,18 +389,34 @@ public class Saved {
             if (file == null) return;
             Runnable r = () -> {
                 try {
-                    URL website = new URL("http://localhost:5000/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
-                    ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+                    URL obj = new URL("http://localhost:5000/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
+
+                    HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+                    connection.setRequestMethod("GET");
+
+                    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    String inputLine;
+                    StringBuffer response = new StringBuffer();
+
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+                    in.close();
+
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                    String filebody = (String)result.get("filebody");
                     File out2 = new File(out,"MySweetyPhone");
                     out2.mkdirs();
                     FileOutputStream fos = new FileOutputStream(new File(out2, text));
-                    fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                    fos.write(Hex.decodeHex(filebody.substring(2).toCharArray()));
                     fos.close();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (DecoderException e) {
                     e.printStackTrace();
                 }
             };
@@ -448,8 +464,23 @@ public class Saved {
 
         (new Thread(() -> {
             try {
-                URL website = new URL("http://localhost:5000/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
-                BufferedImage image = ImageIO.read(website.openStream());
+                URL obj = new URL("http://localhost:5000/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
+                HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+                connection.setRequestMethod("GET");
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                String filebody = (String)result.get("filebody");
+
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(Hex.decodeHex(filebody.substring(2).toCharArray())));
                 Platform.runLater(()->{
                     Image.setFitHeight(460*image.getHeight()/image.getWidth());
                     Image.setImage(SwingFXUtils.toFXImage(image, null));
@@ -457,6 +488,8 @@ public class Saved {
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (DecoderException e) {
                 e.printStackTrace();
             }
         })).start();
@@ -524,18 +557,33 @@ public class Saved {
             final File out = fc.showDialog(null);
             Runnable r = () -> {
                 try {
-                    URL website = new URL("http://localhost:5000/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
-                    ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+                    URL obj = new URL("http://localhost:5000/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
+                    HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+                    connection.setRequestMethod("GET");
+
+                    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    String inputLine;
+                    StringBuffer response = new StringBuffer();
+
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+                    in.close();
+
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                    String filebody = (String)result.get("filebody");
                     File out2 = new File(out,"MySweetyPhone");
                     out2.mkdirs();
                     FileOutputStream fos = new FileOutputStream(new File(out2, text));
-                    fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                    fos.write(Hex.decodeHex(filebody.substring(2).toCharArray()));
                     fos.close();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (DecoderException e) {
                     e.printStackTrace();
                 }
             };
@@ -589,12 +637,26 @@ public class Saved {
         TextVBox.getChildren().add(0,slider);
         new Thread(() -> {
             try {
-                URL website = new URL("http://localhost:5000/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
-                ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+                URL obj = new URL("http://localhost:5000/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
+                HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+                connection.setRequestMethod("GET");
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                String filebody = (String)result.get("filebody");
+
                 File out = File.createTempFile(text, ".tmp");
                 Main.tempfiles.add(out);
                 FileOutputStream fos = new FileOutputStream(out);
-                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                fos.write(Hex.decodeHex(filebody.substring(2).toCharArray()));
                 fos.close();
                 Video.setMediaPlayer(new MediaPlayer(new Media(out.toURI().toString())));
                 Video.getMediaPlayer().setOnEndOfMedia(()->{
@@ -612,11 +674,7 @@ public class Saved {
                     });
                     Video.getMediaPlayer().setOnReady(()->{});
                 });
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (IOException | DecoderException e) {
                 e.printStackTrace();
             }
         }).start();
@@ -674,10 +732,6 @@ public class Saved {
                     Messages.getChildren().remove(vBox);
                     if(Messages.getChildren().size() < 10)
                         LoadMore(10 - Messages.getChildren().size() + 1);
-                } catch (ProtocolException e) {
-                    e.printStackTrace();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -691,18 +745,27 @@ public class Saved {
             final File out = fc.showDialog(null);
             Runnable r = () -> {
                 try {
-                    URL website = new URL("http://localhost:5000/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
-                    ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+                    URL obj = new URL("http://localhost:5000/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
+                    HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+                    connection.setRequestMethod("GET");
+
+                    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    String inputLine;
+                    StringBuffer response = new StringBuffer();
+
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+                    in.close();
+
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                    String filebody = (String)result.get("filebody");
                     File out2 = new File(out,"MySweetyPhone");
                     out2.mkdirs();
                     FileOutputStream fos = new FileOutputStream(new File(out2, text));
-                    fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                    fos.write(Hex.decodeHex(filebody.substring(2).toCharArray()));
                     fos.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
+                } catch (IOException | DecoderException e) {
                     e.printStackTrace();
                 }
             };
@@ -767,12 +830,27 @@ public class Saved {
 
         new Thread(() -> {
             try {
-                URL website = new URL("http://localhost:5000/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
-                ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+                URL obj = new URL("http://localhost:5000/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
+
+                HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+                connection.setRequestMethod("GET");
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                String filebody = (String)result.get("filebody");
+
                 File out = File.createTempFile(text, ".tmp");
                 Main.tempfiles.add(out);
                 FileOutputStream fos = new FileOutputStream(out);
-                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                fos.write(Hex.decodeHex(filebody.substring(2).toCharArray()));
                 fos.close();
                 Video.setMediaPlayer(new MediaPlayer(new Media(out.toURI().toString())));
                 Video.getMediaPlayer().setOnEndOfMedia(()->{
@@ -790,11 +868,7 @@ public class Saved {
                     });
                     Video.getMediaPlayer().setOnReady(()->{});
                 });
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (DecoderException | IOException e) {
                 e.printStackTrace();
             }
         }).start();
@@ -862,18 +936,33 @@ public class Saved {
             final File out = fc.showDialog(null);
             Runnable r = () -> {
                 try {
-                    URL website = new URL("http://localhost:5000/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
-                    ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+                    URL obj = new URL("http://localhost:5000/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
+                    HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+                    connection.setRequestMethod("GET");
+
+                    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    String inputLine;
+                    StringBuffer response = new StringBuffer();
+
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+                    in.close();
+
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                    String filebody = (String)result.get("filebody");
                     File out2 = new File(out,"MySweetyPhone");
                     out2.mkdirs();
                     FileOutputStream fos = new FileOutputStream(new File(out2, text));
-                    fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                    fos.write(Hex.decodeHex(filebody.substring(2).toCharArray()));
                     fos.close();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (DecoderException e) {
                     e.printStackTrace();
                 }
             };
