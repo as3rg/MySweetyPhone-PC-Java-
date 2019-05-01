@@ -132,7 +132,7 @@ public class Saved {
                 login = (String) props.getOrDefault("login", "");
                 name = (String) props.getOrDefault("name", "");
 
-                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=GetMessages&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Count="+(Messages.getChildren().size()-2+Count));
+                URL obj = new URL("http://localhost:5000/?Type=GetMessages&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Count="+(Messages.getChildren().size()-2+Count));
 
                 HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                 connection.setRequestMethod("GET");
@@ -229,7 +229,7 @@ public class Saved {
         delete.setOnAction(event -> {
             EventHandler r = (event1) -> {
                 try {
-                    URL obj = new URL("https://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
+                    URL obj = new URL("https://localhost:5000/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
 
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
@@ -336,7 +336,7 @@ public class Saved {
         delete.setOnAction(event -> {
             EventHandler r = (event1) -> {
                 try {
-                    URL obj = new URL("https://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
+                    URL obj = new URL("https://localhost:5000/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
 
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
@@ -389,7 +389,7 @@ public class Saved {
             if (file == null) return;
             Runnable r = () -> {
                 try {
-                    URL website = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
+                    URL website = new URL("http://localhost:5000/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
                     ReadableByteChannel rbc = Channels.newChannel(website.openStream());
                     File out2 = new File(out,"MySweetyPhone");
                     out2.mkdirs();
@@ -448,7 +448,7 @@ public class Saved {
 
         (new Thread(() -> {
             try {
-                URL website = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
+                URL website = new URL("http://localhost:5000/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
                 BufferedImage image = ImageIO.read(website.openStream());
                 Platform.runLater(()->{
                     Image.setFitHeight(460*image.getHeight()/image.getWidth());
@@ -473,7 +473,7 @@ public class Saved {
         delete.setOnAction(event -> {
             EventHandler r = (event1) -> {
                 try {
-                    URL obj = new URL("https://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
+                    URL obj = new URL("https://localhost:5000/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
 
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
@@ -524,7 +524,7 @@ public class Saved {
             final File out = fc.showDialog(null);
             Runnable r = () -> {
                 try {
-                    URL website = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
+                    URL website = new URL("http://localhost:5000/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
                     ReadableByteChannel rbc = Channels.newChannel(website.openStream());
                     File out2 = new File(out,"MySweetyPhone");
                     out2.mkdirs();
@@ -589,7 +589,7 @@ public class Saved {
         TextVBox.getChildren().add(0,slider);
         new Thread(() -> {
             try {
-                URL website = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
+                URL website = new URL("http://localhost:5000/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
                 ReadableByteChannel rbc = Channels.newChannel(website.openStream());
                 File out = File.createTempFile(text, ".tmp");
                 Main.tempfiles.add(out);
@@ -640,7 +640,7 @@ public class Saved {
             if(Video.getMediaPlayer() != null) Video.getMediaPlayer().stop();
             EventHandler r = (event1) -> {
                 try {
-                    URL obj = new URL("https://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
+                    URL obj = new URL("https://localhost:5000/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
 
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
@@ -691,7 +691,7 @@ public class Saved {
             final File out = fc.showDialog(null);
             Runnable r = () -> {
                 try {
-                    URL website = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
+                    URL website = new URL("http://localhost:5000/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
                     ReadableByteChannel rbc = Channels.newChannel(website.openStream());
                     File out2 = new File(out,"MySweetyPhone");
                     out2.mkdirs();
@@ -767,7 +767,7 @@ public class Saved {
 
         new Thread(() -> {
             try {
-                URL website = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
+                URL website = new URL("http://localhost:5000/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
                 ReadableByteChannel rbc = Channels.newChannel(website.openStream());
                 File out = File.createTempFile(text, ".tmp");
                 Main.tempfiles.add(out);
@@ -811,7 +811,7 @@ public class Saved {
             Video.getMediaPlayer().stop();
             EventHandler r = (event1) -> {
                 try {
-                    URL obj = new URL("https://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
+                    URL obj = new URL("https://localhost:5000/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
 
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
@@ -862,7 +862,7 @@ public class Saved {
             final File out = fc.showDialog(null);
             Runnable r = () -> {
                 try {
-                    URL website = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
+                    URL website = new URL("http://localhost:5000/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
                     ReadableByteChannel rbc = Channels.newChannel(website.openStream());
                     File out2 = new File(out,"MySweetyPhone");
                     out2.mkdirs();
@@ -897,7 +897,7 @@ public class Saved {
         Runnable r;
         r = () -> {
             try {
-                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=SendMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Msg="+MessageText.getText().replace(" ","%20").replace("\n","\\n"));
+                URL obj = new URL("http://localhost:5000/?Type=SendMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Msg="+MessageText.getText().replace(" ","%20").replace("\n","\\n"));
                 HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                 connection.setRequestMethod("GET");
 
@@ -965,7 +965,7 @@ public class Saved {
                 Runnable r = () -> {
                     try {
                         HttpClient client = new DefaultHttpClient();
-                        HttpPost post = new HttpPost("http://mysweetyphone.herokuapp.com/?Type=UploadFile&RegDate=" + regdate + "&MyName=" + name + "&Login=" + login + "&Id=" + id);
+                        HttpPost post = new HttpPost("http://localhost:5000/?Type=UploadFile&RegDate=" + regdate + "&MyName=" + name + "&Login=" + login + "&Id=" + id);
                         MultipartEntity entity = new MultipartEntity();
                         entity.addPart("fileToUpload", new FileBody(file));
                         entity.addPart("submit", new StringBody(""));

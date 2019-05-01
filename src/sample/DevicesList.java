@@ -105,7 +105,7 @@ public class DevicesList {
         regdate = Integer.parseInt((String)props.getOrDefault("regdate","-1"));
         login = (String)props.getOrDefault("login","");
         name = (String)props.getOrDefault("name","");
-        URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate="+regdate+"&Login=" + login + "&Id=" + id + "&Name=" + name);
+        URL obj = new URL("http://localhost:5000/?Type=Check&DeviceType=PC&RegDate="+regdate+"&Login=" + login + "&Id=" + id + "&Name=" + name);
 
         HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
         connection.setRequestMethod("GET");
@@ -121,7 +121,7 @@ public class DevicesList {
 
         Runnable r = () -> {
             try {
-                URL obj2 = new URL("http://mysweetyphone.herokuapp.com/?Type=ShowDevices&RegDate="+regdate+"&Login=" + login + "&Id=" + id + "&MyName=" + name);
+                URL obj2 = new URL("http://localhost:5000/?Type=ShowDevices&RegDate="+regdate+"&Login=" + login + "&Id=" + id + "&MyName=" + name);
 
                 HttpURLConnection connection2 = (HttpURLConnection) obj2.openConnection();
                 connection2.setRequestMethod("GET");
@@ -184,7 +184,7 @@ public class DevicesList {
                         button.setOnMouseClicked(event -> {
                             Runnable r = () -> {
                                 try {
-                                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=RemoveDevice&RegDate="+regdate+"&Login=" + login + "&MyName=" + name + "&Id=" + id + "&Name=" + devices.get(getIndex()).getName());
+                                    URL obj = new URL("http://localhost:5000/?Type=RemoveDevice&RegDate="+regdate+"&Login=" + login + "&MyName=" + name + "&Id=" + id + "&Name=" + devices.get(getIndex()).getName());
 
                                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                                     connection.setRequestMethod("GET");

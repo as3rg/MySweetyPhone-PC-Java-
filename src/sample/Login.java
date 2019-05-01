@@ -105,7 +105,7 @@ public class Login {
 
                 Runnable r = () -> {
                     try {
-                        URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate=" + regdate + "&Login=" + login + "&Id=" + id + "&Name=" + name);
+                        URL obj = new URL("http://localhost:5000/?Type=Check&DeviceType=PC&RegDate=" + regdate + "&Login=" + login + "&Id=" + id + "&Name=" + name);
                         HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                         connection.setRequestMethod("GET");
 
@@ -155,19 +155,19 @@ public class Login {
         }
 
         LoginButton.setOnMouseClicked(event ->
-                RegOrLogin("https://mysweetyphone.herokuapp.com/?Type=Login&Login="+Nick.getText()+"&Pass="+Pass.getText(),true));
+                RegOrLogin("https://localhost:5000/?Type=Login&Login="+Nick.getText()+"&Pass="+Pass.getText(),true));
     }
 
     @FXML
     void ChangeToReg(){
         LoginButton.setText("Зарегистрироваться");
-        LoginButton.setOnMouseClicked(event -> RegOrLogin("https://mysweetyphone.herokuapp.com/?Type=Reg&Login="+Nick.getText()+"&Pass="+Pass.getText(), false));
+        LoginButton.setOnMouseClicked(event -> RegOrLogin("https://localhost:5000/?Type=Reg&Login="+Nick.getText()+"&Pass="+Pass.getText(), false));
     }
 
     @FXML
     void ChangeToLogin(){
         LoginButton.setText("Войти");
-        LoginButton.setOnMouseClicked(event -> RegOrLogin("https://mysweetyphone.herokuapp.com/?Type=Login&Login="+Nick.getText()+"&Pass="+Pass.getText(),true));
+        LoginButton.setOnMouseClicked(event -> RegOrLogin("https://localhost:5000/?Type=Login&Login="+Nick.getText()+"&Pass="+Pass.getText(),true));
     }
 
     private void RegOrLogin(String url, boolean IsLogin){
