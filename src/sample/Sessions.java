@@ -76,6 +76,11 @@ public class Sessions {
                 ConnectToSession.minHeightProperty().bind(ConnectToSessionScrollPane.heightProperty());
                 MainPane.prefWidthProperty().bind(NewSession.getScene().widthProperty());
                 MainPane.prefHeightProperty().bind(NewSession.getScene().heightProperty());
+
+                NewSession.setDisable(false);
+                SessionType.setDisable(false);
+                SearchSessions.setDisable(false);
+                ConnectToSession.setDisable(false);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

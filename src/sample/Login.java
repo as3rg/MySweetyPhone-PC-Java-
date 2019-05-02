@@ -119,10 +119,10 @@ public class Login {
                         in.close();
 
                         JSONObject result = (JSONObject) JSONValue.parse(response.toString());
-                        Long i = (Long) result.getOrDefault("code", 2);
-                        if (i.equals(0L)) {
-                            i = (Long) result.getOrDefault("result", 0);
-                            if (i.equals(2L)) {
+                        int i = ((Long) result.getOrDefault("code", 2)).intValue();
+                        if (i == 0) {
+                            i = ((Long) result.getOrDefault("result", 0)).intValue();
+                            if (i == 2) {
                                 Platform.runLater(() -> {
                                     try {
                                         AnchorPane pane = FXMLLoader.load(getClass().getResource("RegDevice.fxml"));
@@ -131,7 +131,7 @@ public class Login {
                                         e.printStackTrace();
                                     }
                                 });
-                            } else if (i.equals(1L)) {
+                            } else if (i == 1) {
                                 Platform.runLater(() -> {
                                     try {
                                         AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
@@ -147,7 +147,7 @@ public class Login {
                         Nick.setDisable(false);
                         Pass.setDisable(false);
                         Type.setDisable(false);
-                    } catch (ProtocolException e) {} catch (MalformedURLException e) {} catch (IOException e) {}
+                    } catch (IOException e) {}
                 };
                 Thread t = new Thread(r);
                 t.start();
@@ -191,17 +191,17 @@ public class Login {
                 Platform.runLater(()->{
                     try{
                         JSONObject result = (JSONObject) JSONValue.parse(response.toString());
-                        Long i = (Long) result.getOrDefault("code", 2);
+                        int i = ((Long) result.getOrDefault("code", 2)).intValue();
                         Shake onErrorShake = new Shake(LoginButton);
-                        if (i.equals(3L)) {
+                        if (i == 3) {
                             Error.setVisible(true);
                             Error.setText("Имя и Пароль должны быть заполнены!");
                             onErrorShake.play();
-                        } else if (i.equals(1L)) {
+                        } else if (i == 1) {
                             Error.setVisible(true);
                             Error.setText(IsLogin ? "Ошибка! Неверное имя или пароль" : "Ошибка! Это имя уже используется");
                             onErrorShake.play();
-                        } else if (i.equals(0L)) {
+                        } else if (i == 0) {
                             File file = new File("properties.properties");
                             if (!file.exists())
                                 file.createNewFile();
@@ -216,16 +216,10 @@ public class Login {
                         }else {
                             throw new RuntimeException("Ошибка приложения!");
                         }
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 });
-            } catch (ProtocolException e) {
-                e.printStackTrace();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }

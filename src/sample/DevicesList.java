@@ -136,21 +136,17 @@ public class DevicesList {
                 in2.close();
 
                 JSONObject result = (JSONObject) JSONValue.parse(response2.toString());
-                Long i = (Long) result.getOrDefault("code", 2);
-                if(i.equals(0L)){
+                int i = ((Long) result.getOrDefault("code", 2)).intValue();
+                if(i == 0){
                     for(String device : (ArrayList<String>)result.get("PCs")){
                         devices.add(new Device(device, false));
                     }
                     for(String device : (ArrayList<String>)result.get("Phones")){
                         devices.add(new Device(device, true));
                     }
-                }else if(i.equals(4L)){
+                }else if(i == 4){
                     throw new RuntimeException("Ваше устройство не зарегистрировано!");
                 }
-            } catch (ProtocolException e) {
-                e.printStackTrace();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -167,7 +163,7 @@ public class DevicesList {
             public TableCell<Device, Void> call(final TableColumn<Device, Void> param) {
                 final TableCell<Device, Void> cell = new TableCell<Device, Void>() {
 
-                    javafx.scene.control.Button button = new javafx.scene.control.Button("Удалить");
+                    Button button = new Button("Удалить");
                     @Override
                     public void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);

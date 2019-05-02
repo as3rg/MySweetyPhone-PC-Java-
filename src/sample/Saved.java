@@ -31,7 +31,6 @@ import javafx.util.Duration;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
@@ -50,8 +49,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -132,8 +129,7 @@ public class Saved {
                 login = (String) props.getOrDefault("login", "");
                 name = (String) props.getOrDefault("name", "");
 
-                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=GetMessages&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Count="+(Messages.getChildren().size()-2+Count));
-
+                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=GetMessages&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Count="+(Messages.getChildren().size()+Count));
                 HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                 connection.setRequestMethod("GET");
 
@@ -146,12 +142,12 @@ public class Saved {
                 }
                 in.close();
                 JSONObject result = (JSONObject) JSONValue.parse(response.toString());
-                Long i = (Long) result.getOrDefault("code", 2);
-                if(i.equals(2L)){
+                int i = ((Long) result.getOrDefault("code", 2)).intValue();
+                if(i == 2){
                     throw new RuntimeException("Ошибка приложения!");
-                }else if(i.equals(1L)){
+                }else if(i == 1){
                     throw new RuntimeException("Неверные данные");
-                }else if(i.equals(0L)){
+                }else if(i == 0){
                     Platform.runLater(()-> {
                         Object[] messages = ((JSONArray) result.get("messages")).toArray();
                         Messages.getChildren().remove(0,Messages.getChildren().size());
@@ -159,8 +155,9 @@ public class Saved {
                             JSONObject message = (JSONObject) messages[j];
                             Draw(((String) (message).get("msg")).replace("\\n", "\n"), (Long) (message).get("date"), (String) (message).get("sender"), ((String) (message).get("type")).equals("File"),  false);
                         }
+                        LoadButton.setVisible((Boolean)(result.get("hasnext")));
                     });
-                }else if(i.equals(4L)){
+                }else if(i == 4){
                     Platform.runLater(() ->{
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Ошибка");
@@ -173,12 +170,6 @@ public class Saved {
                 }else{
                     throw new RuntimeException("Ошибка приложения!");
                 }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (ProtocolException e) {
-                e.printStackTrace();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -244,13 +235,13 @@ public class Saved {
                     in.close();
 
                     JSONObject result = (JSONObject) JSONValue.parse(response.toString());
-                    Long i = (Long) result.getOrDefault("code", 2);
-                    if(i.equals(2L)){
+                    int i = ((Long) result.getOrDefault("code", 2)).intValue();
+                    if(i == 2){
                         throw new RuntimeException("Ошибка приложения!");
-                    }else if(i.equals(1L)){
+                    }else if(i == 1){
                         throw new RuntimeException("Неверные данные");
-                    }else if(i.equals(0L)){
-                    }else if(i.equals(4L)){
+                    }else if(i == 0){
+                    }else if(i == 4){
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Ошибка");
                         alert.setHeaderText(null);
@@ -263,10 +254,6 @@ public class Saved {
                     Messages.getChildren().remove(vBox);
                     if(Messages.getChildren().size() < 10)
                         LoadMore(10 - Messages.getChildren().size() + 1);
-                } catch (ProtocolException e) {
-                    e.printStackTrace();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -351,13 +338,13 @@ public class Saved {
                     in.close();
 
                     JSONObject result = (JSONObject) JSONValue.parse(response.toString());
-                    Long i = (Long) result.getOrDefault("code", 2);
-                    if(i.equals(2L)){
+                    int i = ((Long) result.getOrDefault("code", 2)).intValue();
+                    if(i == 2){
                         throw new RuntimeException("Ошибка приложения!");
-                    }else if(i.equals(1L)){
+                    }else if(i == 1){
                         throw new RuntimeException("Неверные данные");
-                    }else if(i.equals(0L)){
-                    }else if(i.equals(4L)){
+                    }else if(i == 0){
+                    }else if(i == 4){
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Ошибка");
                         alert.setHeaderText(null);
@@ -370,10 +357,6 @@ public class Saved {
                     Messages.getChildren().remove(vBox);
                     if(Messages.getChildren().size() < 10)
                         LoadMore(10 - Messages.getChildren().size() + 1);
-                } catch (ProtocolException e) {
-                    e.printStackTrace();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -386,7 +369,7 @@ public class Saved {
             DirectoryChooser fc = new DirectoryChooser();
             fc.setTitle("Выберите папку для сохранения");
             final File out = fc.showDialog(null);
-            if (file == null) return;
+            if (out == null) return;
             Runnable r = () -> {
                 try {
                     URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
@@ -410,13 +393,7 @@ public class Saved {
                     FileOutputStream fos = new FileOutputStream(new File(out2, text));
                     fos.write(Hex.decodeHex(filebody.substring(2).toCharArray()));
                     fos.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (DecoderException e) {
+                } catch (IOException | DecoderException e) {
                     e.printStackTrace();
                 }
             };
@@ -463,35 +440,33 @@ public class Saved {
         Image.setFitWidth(460);
 
         (new Thread(() -> {
-            try {
-                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
-                HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
-                connection.setRequestMethod("GET");
+            while (true)
+                try {
+                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
+                    HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+                    connection.setRequestMethod("GET");
 
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
+                    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    String inputLine;
+                    StringBuffer response = new StringBuffer();
 
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+                    in.close();
+
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                    String filebody = (String)result.get("filebody");
+
+                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(Hex.decodeHex(filebody.substring(2).toCharArray())));
+                    Platform.runLater(()->{
+                        Image.setFitHeight(460*image.getHeight()/image.getWidth());
+                        Image.setImage(SwingFXUtils.toFXImage(image, null));
+                    });
+                    break;
+                } catch (IOException | DecoderException e) {
+                    e.printStackTrace();
                 }
-                in.close();
-
-                JSONObject result = (JSONObject) JSONValue.parse(response.toString());
-                String filebody = (String)result.get("filebody");
-
-                BufferedImage image = ImageIO.read(new ByteArrayInputStream(Hex.decodeHex(filebody.substring(2).toCharArray())));
-                Platform.runLater(()->{
-                    Image.setFitHeight(460*image.getHeight()/image.getWidth());
-                    Image.setImage(SwingFXUtils.toFXImage(image, null));
-                });
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (DecoderException e) {
-                e.printStackTrace();
-            }
         })).start();
 
         vBox.getChildren().add(0,Image);
@@ -521,13 +496,13 @@ public class Saved {
                     in.close();
 
                     JSONObject result = (JSONObject) JSONValue.parse(response.toString());
-                    Long i = (Long) result.getOrDefault("code", 2);
-                    if(i.equals(2L)){
+                    int i = ((Long) result.getOrDefault("code", 2)).intValue();
+                    if(i == 2){
                         throw new RuntimeException("Ошибка приложения!");
-                    }else if(i.equals(1L)){
+                    }else if(i == 1){
                         throw new RuntimeException("Неверные данные");
-                    }else if(i.equals(0L)){
-                    }else if(i.equals(4L)){
+                    }else if(i == 0){
+                    }else if(i == 4){
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Ошибка");
                         alert.setHeaderText(null);
@@ -540,10 +515,6 @@ public class Saved {
                     Messages.getChildren().remove(vBox);
                     if(Messages.getChildren().size() < 10)
                         LoadMore(10 - Messages.getChildren().size() + 1);
-                } catch (ProtocolException e) {
-                    e.printStackTrace();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -555,6 +526,7 @@ public class Saved {
             DirectoryChooser fc = new DirectoryChooser();
             fc.setTitle("Выберите папку для сохранения");
             final File out = fc.showDialog(null);
+            if(out == null) return;
             Runnable r = () -> {
                 try {
                     URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
@@ -577,13 +549,7 @@ public class Saved {
                     FileOutputStream fos = new FileOutputStream(new File(out2, text));
                     fos.write(Hex.decodeHex(filebody.substring(2).toCharArray()));
                     fos.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (DecoderException e) {
+                } catch (IOException | DecoderException e) {
                     e.printStackTrace();
                 }
             };
@@ -636,47 +602,47 @@ public class Saved {
 
         TextVBox.getChildren().add(0,slider);
         new Thread(() -> {
-            try {
-                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
-                HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
-                connection.setRequestMethod("GET");
+            while (true)
+                try {
+                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
+                    HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+                    connection.setRequestMethod("GET");
 
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
+                    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    String inputLine;
+                    StringBuffer response = new StringBuffer();
 
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+                    in.close();
 
-                JSONObject result = (JSONObject) JSONValue.parse(response.toString());
-                String filebody = (String)result.get("filebody");
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                    String filebody = (String)result.get("filebody");
 
-                File out = File.createTempFile(text, ".tmp");
-                Main.tempfiles.add(out);
-                FileOutputStream fos = new FileOutputStream(out);
-                fos.write(Hex.decodeHex(filebody.substring(2).toCharArray()));
-                fos.close();
-                Video.setMediaPlayer(new MediaPlayer(new Media(out.toURI().toString())));
-                Video.getMediaPlayer().setOnEndOfMedia(()->{
-                    Video.getMediaPlayer().seek(Duration.ZERO);
-                    Video.getMediaPlayer().pause();
-                });
-                Video.getMediaPlayer().setOnReady(() -> {
-                    slider.setMax(Video.getMediaPlayer().getMedia().getDuration().toMillis());
-                    slider.valueProperty().addListener((obs, oldVal, newVal) -> {
-                        if (slider.isPressed())
-                            Video.getMediaPlayer().seek(Duration.millis(newVal.doubleValue()));
+                    File out = File.createTempFile(text, ".tmp");
+                    Main.tempfiles.add(out);
+                    FileOutputStream fos = new FileOutputStream(out);
+                    fos.write(Hex.decodeHex(filebody.substring(2).toCharArray()));
+                    fos.close();
+                    Video.setMediaPlayer(new MediaPlayer(new Media(out.toURI().toString())));
+                    Video.getMediaPlayer().setOnEndOfMedia(()->{
+                        Video.getMediaPlayer().seek(Duration.ZERO);
+                        Video.getMediaPlayer().pause();
                     });
-                    Video.getMediaPlayer().currentTimeProperty().addListener((observable, oldValue, newValue) -> {
-                        slider.setValue(newValue.toMillis());
+                    Video.getMediaPlayer().setOnReady(() -> {
+                        slider.setMax(Video.getMediaPlayer().getMedia().getDuration().toMillis());
+                        slider.valueProperty().addListener((obs, oldVal, newVal) -> {
+                            if (slider.isPressed())
+                                Video.getMediaPlayer().seek(Duration.millis(newVal.doubleValue()));
+                        });
+                        Video.getMediaPlayer().currentTimeProperty().addListener((observable, oldValue, newValue) -> {
+                            slider.setValue(newValue.toMillis());
+                        });
+                        Video.getMediaPlayer().setOnReady(()->{});
                     });
-                    Video.getMediaPlayer().setOnReady(()->{});
-                });
-            } catch (IOException | DecoderException e) {
-                e.printStackTrace();
-            }
+                    break;
+                } catch (IOException | DecoderException e) {}
         }).start();
 
         Video.setOnMouseClicked(event1 -> {
@@ -713,13 +679,13 @@ public class Saved {
                     in.close();
 
                     JSONObject result = (JSONObject) JSONValue.parse(response.toString());
-                    Long i = (Long) result.getOrDefault("code", 2);
-                    if(i.equals(2L)){
+                    int i = ((Long) result.getOrDefault("code", 2)).intValue();
+                    if(i == 2){
                         throw new RuntimeException("Ошибка приложения!");
-                    }else if(i.equals(1L)){
+                    }else if(i == 1){
                         throw new RuntimeException("Неверные данные");
-                    }else if(i.equals(0L)){
-                    }else if(i.equals(4L)){
+                    }else if(i == 0){
+                    }else if(i == 4){
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Ошибка");
                         alert.setHeaderText(null);
@@ -743,6 +709,7 @@ public class Saved {
             DirectoryChooser fc = new DirectoryChooser();
             fc.setTitle("Выберите папку для сохранения");
             final File out = fc.showDialog(null);
+            if(out == null) return;
             Runnable r = () -> {
                 try {
                     URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
@@ -829,47 +796,52 @@ public class Saved {
         TextVBox.getChildren().add(0,Icon);
 
         new Thread(() -> {
-            try {
-                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
 
-                HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
-                connection.setRequestMethod("GET");
+            while (true) {
+                try {
+                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate=" + regdate + "&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ", "%20") + "&Date=" + date);
 
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
+                    HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+                    connection.setRequestMethod("GET");
 
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
+                    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    String inputLine;
+                    StringBuffer response = new StringBuffer();
+
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+                    in.close();
+
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                    String filebody = (String) result.get("filebody");
+
+                    File out = File.createTempFile(text, ".tmp");
+                    Main.tempfiles.add(out);
+                    FileOutputStream fos = new FileOutputStream(out);
+                    fos.write(Hex.decodeHex(filebody.substring(2).toCharArray()));
+                    fos.close();
+                    Video.setMediaPlayer(new MediaPlayer(new Media(out.toURI().toString())));
+                    Video.getMediaPlayer().setOnEndOfMedia(() -> {
+                        Video.getMediaPlayer().seek(Duration.ZERO);
+                        Video.getMediaPlayer().pause();
+                    });
+                    Video.getMediaPlayer().setOnReady(() -> {
+                        slider.setMax(Video.getMediaPlayer().getMedia().getDuration().toMillis());
+                        slider.valueProperty().addListener((obs, oldVal, newVal) -> {
+                            if (slider.isPressed())
+                                Video.getMediaPlayer().seek(Duration.millis(newVal.doubleValue()));
+                        });
+                        Video.getMediaPlayer().currentTimeProperty().addListener((observable, oldValue, newValue) -> {
+                            slider.setValue(newValue.toMillis());
+                        });
+                        Video.getMediaPlayer().setOnReady(() -> {
+                        });
+                    });
+                    break;
+                } catch (DecoderException | IOException e) {
+                    e.printStackTrace();
                 }
-                in.close();
-
-                JSONObject result = (JSONObject) JSONValue.parse(response.toString());
-                String filebody = (String)result.get("filebody");
-
-                File out = File.createTempFile(text, ".tmp");
-                Main.tempfiles.add(out);
-                FileOutputStream fos = new FileOutputStream(out);
-                fos.write(Hex.decodeHex(filebody.substring(2).toCharArray()));
-                fos.close();
-                Video.setMediaPlayer(new MediaPlayer(new Media(out.toURI().toString())));
-                Video.getMediaPlayer().setOnEndOfMedia(()->{
-                    Video.getMediaPlayer().seek(Duration.ZERO);
-                    Video.getMediaPlayer().pause();
-                });
-                Video.getMediaPlayer().setOnReady(() -> {
-                    slider.setMax(Video.getMediaPlayer().getMedia().getDuration().toMillis());
-                    slider.valueProperty().addListener((obs, oldVal, newVal) -> {
-                        if (slider.isPressed())
-                            Video.getMediaPlayer().seek(Duration.millis(newVal.doubleValue()));
-                    });
-                    Video.getMediaPlayer().currentTimeProperty().addListener((observable, oldValue, newValue) -> {
-                        slider.setValue(newValue.toMillis());
-                    });
-                    Video.getMediaPlayer().setOnReady(()->{});
-                });
-            } catch (DecoderException | IOException e) {
-                e.printStackTrace();
             }
         }).start();
 
@@ -900,13 +872,13 @@ public class Saved {
                     in.close();
 
                     JSONObject result = (JSONObject) JSONValue.parse(response.toString());
-                    Long i = (Long) result.getOrDefault("code", 2);
-                    if(i.equals(2L)){
+                    int i = ((Long) result.getOrDefault("code", 2)).intValue();
+                    if(i == 2){
                         throw new RuntimeException("Ошибка приложения!");
-                    }else if(i.equals(1L)){
+                    }else if(i == 1){
                         throw new RuntimeException("Неверные данные");
-                    }else if(i.equals(0L)){
-                    }else if(i.equals(4L)){
+                    }else if(i == 0){
+                    }else if(i == 4){
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Ошибка");
                         alert.setHeaderText(null);
@@ -919,10 +891,6 @@ public class Saved {
                     Messages.getChildren().remove(vBox);
                     if(Messages.getChildren().size() < 10)
                         LoadMore(10 - Messages.getChildren().size() + 1);
-                } catch (ProtocolException e) {
-                    e.printStackTrace();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -934,6 +902,7 @@ public class Saved {
             DirectoryChooser fc = new DirectoryChooser();
             fc.setTitle("Выберите папку для сохранения");
             final File out = fc.showDialog(null);
+            if(out == null) return;
             Runnable r = () -> {
                 try {
                     URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
@@ -956,13 +925,7 @@ public class Saved {
                     FileOutputStream fos = new FileOutputStream(new File(out2, text));
                     fos.write(Hex.decodeHex(filebody.substring(2).toCharArray()));
                     fos.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (DecoderException e) {
+                } catch (IOException | DecoderException e) {
                     e.printStackTrace();
                 }
             };
@@ -1000,15 +963,15 @@ public class Saved {
                 in.close();
 
                 JSONObject result = (JSONObject) JSONValue.parse(response.toString());
-                Long i = (Long) result.getOrDefault("code", 2);
-                if(i.equals(2L)){
+                int i = ((Long) result.getOrDefault("code", 2)).intValue();
+                if(i == 2){
                     throw new RuntimeException("Ошибка приложения!");
-                }else if(i.equals(1L)){
+                }else if(i == 1){
                     throw new RuntimeException("Неверные данные");
-                }else if(i.equals(0L)){
+                }else if(i == 0){
                     Draw(MessageText.getText(), (Long) result.getOrDefault("time", 2), name, false, true);
                     MessageText.setText("");
-                }else if(i.equals(4L)){
+                }else if(i == 4){
                     Platform.runLater(() -> {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Ошибка");
@@ -1020,10 +983,6 @@ public class Saved {
                 }else{
                     throw new RuntimeException("Ошибка приложения!");
                 }
-            } catch (ProtocolException e) {
-                e.printStackTrace();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -1061,29 +1020,25 @@ public class Saved {
                         post.setEntity(entity);
                         HttpResponse response = client.execute(post);
                         JSONObject result = (JSONObject) JSONValue.parse(EntityUtils.toString(response.getEntity(), "UTF-8"));
-                        Long i = (Long) result.getOrDefault("code", 2);
-                        if (i.equals(2L)) {
+                        int i = ((Long) result.getOrDefault("code", 2)).intValue();
+                        if (i == 2) {
                             throw new RuntimeException("Ошибка приложения!");
-                        } else if (i.equals(1L)) {
+                        } else if (i == 1) {
                             throw new RuntimeException("Неверные данные");
-                        } else if (i.equals(0L)) {
+                        } else if (i == 0) {
                             Draw(file.getName(), (Long) result.getOrDefault("time", 2), name, true, true);
-                        } else if (i.equals(4L)) {
+                        } else if (i == 4) {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
                             alert.setTitle("Ошибка");
                             alert.setHeaderText(null);
                             alert.setContentText("Ваше устройство не зарегистрировано!");
                             alert.setOnCloseRequest(event -> Platform.exit());
                             alert.show();
-                        } else if (i.equals(3L)) {
+                        } else if (i == 3) {
                             throw new RuntimeException("Файл не отправлен!");
                         } else {
                             throw new RuntimeException("Ошибка приложения!");
                         }
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    } catch (ClientProtocolException e) {
-                        e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

@@ -2,6 +2,7 @@ package sample;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -26,6 +27,9 @@ public class MainActivity {
     public FlowPane MainPane;
 
     @FXML
+    private Button Reload;
+
+    @FXML
     public FlowPane Header;
 
     @FXML
@@ -44,21 +48,29 @@ public class MainActivity {
     private Pane CallMenu;
 
     @FXML
+    private VBox LeftPane;
+
+    static interface MethodToCall{
+        void f() throws IOException;
+    }
+
+    MethodToCall mtc;
+
+    @FXML
     void initialize() throws IOException {
         controller = this;
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DevicesList.fxml"));
-        Pane pane = fxmlLoader.load();
-        Replace.getChildren().setAll(pane);
+        DevicesList();
         Thread Resize = new Thread(()->{
             try {
                 while (MainPane.getScene() == null) Thread.sleep(100);
                 Replace.prefHeightProperty().bind(MainPane.getScene().heightProperty().subtract(Header.heightProperty()));
                 MenuPane.prefHeightProperty().bind(MainPane.getScene().heightProperty().subtract(Header.heightProperty()));
-                Replace.prefWidthProperty().bind(MainPane.getScene().widthProperty().subtract(CallMenu.widthProperty()));
+                Replace.prefWidthProperty().bind(MainPane.getScene().widthProperty().subtract(LeftPane.widthProperty()));
                 MainPane.prefWidthProperty().bind(MainPane.getScene().widthProperty());
                 Header.prefWidthProperty().bind(MainPane.getScene().widthProperty());
                 MenuPane.visibleProperty().bind(CallMenu.hoverProperty().or(MenuPane.hoverProperty()));
                 Replace.disableProperty().bind(CallMenu.hoverProperty().or(MenuPane.hoverProperty()));
+                CallMenu.prefHeightProperty().bind(LeftPane.heightProperty().subtract(Reload.heightProperty()));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -67,10 +79,16 @@ public class MainActivity {
     }
 
     @FXML
+    void Reload() throws IOException {
+        mtc.f();
+    }
+
+    @FXML
     void DevicesList() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DevicesList.fxml"));
         Pane pane = fxmlLoader.load();
         Replace.getChildren().setAll(pane);
+        mtc = this::DevicesList;
     }
 
     @FXML
@@ -78,6 +96,7 @@ public class MainActivity {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Saved.fxml"));
         Pane pane = fxmlLoader.load();
         Replace.getChildren().setAll(pane);
+        mtc = this::Saved;
     }
 
     @FXML
@@ -85,5 +104,6 @@ public class MainActivity {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Sessions.fxml"));
         Pane pane = fxmlLoader.load();
         Replace.getChildren().setAll(pane);
+        mtc = this::Sessions;
     }
 }

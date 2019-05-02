@@ -16,8 +16,6 @@ import org.json.simple.JSONValue;
 
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -100,20 +98,19 @@ public class RegDevice {
 
 
                 JSONObject result = (JSONObject) JSONValue.parse(response.toString());
-                Long i = (Long) result.getOrDefault("code", 2);
+                int i = ((Long)result.getOrDefault("code", 2)).intValue();
                 Platform.runLater(()-> {
                     try {
-                        if (i.equals(3L)) {
+                        if (i == 3) {
                             Error.setVisible(true);
                             Error.setText("Вы должны указать имя!!");
-                        } else if (i.equals(2L)) {
+                        } else if (i == 2) {
                             Error.setVisible(true);
                             Error.setText("Ошибка приложения!");
-                        } else if (i.equals(1L)) {
-
+                        } else if (i == 1) {
                             Error.setVisible(true);
                             Error.setText("Вы уже используете это имя!");
-                        } else if (i.equals(0L)) {
+                        } else if (i == 0) {
                             props.setProperty("name", DeviceName.getText());
                             props.setProperty("regdate", ((Long) result.get("regdate")).toString());
                             props.store(new FileOutputStream("properties.properties"), "");
@@ -125,16 +122,10 @@ public class RegDevice {
                         }
                         Next.setDisable(false);
                         DeviceName.setDisable(false);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 });
-            } catch (ProtocolException e) {
-                e.printStackTrace();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
