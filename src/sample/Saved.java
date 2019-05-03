@@ -152,7 +152,7 @@ public class Saved {
                         Messages.getChildren().remove(0,Messages.getChildren().size());
                         for (int j = messages.length-1; j >= 0; j--) {
                             JSONObject message = (JSONObject) messages[j];
-                            Draw(((String) (message).get("msg")).replace("\\n", "\n"), (Long) (message).get("date"), (String) (message).get("sender"), ((String) (message).get("type")).equals("File"),  false);
+                            Draw(((String) (message).get("msg")).replace("\\n", "\n"), ((Long) (message).get("date")).intValue(), (String) (message).get("sender"), ((String) (message).get("type")).equals("File"),  false);
                         }
                         LoadButton.setVisible((Boolean)(result.get("hasnext")));
                     });
@@ -177,14 +177,14 @@ public class Saved {
         t.start();
     }
 
-    private void Draw(String text, Long date, String sender, boolean isFile, Boolean needsAnim) {
+    private void Draw(String text, int date, String sender, boolean isFile, Boolean needsAnim) {
         if(isFile)
             DrawFile(text, date, sender, needsAnim);
         else
             DrawText(text, date, sender, needsAnim);
     }
 
-    private void DrawText(String text, Long date, String sender, Boolean needsAnim) {
+    private void DrawText(String text, int date, String sender, Boolean needsAnim) {
         Date Date = new Date(date * 1000L);
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd.MM.yyyy");
         VBox vBox = new VBox();
@@ -271,7 +271,7 @@ public class Saved {
         });
     }
 
-    private void DrawFile(String text, Long date, String sender, Boolean needsAnim) {
+    private void DrawFile(String text, int date, String sender, Boolean needsAnim) {
         if(text.toLowerCase().contains(".png") || text.toLowerCase().contains(".jpg") || text.toLowerCase().contains(".jpeg") || text.toLowerCase().contains("bmp") || text.toLowerCase().contains("gif")){
             DrawImage(text, date, sender, needsAnim);
             return;
@@ -411,7 +411,7 @@ public class Saved {
         });
     }
 
-    private void DrawImage(String text, Long date, String sender, Boolean needsAnim) {
+    private void DrawImage(String text, int date, String sender, Boolean needsAnim) {
         Date Date = new java.util.Date(date * 1000L);
         SimpleDateFormat sdf = new java.text.SimpleDateFormat("HH:mm dd.MM.yyyy");
         VBox vBox = new VBox();
@@ -567,7 +567,7 @@ public class Saved {
         });
     }
 
-    private void DrawVideo(String text, Long date, String sender, Boolean needsAnim) {
+    private void DrawVideo(String text, int date, String sender, Boolean needsAnim) {
         Date Date = new java.util.Date(date * 1000L);
         SimpleDateFormat sdf = new java.text.SimpleDateFormat("HH:mm dd.MM.yyyy");
         VBox vBox = new VBox();
@@ -595,7 +595,7 @@ public class Saved {
         MediaView Video = new MediaView();
 
         Video.setStyle("-fx-background-radius: 10 10 0 0;");
-        Video.setFitWidth(460);
+//        Video.setFitWidth(460);
 
         Slider slider = new Slider(0,10,0);
 
@@ -750,7 +750,7 @@ public class Saved {
         });
     }
 
-    private void DrawAudio(String text, Long date, String sender, Boolean needsAnim) {
+    private void DrawAudio(String text, int date, String sender, Boolean needsAnim) {
         Date Date = new java.util.Date(date * 1000L);
         SimpleDateFormat sdf = new java.text.SimpleDateFormat("HH:mm dd.MM.yyyy");
         VBox vBox = new VBox();
@@ -968,7 +968,7 @@ public class Saved {
                 }else if(i == 1){
                     throw new RuntimeException("Неверные данные");
                 }else if(i == 0){
-                    Draw(MessageText.getText(), (Long) result.getOrDefault("time", 2), name, false, true);
+                    Draw(MessageText.getText(), (Integer) result.getOrDefault("time", 2), name, false, true);
                     MessageText.setText("");
                 }else if(i == 4){
                     Platform.runLater(() -> {
@@ -1000,7 +1000,7 @@ public class Saved {
         if (files == null) return;
         for (Object f : files) {
             File file = (File) f;
-            if (file.length() >= 1100000) {
+            if (file.length() >= 1048576) {
                 tooBig.add(file.getName());
                 continue;
             }
@@ -1019,14 +1019,13 @@ public class Saved {
                         post.setEntity(entity);
                         String response = EntityUtils.toString(client.execute(post).getEntity(), "UTF-8");
                         JSONObject result = (JSONObject) JSONValue.parse(response);
-                        System.out.println(response);
                         int i = ((Long) result.getOrDefault("code", 2)).intValue();
                         if (i == 2) {
                             throw new RuntimeException("Ошибка приложения!");
                         } else if (i == 1) {
                             throw new RuntimeException("Неверные данные");
                         } else if (i == 0) {
-                            Draw(file.getName(), (Long) result.getOrDefault("time", 2), name, true, true);
+                            Draw(file.getName(), ((Long) result.getOrDefault("time", 2)).intValue(), name, true, true);
                         } else if (i == 4) {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
                             alert.setTitle("Ошибка");
