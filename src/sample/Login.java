@@ -155,19 +155,19 @@ public class Login {
         }
 
         LoginButton.setOnMouseClicked(event ->
-                RegOrLogin("https://mysweetyphone.herokuapp.com/?Type=Login&Login="+Nick.getText()+"&Pass="+Pass.getText(),true));
+                RegOrLogin("http://mysweetyphone.herokuapp.com/?Type=Login&Login="+Nick.getText()+"&Pass="+Pass.getText(),true));
     }
 
     @FXML
     void ChangeToReg(){
         LoginButton.setText("Зарегистрироваться");
-        LoginButton.setOnMouseClicked(event -> RegOrLogin("https://mysweetyphone.herokuapp.com/?Type=Reg&Login="+Nick.getText()+"&Pass="+Pass.getText(), false));
+        LoginButton.setOnMouseClicked(event -> RegOrLogin("http://mysweetyphone.herokuapp.com/?Type=Reg&Login="+Nick.getText()+"&Pass="+Pass.getText(), false));
     }
 
     @FXML
     void ChangeToLogin(){
         LoginButton.setText("Войти");
-        LoginButton.setOnMouseClicked(event -> RegOrLogin("https://mysweetyphone.herokuapp.com/?Type=Login&Login="+Nick.getText()+"&Pass="+Pass.getText(),true));
+        LoginButton.setOnMouseClicked(event -> RegOrLogin("http://mysweetyphone.herokuapp.com/?Type=Login&Login="+Nick.getText()+"&Pass="+Pass.getText(),true));
     }
 
     private void RegOrLogin(String url, boolean IsLogin){

@@ -30,7 +30,6 @@ import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
@@ -220,7 +219,7 @@ public class Saved {
         delete.setOnAction(event -> {
             EventHandler r = (event1) -> {
                 try {
-                    URL obj = new URL("https://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
+                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
 
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
@@ -323,7 +322,7 @@ public class Saved {
         delete.setOnAction(event -> {
             EventHandler r = (event1) -> {
                 try {
-                    URL obj = new URL("https://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
+                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
 
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
@@ -481,7 +480,7 @@ public class Saved {
         delete.setOnAction(event -> {
             EventHandler r = (event1) -> {
                 try {
-                    URL obj = new URL("https://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
+                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
 
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
@@ -664,7 +663,7 @@ public class Saved {
             if(Video.getMediaPlayer() != null) Video.getMediaPlayer().stop();
             EventHandler r = (event1) -> {
                 try {
-                    URL obj = new URL("https://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
+                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
 
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
@@ -857,7 +856,7 @@ public class Saved {
             Video.getMediaPlayer().stop();
             EventHandler r = (event1) -> {
                 try {
-                    URL obj = new URL("https://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
+                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
 
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
@@ -1018,8 +1017,9 @@ public class Saved {
                         entity.addPart("fileToUpload", new FileBody(file));
                         entity.addPart("submit", new StringBody(""));
                         post.setEntity(entity);
-                        HttpResponse response = client.execute(post);
-                        JSONObject result = (JSONObject) JSONValue.parse(EntityUtils.toString(response.getEntity(), "UTF-8"));
+                        String response = EntityUtils.toString(client.execute(post).getEntity(), "UTF-8");
+                        JSONObject result = (JSONObject) JSONValue.parse(response);
+                        System.out.println(response);
                         int i = ((Long) result.getOrDefault("code", 2)).intValue();
                         if (i == 2) {
                             throw new RuntimeException("Ошибка приложения!");
