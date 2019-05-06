@@ -11,7 +11,7 @@ import java.net.DatagramPacket;
 public class MouseTracker extends Frame implements MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
 
     static int startX = 100,startY = 100;
-    SessionClient ss;
+    SessionClient sc;
     double width;
     double height;
     JFrame f;
@@ -23,8 +23,8 @@ public class MouseTracker extends Frame implements MouseListener, MouseMotionLis
             e.printStackTrace();
         }
     }
-    public MouseTracker(SessionClient ss) throws IOException, AWTException {
-        this.ss = ss;
+    public MouseTracker(SessionClient sc) throws IOException, AWTException {
+        this.sc = sc;
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         width = screenSize.getWidth();
         height = screenSize.getHeight();
@@ -58,7 +58,7 @@ public class MouseTracker extends Frame implements MouseListener, MouseMotionLis
             msg.put("Key",e.getButton());
             Message[] messages = Message.getMessages(msg.toJSONString().getBytes());
             for(Message m : messages){
-                    ss.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,ss.getAddress(),ss.getPort()));
+                    sc.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,sc.getAddress(),sc.getPort()));
             }
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -74,7 +74,7 @@ public class MouseTracker extends Frame implements MouseListener, MouseMotionLis
             msg.put("Key",e.getButton());
             Message[] messages = Message.getMessages(msg.toJSONString().getBytes());
             for(Message m : messages){
-                ss.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,ss.getAddress(),ss.getPort()));
+                sc.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,sc.getAddress(),sc.getPort()));
             }
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -100,7 +100,7 @@ public class MouseTracker extends Frame implements MouseListener, MouseMotionLis
                 msg.put("Y", e.getY() - startY);
                 Message[] messages = Message.getMessages(msg.toJSONString().getBytes());
                 for(Message m : messages){
-                    ss.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,ss.getAddress(),ss.getPort()));
+                    sc.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,sc.getAddress(),sc.getPort()));
                 }
                 r.mouseMove(startX, startY);
             }
@@ -118,7 +118,7 @@ public class MouseTracker extends Frame implements MouseListener, MouseMotionLis
             msg.put("Y",e.getY()-startY);
             Message[] messages = Message.getMessages(msg.toJSONString().getBytes());
             for(Message m : messages){
-                ss.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,ss.getAddress(),ss.getPort()));
+                sc.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,sc.getAddress(),sc.getPort()));
             }
             r.mouseMove(startX, startY);
         } catch (IOException ex) {
@@ -134,7 +134,7 @@ public class MouseTracker extends Frame implements MouseListener, MouseMotionLis
             msg.put("value",e.getWheelRotation());
             Message[] messages = Message.getMessages(msg.toJSONString().getBytes());
             for(Message m : messages){
-                ss.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,ss.getAddress(),ss.getPort()));
+                sc.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,sc.getAddress(),sc.getPort()));
             }
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -152,30 +152,30 @@ public class MouseTracker extends Frame implements MouseListener, MouseMotionLis
                 msg.put("Type", "finish");
                 Message[] messages = Message.getMessages(msg.toJSONString().getBytes());
                 for(Message m : messages){
-                    ss.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,ss.getAddress(),ss.getPort()));
+                    sc.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,sc.getAddress(),sc.getPort()));
                 }
                 f.dispose();
                 Thread.sleep(100);
-                ss.Stop();
-            }else if(e.isAltDown() && e.getKeyCode() == KeyEvent.VK_S) {
-                msg.put("Type", "swap");
-                Message[] messages = Message.getMessages(msg.toJSONString().getBytes());
-                for(Message m : messages){
-                    ss.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,ss.getAddress(),ss.getPort()));
-                }
-                ss.socket.close();
-                Thread.sleep(1000);
-                SessionClient sc = new SessionClient(ss.address,ss.port,ss.type);
-                Session.sessions.add(sc);
-                Session.sessions.remove(this);
-                sc.Start();
-                f.dispose();
+                sc.Stop();
+//            }else if(e.isAltDown() && e.getKeyCode() == KeyEvent.VK_S) {
+//                msg.put("Type", "swap");
+//                Message[] messages = Message.getMessages(msg.toJSONString().getBytes());
+//                for(Message m : messages){
+//                    sc.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,sc.getAddress(),sc.getPort()));
+//                }
+//                sc.socket.close();
+//                Thread.sleep(1000);
+//                SessionServer ss = new SessionServer(sc.getAddress(),sc.getPort(),sc.getType());
+//                Session.sessions.add(sc);
+//                Session.sessions.remove(this);
+//                sc.Start();
+//                f.dispose();
             }else{
                 msg.put("Type", "keyPressed");
                 msg.put("value", e.getKeyCode());
                 Message[] messages = Message.getMessages(msg.toJSONString().getBytes());
                 for(Message m : messages){
-                    ss.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,ss.getAddress(),ss.getPort()));
+                    sc.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,sc.getAddress(),sc.getPort()));
                 }
             }
         } catch (InterruptedException e1) {
@@ -193,7 +193,7 @@ public class MouseTracker extends Frame implements MouseListener, MouseMotionLis
             msg.put("value", e.getKeyCode());
             Message[] messages = Message.getMessages(msg.toJSONString().getBytes());
             for (Message m : messages) {
-                ss.getSocket().send(new DatagramPacket(m.getArr(), m.getArr().length, ss.getAddress(), ss.getPort()));
+                sc.getSocket().send(new DatagramPacket(m.getArr(), m.getArr().length, sc.getAddress(), sc.getPort()));
             }
         } catch (IOException ex) {
             ex.printStackTrace();

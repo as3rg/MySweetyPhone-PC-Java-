@@ -46,7 +46,7 @@ public class SessionClient extends Session{
         searching = new Thread(() -> {
             try {
                 while ((new Date()).getTime() - time <= 60000) {
-                    s.receive(p);
+                    if(!s.isClosed()) s.receive(p);
                     JSONObject ans = (JSONObject) JSONValue.parse(new String(p.getData()));
                     if (!ips.contains(p.getAddress())) {
                         ips.add(p.getAddress());
@@ -79,17 +79,17 @@ public class SessionClient extends Session{
         s.close();
     }
 
-    public SessionClient(InetAddress address, int port, Type type){
+    public SessionClient(InetAddress address, int Port, Type type) throws SocketException {
         this.address = address;
-        this.port = port;
+        this.port = 5001;
         this.type = type;
-
+        System.out.println(address.getHostAddress()+":"+port);
+        socket = new DatagramSocket();
+        socket.setBroadcast(true);
         switch (type) {
             case MOUSE:
                 t = new Thread(() -> {
                     try {
-                        this.type = type;
-                        this.address = socket.getInetAddress();
                         if(searching != null) StopSearching();
                         MouseTracker mt = new MouseTracker(this);
                     } catch (IOException | AWTException e) {
