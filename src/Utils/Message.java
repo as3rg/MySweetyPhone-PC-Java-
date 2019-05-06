@@ -37,13 +37,13 @@ public class Message {
         arr[0] = 0;
         int i = 1;
         for(; i < idSize+1; i++){
-            arr[i] = byteId[i];
+            arr[i] = byteId[i-1];
         }
         for(; i < idSize*2+1; i++){
             arr[i] = byteNext[i-idSize-1];
         }
         for(; i < idSize*3+1; i++){
-            arr[i] = byteLen[i-idSize*2];
+            arr[i] = byteLen[i-idSize*2-1];
         }
         for(; i < maxSize; i++){
             arr[i] = body[i-3*idSize-1];
@@ -58,7 +58,7 @@ public class Message {
         int i = 1;
         byte[] value = new byte[idSize];
         for(; i < idSize+1; i++){
-            value[i] = arr[i];
+            value[i-1] = arr[i];
         }
         id = ByteBuffer.wrap(value).getInt();
         value = new byte[idSize];
@@ -68,7 +68,7 @@ public class Message {
         next = ByteBuffer.wrap(value).getInt();
         value = new byte[idSize];
         for(; i < idSize*3+1; i++){
-            value[i-idSize*2] = arr[i];
+            value[i-idSize*2-1] = arr[i];
         }
         len = ByteBuffer.wrap(value).getInt();
     }

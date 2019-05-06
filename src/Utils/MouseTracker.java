@@ -11,7 +11,7 @@ import java.net.DatagramPacket;
 public class MouseTracker extends Frame implements MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
 
     static int startX = 100,startY = 100;
-    SessionServer ss;
+    SessionClient ss;
     double width;
     double height;
     JFrame f;
@@ -23,7 +23,7 @@ public class MouseTracker extends Frame implements MouseListener, MouseMotionLis
             e.printStackTrace();
         }
     }
-    public MouseTracker(SessionServer ss) throws IOException, AWTException {
+    public MouseTracker(SessionClient ss) throws IOException, AWTException {
         this.ss = ss;
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         width = screenSize.getWidth();

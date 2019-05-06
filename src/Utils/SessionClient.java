@@ -8,8 +8,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import java.awt.*;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -85,68 +83,18 @@ public class SessionClient extends Session{
         this.address = address;
         this.port = port;
         this.type = type;
+
         switch (type) {
             case MOUSE:
                 t = new Thread(() -> {
                     try {
-                        socket = new DatagramSocket(port,address);
-
+                        this.type = type;
+                        this.address = socket.getInetAddress();
                         if(searching != null) StopSearching();
-                        Robot r = new Robot();
-                        while (true) {
-                            Message m;
-                            int head = -1;
-                            do{
-                                byte[] buf = new byte[Message.maxSize];
-                                DatagramPacket p = new DatagramPacket(buf, buf.length);
-                                m = new Message(p.getData());
-                                MessageParser.messageMap.put(m.getId(), m);
-                                if(head == -1)
-                                    head = m.getId();
-                            }while (m.getNext() != -1);
-                            JSONObject msg = (JSONObject)JSONValue.parse(new String(MessageParser.parse(head)));
-                            Point p = MouseInfo.getPointerInfo().getLocation();
-                            switch ((String)msg.get("Type")){
-                                case "mouseMoved":
-                                    r.mouseMove(((Long) msg.get("X")).intValue() + (int)p.getX(), ((Long) msg.get("Y")).intValue() + (int)p.getY());
-                                    break;
-                                case "mouseReleased":
-                                    r.mouseRelease(InputEvent.getMaskForButton(((Long) msg.get("Key")).intValue()));
-                                    break;
-                                case "mousePressed":
-                                    r.mousePress(InputEvent.getMaskForButton(((Long) msg.get("Key")).intValue()));
-                                    break;
-                                case "mouseWheel":
-                                    r.mouseWheel(((Long)msg.get("value")).intValue());
-                                    break;
-                                case "keyReleased":
-                                    r.keyRelease(((Long)msg.get("value")).intValue());
-                                    break;
-                                case "keyPressed":
-                                    r.keyPress(((Long)msg.get("value")).intValue());
-                                    break;
-                                case "swap":
-                                    SessionServer ss = new SessionServer(type,port,()->{});
-                                    socket.close();
-                                    Session.sessions.add(ss);
-                                    Session.sessions.remove(this);
-                                    ss.Start();
-                                    return;
-                                case "finish":
-                                    r.keyRelease(KeyEvent.VK_ALT);
-                                    Stop();
-                                    return;
-                            }
-
-                        }
-                    } catch (SocketException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (AWTException e) {
+                        MouseTracker mt = new MouseTracker(this);
+                    } catch (IOException | AWTException e) {
                         e.printStackTrace();
                     }
-
                 });
                 break;
             default:
