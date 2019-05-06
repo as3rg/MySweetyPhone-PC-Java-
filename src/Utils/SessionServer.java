@@ -57,6 +57,7 @@ public class SessionServer extends Session{
                             do{
                                 byte[] buf = new byte[Message.maxSize];
                                 DatagramPacket p = new DatagramPacket(buf, buf.length);
+                                socket.receive(p);
                                 m = new Message(p.getData());
                                 MessageParser.messageMap.put(m.getId(), m);
                                 if(head == -1)
