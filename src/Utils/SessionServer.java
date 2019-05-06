@@ -19,8 +19,7 @@ public class SessionServer extends Session{
 
     public SessionServer(Type type, int initPort, Runnable doOnStopSession) throws IOException {
         onStop = new Thread(doOnStopSession);
-        socket = new DatagramSocket();
-        this.port = initPort;
+        this.port = 5001;
         JSONObject message = new JSONObject();
         message.put("port", port);
         message.put("type", type.ordinal());
@@ -42,13 +41,12 @@ public class SessionServer extends Session{
         };
         broadcasting.schedule(broadcastingTask, 2000, 2000);
 
-
         switch (type) {
             case MOUSE:
                 t = new Thread(() -> {
                     try {
                         socket = new DatagramSocket(port);
-
+                        socket.setBroadcast(true);
                         if(onStop != null) onStop.start();
                         Robot r = new Robot();
                         while (true) {
@@ -63,7 +61,8 @@ public class SessionServer extends Session{
                                 if(head == -1)
                                     head = m.getId();
                             }while (m.getNext() != -1);
-                            JSONObject msg = (JSONObject) JSONValue.parse(new String(MessageParser.parse(head)));
+                            String msgString = new String(MessageParser.parse(head));
+                            JSONObject msg = (JSONObject) JSONValue.parse(msgString);
                             Point p = MouseInfo.getPointerInfo().getLocation();
                             switch ((String)msg.get("Type")){
                                 case "mouseMoved":
