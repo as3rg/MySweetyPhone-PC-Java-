@@ -5,21 +5,26 @@ import org.json.simple.JSONObject;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.net.DatagramPacket;
 
 public class MouseTracker extends Frame implements MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
 
+    static int startX = 100,startY = 100;
     SessionServer ss;
-    PrintWriter outputStream;
     double width;
     double height;
     JFrame f;
-    public MouseTracker(SessionServer ss) throws IOException {
+    static Robot r;
+    static {
+        try {
+            r = new Robot();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+    }
+    public MouseTracker(SessionServer ss) throws IOException, AWTException {
         this.ss = ss;
-        outputStream = new PrintWriter(new BufferedWriter(new OutputStreamWriter(ss.getSocket().getOutputStream())), true);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         width = screenSize.getWidth();
         height = screenSize.getHeight();
@@ -47,23 +52,33 @@ public class MouseTracker extends Frame implements MouseListener, MouseMotionLis
     @Override
     public void mousePressed(MouseEvent e)
     {
-        JSONObject msg = new JSONObject();
-        msg.put("Type","mousePressed");
-        msg.put("X",e.getX()/width);
-        msg.put("Y",e.getY()/height);
-        msg.put("Key",e.getButton());
-        outputStream.println(msg.toJSONString());
+        try {
+            JSONObject msg = new JSONObject();
+            msg.put("Type","mousePressed");
+            msg.put("Key",e.getButton());
+            Message[] messages = Message.getMessages(msg.toJSONString().getBytes());
+            for(Message m : messages){
+                    ss.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,ss.getAddress(),ss.getPort()));
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
     public void mouseReleased(MouseEvent e)
     {
-        JSONObject msg = new JSONObject();
-        msg.put("Type","mouseReleased");
-        msg.put("X",e.getX()/width);
-        msg.put("Y",e.getY()/height);
-        msg.put("Key",e.getButton());
-        outputStream.println(msg.toJSONString());
+        try{
+            JSONObject msg = new JSONObject();
+            msg.put("Type","mouseReleased");
+            msg.put("Key",e.getButton());
+            Message[] messages = Message.getMessages(msg.toJSONString().getBytes());
+            for(Message m : messages){
+                ss.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,ss.getAddress(),ss.getPort()));
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -77,28 +92,53 @@ public class MouseTracker extends Frame implements MouseListener, MouseMotionLis
 
     @Override
     public void mouseMoved(MouseEvent e){
-        JSONObject msg = new JSONObject();
-        msg.put("Type","mouseMoved");
-        msg.put("X",e.getX()/width);
-        msg.put("Y",e.getY()/height);
-        outputStream.println(msg.toJSONString());
+        try {
+            if (e.getX() != startX || e.getY() != startY) {
+                JSONObject msg = new JSONObject();
+                msg.put("Type", "mouseMoved");
+                msg.put("X", e.getX() - startX);
+                msg.put("Y", e.getY() - startY);
+                Message[] messages = Message.getMessages(msg.toJSONString().getBytes());
+                for(Message m : messages){
+                    ss.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,ss.getAddress(),ss.getPort()));
+                }
+                r.mouseMove(startX, startY);
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
     public void mouseDragged(MouseEvent e){
-        JSONObject msg = new JSONObject();
-        msg.put("Type","mouseMoved");
-        msg.put("X",e.getX()/width);
-        msg.put("Y",e.getY()/height);
-        outputStream.println(msg.toJSONString());
+        try{
+            JSONObject msg = new JSONObject();
+            msg.put("Type","mouseMoved");
+            msg.put("X",e.getX()-startX);
+            msg.put("Y",e.getY()-startY);
+            Message[] messages = Message.getMessages(msg.toJSONString().getBytes());
+            for(Message m : messages){
+                ss.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,ss.getAddress(),ss.getPort()));
+            }
+            r.mouseMove(startX, startY);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e){
-        JSONObject msg = new JSONObject();
-        msg.put("Type","mouseWheel");
-        msg.put("value",e.getWheelRotation());
-        outputStream.println(msg.toJSONString());
+        try{
+            JSONObject msg = new JSONObject();
+            msg.put("Type","mouseWheel");
+            msg.put("value",e.getWheelRotation());
+            Message[] messages = Message.getMessages(msg.toJSONString().getBytes());
+            for(Message m : messages){
+                ss.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,ss.getAddress(),ss.getPort()));
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -110,15 +150,20 @@ public class MouseTracker extends Frame implements MouseListener, MouseMotionLis
             JSONObject msg = new JSONObject();
             if (e.isAltDown() && e.getKeyCode() == KeyEvent.VK_F4){
                 msg.put("Type", "finish");
-                outputStream.println(msg.toJSONString());
+                Message[] messages = Message.getMessages(msg.toJSONString().getBytes());
+                for(Message m : messages){
+                    ss.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,ss.getAddress(),ss.getPort()));
+                }
                 f.dispose();
                 Thread.sleep(100);
                 ss.Stop();
             }else if(e.isAltDown() && e.getKeyCode() == KeyEvent.VK_S) {
                 msg.put("Type", "swap");
-                outputStream.println(msg.toJSONString());
+                Message[] messages = Message.getMessages(msg.toJSONString().getBytes());
+                for(Message m : messages){
+                    ss.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,ss.getAddress(),ss.getPort()));
+                }
                 ss.socket.close();
-                ss.ss.close();
                 Thread.sleep(1000);
                 SessionClient sc = new SessionClient(ss.address,ss.port,ss.type);
                 Session.sessions.add(sc);
@@ -128,7 +173,10 @@ public class MouseTracker extends Frame implements MouseListener, MouseMotionLis
             }else{
                 msg.put("Type", "keyPressed");
                 msg.put("value", e.getKeyCode());
-                outputStream.println(msg.toJSONString());
+                Message[] messages = Message.getMessages(msg.toJSONString().getBytes());
+                for(Message m : messages){
+                    ss.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,ss.getAddress(),ss.getPort()));
+                }
             }
         } catch (InterruptedException e1) {
             e1.printStackTrace();
@@ -139,9 +187,16 @@ public class MouseTracker extends Frame implements MouseListener, MouseMotionLis
 
     @Override
     public void keyReleased(KeyEvent e) {
-        JSONObject msg = new JSONObject();
-        msg.put("Type", "keyReleased");
-        msg.put("value", e.getKeyCode());
-        outputStream.println(msg.toJSONString());
+        try {
+            JSONObject msg = new JSONObject();
+            msg.put("Type", "keyReleased");
+            msg.put("value", e.getKeyCode());
+            Message[] messages = Message.getMessages(msg.toJSONString().getBytes());
+            for (Message m : messages) {
+                ss.getSocket().send(new DatagramPacket(m.getArr(), m.getArr().length, ss.getAddress(), ss.getPort()));
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }

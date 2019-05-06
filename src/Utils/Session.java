@@ -1,14 +1,14 @@
 package Utils;
 
 import java.io.IOException;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Timer;
 
 public abstract class Session{
     protected InetAddress address;
-    protected Socket socket;
+    protected DatagramSocket socket;
     protected int port;
     protected Type type;
     protected Thread t;
@@ -16,8 +16,7 @@ public abstract class Session{
     static int BroadCastingPort = 9000;
 
     public enum Type{
-        MOUSE,
-        SCREENMIRRORING
+        MOUSE
     }
 
     public static ArrayList<Session> sessions;
@@ -54,7 +53,7 @@ public abstract class Session{
 
     public abstract boolean isServer();
 
-    public Socket getSocket() {
+    public DatagramSocket getSocket() {
         return socket;
     }
 }

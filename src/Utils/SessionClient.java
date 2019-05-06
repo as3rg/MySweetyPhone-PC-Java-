@@ -7,20 +7,16 @@ import javafx.scene.paint.Paint;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.TimerTask;
-import java.util.Timer;
 
 public class SessionClient extends Session{
 
@@ -69,8 +65,7 @@ public class SessionClient extends Session{
                         });
                     }
                 }
-            } catch (SocketException e){
-            } catch (IOException e) {
+            } catch (IOException e){
                 e.printStackTrace();
             }
             isSearching = false;
@@ -94,19 +89,26 @@ public class SessionClient extends Session{
             case MOUSE:
                 t = new Thread(() -> {
                     try {
-                        socket = new Socket(address, port);
-                        socket.setSoTimeout(60000);
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                        socket = new DatagramSocket(port,address);
+
                         if(searching != null) StopSearching();
-                        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                        double width = screenSize.getWidth();
-                        double height = screenSize.getHeight();
                         Robot r = new Robot();
                         while (true) {
-                            JSONObject msg = (JSONObject)JSONValue.parse(reader.readLine());
+                            Message m;
+                            int head = -1;
+                            do{
+                                byte[] buf = new byte[Message.maxSize];
+                                DatagramPacket p = new DatagramPacket(buf, buf.length);
+                                m = new Message(p.getData());
+                                MessageParser.messageMap.put(m.getId(), m);
+                                if(head == -1)
+                                    head = m.getId();
+                            }while (m.getNext() != -1);
+                            JSONObject msg = (JSONObject)JSONValue.parse(new String(MessageParser.parse(head)));
+                            Point p = MouseInfo.getPointerInfo().getLocation();
                             switch ((String)msg.get("Type")){
                                 case "mouseMoved":
-                                    r.mouseMove((int)(((Double)msg.get("X")).doubleValue() * width), (int)(((Double)msg.get("Y")).doubleValue() * height));
+                                    r.mouseMove(((Long) msg.get("X")).intValue() + (int)p.getX(), ((Long) msg.get("Y")).intValue() + (int)p.getY());
                                     break;
                                 case "mouseReleased":
                                     r.mouseRelease(InputEvent.getMaskForButton(((Long) msg.get("Key")).intValue()));
@@ -137,54 +139,6 @@ public class SessionClient extends Session{
                             }
 
                         }
-                    } catch (SocketException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (AWTException e) {
-                        e.printStackTrace();
-                    }
-
-                });
-                break;
-            case SCREENMIRRORING:
-                t = new Thread(() -> {
-                    try {
-                        socket = new Socket(address, port);
-                        socket.setSoTimeout(60000);
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                        if(searching != null) StopSearching();
-                        JFrame f = new JFrame("MouseListener");
-                        f.setSize(600, 100);
-                        f.setAlwaysOnTop(true);
-                        f.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                        f.setUndecorated(true);
-                        f.setVisible(true);
-                        JPanel p = new JPanel();
-                        p.setLayout(new FlowLayout());
-                        JLabel icon = new JLabel();
-                        p.add(icon);
-                        icon.setSize(Toolkit.getDefaultToolkit().getScreenSize());
-                        f.setBackground(Color.getColor("#202020"));
-                        f.add(p);
-                        f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-                        f.show();
-                        Robot r = new Robot();
-                        (new Timer()).scheduleAtFixedRate(new TimerTask() {
-                            @Override
-                            public void run() {
-                                try {
-                                    BufferedImage bufferedWriter = ImageIO.read(socket.getInputStream());
-
-                                    if(bufferedWriter != null) {
-                                        ImageIcon ii = new ImageIcon(bufferedWriter);
-                                        icon.setIcon(ii);
-                                    }
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }, 1,1);
                     } catch (SocketException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
