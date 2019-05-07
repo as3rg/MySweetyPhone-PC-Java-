@@ -50,23 +50,26 @@ public class SessionServer extends Session{
                         if(onStop != null) onStop.start();
                         Robot r = new Robot();
                         while (true) {
-                            Message m;
+                            Message m = null;
                             int head = -1;
                             do{
                                 byte[] buf = new byte[Message.maxSize];
                                 DatagramPacket p = new DatagramPacket(buf, buf.length);
-                                socket.receive(p);
-                                m = new Message(p.getData());
-                                MessageParser.messageMap.put(m.getId(), m);
-                                if(head == -1)
-                                    head = m.getId();
-                            }while (m.getNext() != -1);
+                                if(!socket.isClosed()) {
+                                    socket.receive(p);
+                                    m = new Message(p.getData());
+                                    MessageParser.messageMap.put(m.getId(), m);
+                                    if (head == -1)
+                                        head = m.getId();
+                                }
+                            }while (m == null || m.getNext() != -1);
                             String msgString = new String(MessageParser.parse(head));
                             JSONObject msg = (JSONObject) JSONValue.parse(msgString);
                             Point p = MouseInfo.getPointerInfo().getLocation();
+                            System.out.println(msgString);
                             switch ((String)msg.get("Type")){
                                 case "mouseMoved":
-                                    r.mouseMove(((Long) msg.get("X")).intValue() + (int)p.getX(), ((Long) msg.get("Y")).intValue() + (int)p.getY());
+                                    r.mouseMove(((Double) msg.get("X")).intValue(), ((Double) msg.get("Y")).intValue());
                                     break;
                                 case "mouseReleased":
                                     r.mouseRelease(InputEvent.getMaskForButton(((Long) msg.get("Key")).intValue()));
@@ -75,7 +78,7 @@ public class SessionServer extends Session{
                                     r.mousePress(InputEvent.getMaskForButton(((Long) msg.get("Key")).intValue()));
                                     break;
                                 case "mouseWheel":
-                                    r.mouseWheel(((Long)msg.get("value")).intValue());
+                                    r.mouseWheel(((Double)msg.get("value")).intValue());
                                     break;
                                 case "keyReleased":
                                     r.keyRelease(((Long)msg.get("value")).intValue());
@@ -94,6 +97,8 @@ public class SessionServer extends Session{
                                     r.keyRelease(KeyEvent.VK_ALT);
                                     Stop();
                                     return;
+                                default:
+                                    System.out.println(msgString);
                             }
 
                         }
