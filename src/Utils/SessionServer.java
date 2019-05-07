@@ -53,7 +53,7 @@ public class SessionServer extends Session{
                             Message m = null;
                             int head = -1;
                             do{
-                                byte[] buf = new byte[Message.maxSize];
+                                byte[] buf = new byte[Message.getMessageSize(MouseTracker.MESSAGESIZE)];
                                 DatagramPacket p = new DatagramPacket(buf, buf.length);
                                 if(!socket.isClosed()) {
                                     socket.receive(p);
@@ -66,7 +66,6 @@ public class SessionServer extends Session{
                             String msgString = new String(MessageParser.parse(head));
                             JSONObject msg = (JSONObject) JSONValue.parse(msgString);
                             Point p = MouseInfo.getPointerInfo().getLocation();
-                            System.out.println(msgString);
                             switch ((String)msg.get("Type")){
                                 case "mouseMoved":
                                     r.mouseMove(((Double) msg.get("X")).intValue(), ((Double) msg.get("Y")).intValue());

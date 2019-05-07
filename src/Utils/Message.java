@@ -12,8 +12,8 @@ public class Message {
      */
     static int currentId;
     public static final int idSize = 4;
-    public static final int maxSize = 65507;
-    public static final int bodySize = maxSize-idSize*3;
+    public int maxSize = 65507;
+    public int bodySize = maxSize-idSize*3;
     public static final int sendPort = 2020;
     private byte[] arr = new byte[65507];
     private int id, next, len;
@@ -23,7 +23,11 @@ public class Message {
         currentId = 0;
     }
 
-    private Message(int length, byte[] body){
+    private Message(int length, byte[] body, int size){
+        if(size != -1) {
+            bodySize = size;
+            maxSize = bodySize + idSize*3;
+        }
         if(body.length > bodySize)
             throw new RuntimeException("");
         id = currentId;
@@ -105,7 +109,7 @@ public class Message {
         return b;
     }
 
-    public static Message[] getMessages(byte[] body) {
+    public static Message[] getMessages(byte[] body, int bodySize) {
         ArrayList<Message> result = new ArrayList<>();
         byte[] b = new byte[bodySize];
         for (int i = 0; i < body.length;) {
@@ -114,12 +118,16 @@ public class Message {
             for(;i < nextZero && i < body.length;i++,j++) {
                 b[j] = body[i];
             }
-            result.add(new Message(j, b));
+            result.add(new Message(j, b, bodySize));
         }
         Message[] out = result.toArray(Message[]::new);
         out[0].setHead(true);
         for(int i = 0; i < out.length - 1; i++)
             out[i].next = out[i+1].id;
         return out;
+    }
+
+    public static int getMessageSize(int i){
+        return i+idSize*3;
     }
 }

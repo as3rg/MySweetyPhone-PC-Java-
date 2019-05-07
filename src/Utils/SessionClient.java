@@ -7,7 +7,6 @@ import javafx.scene.paint.Paint;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -89,12 +88,8 @@ public class SessionClient extends Session{
         switch (type) {
             case MOUSE:
                 t = new Thread(() -> {
-                    try {
-                        if(searching != null) StopSearching();
-                        MouseTracker mt = new MouseTracker(this);
-                    } catch (IOException | AWTException e) {
-                        e.printStackTrace();
-                    }
+                    if(searching != null) StopSearching();
+                    MouseTracker mt = new MouseTracker(this);
                 });
                 break;
             default:
