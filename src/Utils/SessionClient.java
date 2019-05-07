@@ -45,7 +45,7 @@ public class SessionClient extends Session{
         searching = new Thread(() -> {
             try {
                 while ((new Date()).getTime() - time <= 60000) {
-                    if(!s.isClosed()) s.receive(p);
+                    s.receive(p);
                     JSONObject ans = (JSONObject) JSONValue.parse(new String(p.getData()));
                     if (!ips.contains(p.getAddress())) {
                         ips.add(p.getAddress());
@@ -62,7 +62,8 @@ public class SessionClient extends Session{
                         });
                     }
                 }
-            } catch (IOException e){
+            } catch (SocketException ignored){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             isSearching = false;
@@ -82,7 +83,6 @@ public class SessionClient extends Session{
         this.address = address;
         this.port = 5001;
         this.type = type;
-        System.out.println(address.getHostAddress()+":"+port);
         socket = new DatagramSocket();
         socket.setBroadcast(true);
         switch (type) {

@@ -78,7 +78,6 @@ public class MouseTracker{
             for(Message m : messages){
                 sc.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,sc.getAddress(),sc.getPort()));
             }
-            System.out.println(msg.toJSONString().getBytes().length);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -94,7 +93,7 @@ public class MouseTracker{
             for(Message m : messages){
                 sc.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,sc.getAddress(),sc.getPort()));
             }
-            System.out.println(msg.toJSONString().getBytes().length);
+            System.out.println(sc.getAddress().getHostAddress()+":"+sc.getPort());
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -114,7 +113,6 @@ public class MouseTracker{
             for(Message m : messages){
                 sc.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,sc.getAddress(),sc.getPort()));
             }
-            System.out.println(msg.toJSONString().getBytes().length);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -153,7 +151,6 @@ public class MouseTracker{
                     sc.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,sc.getAddress(),sc.getPort()));
                 }
             }
-            System.out.println(msg.toJSONString().getBytes().length);
         } catch (InterruptedException | IOException e1) {
             e1.printStackTrace();
         }
@@ -168,7 +165,6 @@ public class MouseTracker{
             for (Message m : messages) {
                 sc.getSocket().send(new DatagramPacket(m.getArr(), m.getArr().length, sc.getAddress(), sc.getPort()));
             }
-            System.out.println(msg.toJSONString().getBytes().length);
         } catch (IOException ex) {
             ex.printStackTrace();
         }

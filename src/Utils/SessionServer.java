@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.Inet4Address;
-import java.net.SocketException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -55,57 +54,56 @@ public class SessionServer extends Session{
                             do{
                                 byte[] buf = new byte[Message.getMessageSize(MouseTracker.MESSAGESIZE)];
                                 DatagramPacket p = new DatagramPacket(buf, buf.length);
-                                if(!socket.isClosed()) {
+                                try {
                                     socket.receive(p);
                                     m = new Message(p.getData());
                                     MessageParser.messageMap.put(m.getId(), m);
                                     if (head == -1)
                                         head = m.getId();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
                                 }
                             }while (m == null || m.getNext() != -1);
                             String msgString = new String(MessageParser.parse(head));
                             JSONObject msg = (JSONObject) JSONValue.parse(msgString);
                             Point p = MouseInfo.getPointerInfo().getLocation();
-                            switch ((String)msg.get("Type")){
-                                case "mouseMoved":
-                                    r.mouseMove(((Double) msg.get("X")).intValue(), ((Double) msg.get("Y")).intValue());
-                                    break;
-                                case "mouseReleased":
-                                    r.mouseRelease(InputEvent.getMaskForButton(((Long) msg.get("Key")).intValue()));
-                                    break;
-                                case "mousePressed":
-                                    r.mousePress(InputEvent.getMaskForButton(((Long) msg.get("Key")).intValue()));
-                                    break;
-                                case "mouseWheel":
-                                    r.mouseWheel(((Double)msg.get("value")).intValue());
-                                    break;
-                                case "keyReleased":
-                                    r.keyRelease(((Long)msg.get("value")).intValue());
-                                    break;
-                                case "keyPressed":
-                                    r.keyPress(((Long)msg.get("value")).intValue());
-                                    break;
-                                case "swap":
-                                    SessionServer ss = new SessionServer(type,port,()->{});
-                                    socket.close();
-                                    Session.sessions.add(ss);
-                                    Session.sessions.remove(this);
-                                    ss.Start();
-                                    return;
-                                case "finish":
-                                    r.keyRelease(KeyEvent.VK_ALT);
-                                    Stop();
-                                    return;
-                                default:
-                                    System.out.println(msgString);
-                            }
+                            if(msg!=null)
+                                switch ((String)msg.get("Type")){
+                                    case "mouseMoved":
+                                        r.mouseMove(((Double) msg.get("X")).intValue(), ((Double) msg.get("Y")).intValue());
+                                        break;
+                                    case "mouseReleased":
+                                        r.mouseRelease(InputEvent.getMaskForButton(((Long) msg.get("Key")).intValue()));
+                                        break;
+                                    case "mousePressed":
+                                        r.mousePress(InputEvent.getMaskForButton(((Long) msg.get("Key")).intValue()));
+                                        break;
+                                    case "mouseWheel":
+                                        r.mouseWheel(((Double)msg.get("value")).intValue());
+                                        break;
+                                    case "keyReleased":
+                                        r.keyRelease(((Long)msg.get("value")).intValue());
+                                        break;
+                                    case "keyPressed":
+                                        r.keyPress(((Long)msg.get("value")).intValue());
+                                        break;
+                                    case "swap":
+                                        SessionServer ss = new SessionServer(type,port,()->{});
+                                        socket.close();
+                                        Session.sessions.add(ss);
+                                        Session.sessions.remove(this);
+                                        ss.Start();
+                                        return;
+                                    case "finish":
+                                        r.keyRelease(KeyEvent.VK_ALT);
+                                        Stop();
+                                        return;
+                                    default:
+                                        System.out.println(msgString);
+                                }
 
                         }
-                    } catch (SocketException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (AWTException e) {
+                    } catch (AWTException | IOException e) {
                         e.printStackTrace();
                     }
 

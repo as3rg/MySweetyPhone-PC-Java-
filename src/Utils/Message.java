@@ -12,10 +12,10 @@ public class Message {
      */
     static int currentId;
     public static final int idSize = 4;
-    public int maxSize = 65507;
-    public int bodySize = maxSize-idSize*3;
+    public int maxSize;
+    public int bodySize;
     public static final int sendPort = 2020;
-    private byte[] arr = new byte[65507];
+    private byte[] arr;
     private int id, next, len;
     private boolean isHeadValue;
 
@@ -26,10 +26,14 @@ public class Message {
     private Message(int length, byte[] body, int size){
         if(size != -1) {
             bodySize = size;
-            maxSize = bodySize + idSize*3;
+            maxSize = bodySize + idSize*3 + 1;
+        }else{
+            maxSize = 65507;
+            bodySize = maxSize-idSize*3;
         }
         if(body.length > bodySize)
             throw new RuntimeException("");
+        arr = new byte[maxSize];
         id = currentId;
         this.next = -1;
         len = length;
@@ -59,6 +63,8 @@ public class Message {
     public Message(byte[] array){
         arr = array;
         isHeadValue = arr[0] != 0 ? true : false;
+        maxSize = array.length;
+        bodySize = array.length - 3*idSize - 1;
         int i = 1;
         byte[] value = new byte[idSize];
         for(; i < idSize+1; i++){
@@ -128,6 +134,6 @@ public class Message {
     }
 
     public static int getMessageSize(int i){
-        return i+idSize*3;
+        return i+idSize*3+1;
     }
 }
