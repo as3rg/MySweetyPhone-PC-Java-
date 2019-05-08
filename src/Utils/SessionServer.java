@@ -1,5 +1,6 @@
 package Utils;
 
+import javafx.application.Platform;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
@@ -47,7 +48,6 @@ public class SessionServer extends Session{
                     try {
                         socket = new DatagramSocket(port);
                         socket.setBroadcast(true);
-                        if(onStop != null) onStop.start();
                         Robot r = new Robot();
                         while (!socket.isClosed()) {
                             Message m = null;
@@ -57,6 +57,10 @@ public class SessionServer extends Session{
                                 DatagramPacket p = new DatagramPacket(buf, buf.length);
                                 try {
                                     socket.receive(p);
+                                    if(onStop != null){
+                                        Platform.runLater(onStop);
+                                        onStop = null;
+                                    }
                                     m = new Message(p.getData());
                                     MessageParser.messageMap.put(m.getId(), m);
                                     if (head == -1)
@@ -69,7 +73,6 @@ public class SessionServer extends Session{
                             if(MessageParser.messageMap.get(head) == null) continue;
                             String msgString = new String(MessageParser.parse(head));
                             JSONObject msg = (JSONObject) JSONValue.parse(msgString);
-                            Point p = MouseInfo.getPointerInfo().getLocation();
                             if(msg!=null)
                                 switch ((String)msg.get("Type")){
                                     case "mouseMoved":

@@ -57,7 +57,6 @@ public class SServer {
         });
         Resize.start();
         SessionType.getItems().add("Эмуляция мыши");
-        SessionType.getItems().add("Отражение экрана");
         NewSession.setOnMouseClicked(this::OpenSession);
     }
 
@@ -72,8 +71,13 @@ public class SServer {
             } else {
                 NewSession.setOnMouseClicked(this::CloseSession);
                 NewSession.setText("Закрыть сессию");
-                Utils.SessionServer test = new Utils.SessionServer(Session.Type.values()[SessionType.getItems().indexOf(SessionType.getValue())],0,()->{});
-                test.Start();
+                Utils.SessionServer s = new Utils.SessionServer(Session.Type.values()[SessionType.getItems().indexOf(SessionType.getValue())],0,()->{
+                    NewSession.setOnMouseClicked(this::OpenSession);
+                    NewSession.setText("Открыть сессию");
+                    SessionType.setDisable(false);
+                });
+                s.Start();
+                SessionType.setDisable(true);
             }
         } catch (IOException err){
             err.printStackTrace();
@@ -86,6 +90,7 @@ public class SServer {
             NewSession.setText("Открыть сессию");
             Session.sessions.get(Session.sessions.size() - 1).Stop();
             Session.sessions.remove(Session.sessions.size() - 1);
+            SessionType.setDisable(false);
         } catch (IOException e1) {
             e1.printStackTrace();
         }

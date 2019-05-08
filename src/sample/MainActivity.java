@@ -77,8 +77,6 @@ public class MainActivity {
             }
         });
         Resize.start();
-
-        SClient();
     }
 
     @FXML
