@@ -12,13 +12,21 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 
 public class SessionClient extends Session{
 
+    static private class Server{
+        public int value;
+        public Button b;
+        Server(Button b){
+            this.b = b;
+            value = 5;
+        }
+    }
+
     static ArrayList<SessionClient> servers;
-    static ArrayList<InetAddress> ips;
+    static Map<String, Server> ips;
     static boolean isSearching;
     static Thread searching;
     static DatagramSocket s;
@@ -34,7 +42,7 @@ public class SessionClient extends Session{
             return;
         }
         servers = new ArrayList<>();
-        ips = new ArrayList<>();
+        ips = new TreeMap<>();
         isSearching = true;
         s = new DatagramSocket(BroadCastingPort);
         s.setBroadcast(true);
@@ -42,16 +50,32 @@ public class SessionClient extends Session{
         byte[] buf = new byte[30];
         DatagramPacket p = new DatagramPacket(buf, buf.length);
         long time = (new Date()).getTime();
+        Timer t = new Timer();
         searching = new Thread(() -> {
+            t.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    for (String item : ips.keySet()) {
+                        if (ips.get(item).value == 1) {
+                            Button b = ips.get(item).b;
+                            Platform.runLater(() -> v.getChildren().remove(b));
+                            ips.remove(item);
+                        }else
+                            ips.get(item).value--;
+                    }
+                }
+            }, 0, 2000);
             try {
                 while ((new Date()).getTime() - time <= 60000) {
                     s.receive(p);
                     JSONObject ans = (JSONObject) JSONValue.parse(new String(p.getData()));
-                    if (!ips.contains(p.getAddress())) {
-                        ips.add(p.getAddress());
+                    if (!ips.containsKey(p.getAddress().getHostAddress())) {
                         servers.add(new SessionClient(p.getAddress(),((Long)ans.get("port")).intValue(), Type.values()[((Long)ans.get("type")).intValue()]));
+                        Server s = new Server(null);
+                        ips.put(p.getAddress().getHostAddress(),s);
                         Platform.runLater(() -> {
                             Button ip = new Button(p.getAddress().getHostAddress());
+                            s.b = ip;
                             ip.setTextFill(Paint.valueOf("#F0F0F0"));
                             ip.setOnMouseClicked(event->{
                                 servers.get(v.getChildren().indexOf(ip)).Start();
@@ -60,7 +84,8 @@ public class SessionClient extends Session{
                             v.setDisable(false);
                             v.getChildren().add(ip);
                         });
-                    }
+                    }else
+                        ips.get(p.getAddress().getHostAddress()).value++;
                 }
             } catch (SocketException ignored){
             } catch (IOException e) {
@@ -68,6 +93,7 @@ public class SessionClient extends Session{
             }
             isSearching = false;
             s.close();
+            t.cancel();
             Platform.runLater(onFinishSearching);
         });
         searching.start();
