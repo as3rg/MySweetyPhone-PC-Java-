@@ -132,26 +132,28 @@ public class MouseTracker{
     public void keyPressed(KeyEvent e) {
         try {
             JSONObject msg = new JSONObject();
-//            }else if(e.isAltDown() && e.getKeyCode() == KeyEvent.VK_S) {
-//                msg.put("Type", "swap");
-//                Message[] messages = Message.getMessages(msg.toJSONString().getBytes());
-//                for(Message m : messages){
-//                    sc.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,sc.getAddress(),sc.getPort()));
-//                }
-//                sc.socket.close();
-//                Thread.sleep(1000);
-//                SessionServer ss = new SessionServer(sc.getAddress(),sc.getPort(),sc.getType());
-//                Session.sessions.add(sc);
-//                Session.sessions.remove(this);
-//                sc.Start();
-//                f.dispose();
-            msg.put("Type", "keyPressed");
-            msg.put("value", e.getCode().getCode());
-            Message[] messages = Message.getMessages(msg.toJSONString().getBytes(), MESSAGESIZE);
-            for(Message m : messages){
-                sc.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,sc.getAddress(),sc.getPort()));
+            if(e.isAltDown() && e.getCode() == KeyCode.S) {
+                msg.put("Type", "swap");
+                Message[] messages = Message.getMessages(msg.toJSONString().getBytes(), MESSAGESIZE);
+                for (Message m : messages) {
+                    sc.getSocket().send(new DatagramPacket(m.getArr(), m.getArr().length, sc.getAddress(), sc.getPort()));
+                }
+                sc.socket.close();
+                Thread.sleep(1000);
+                SessionServer ss = new SessionServer(sc.getType(), sc.getPort(), ()->{});
+                Session.sessions.add(ss);
+                Session.sessions.remove(this);
+                ss.Start();
+                s.close();
+            }else {
+                msg.put("Type", "keyPressed");
+                msg.put("value", e.getCode().getCode());
+                Message[] messages = Message.getMessages(msg.toJSONString().getBytes(), MESSAGESIZE);
+                for (Message m : messages) {
+                    sc.getSocket().send(new DatagramPacket(m.getArr(), m.getArr().length, sc.getAddress(), sc.getPort()));
+                }
             }
-        } catch (IOException e1) {
+        } catch (IOException | InterruptedException e1) {
             e1.printStackTrace();
         }
     }

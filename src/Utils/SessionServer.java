@@ -49,12 +49,14 @@ public class SessionServer extends Session{
                         socket = new DatagramSocket(port);
                         socket.setBroadcast(true);
                         Robot r = new Robot();
+                        DatagramPacket p;
                         while (!socket.isClosed()) {
                             Message m = null;
                             int head = -1;
+                            p = null;
                             do{
                                 byte[] buf = new byte[Message.getMessageSize(MouseTracker.MESSAGESIZE)];
-                                DatagramPacket p = new DatagramPacket(buf, buf.length);
+                                p = new DatagramPacket(buf, buf.length);
                                 try {
                                     socket.receive(p);
                                     if(onStop != null){
@@ -94,11 +96,11 @@ public class SessionServer extends Session{
                                         r.keyPress(((Long)msg.get("value")).intValue());
                                         break;
                                     case "swap":
-                                        SessionServer ss = new SessionServer(type,port,()->{});
+                                        SessionClient sc = new SessionClient(p.getAddress(),port,type);
                                         socket.close();
-                                        Session.sessions.add(ss);
+                                        Session.sessions.add(sc);
                                         Session.sessions.remove(this);
-                                        ss.Start();
+                                        sc.Start();
                                         return;
                                     case "finish":
                                         r.keyRelease(KeyEvent.VK_ALT);
