@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.Inet4Address;
+import java.net.SocketException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -60,6 +61,7 @@ public class SessionServer extends Session{
                                     MessageParser.messageMap.put(m.getId(), m);
                                     if (head == -1)
                                         head = m.getId();
+                                } catch (SocketException ignored){
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }

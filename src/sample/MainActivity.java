@@ -76,6 +76,8 @@ public class MainActivity {
             }
         });
         Resize.start();
+
+        SClient();
     }
 
     @FXML
@@ -100,10 +102,18 @@ public class MainActivity {
     }
 
     @FXML
-    void Sessions() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Sessions.fxml"));
+    void SClient() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("SClient.fxml"));
         Pane pane = fxmlLoader.load();
         Replace.getChildren().setAll(pane);
-        mtc = this::Sessions;
+        mtc = this::SClient;
+    }
+
+    @FXML
+    void SServer() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("SServer.fxml"));
+        Pane pane = fxmlLoader.load();
+        Replace.getChildren().setAll(pane);
+        mtc = this::SServer;
     }
 }
