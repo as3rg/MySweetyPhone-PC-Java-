@@ -107,7 +107,7 @@ public class SessionClient extends Session{
 
     public SessionClient(InetAddress address, int Port, Type type) throws SocketException {
         this.address = address;
-        this.port = 5001;
+        this.port = Port;
         this.type = type;
         socket = new DatagramSocket();
         socket.setBroadcast(true);

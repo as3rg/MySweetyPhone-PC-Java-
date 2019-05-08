@@ -4,12 +4,12 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class MessageParser {
-    static Map<Integer, Message> messageMap;
-    static {
+     public Map<Integer, Message> messageMap;
+     {
         messageMap = new TreeMap<>();
-    }
+     }
 
-    static byte[] parse(int i) {
+    public byte[] parse(int i) {
         byte[] bb = new byte[getLen(i)];
         Message m = messageMap.get(i);
         byte[] body = m.getBody();
@@ -28,7 +28,7 @@ public class MessageParser {
         return bb;
     }
 
-    static int getLen(int i) {
+    int getLen(int i) {
         if(!messageMap.containsKey(i))
             return 0;
         Message m = messageMap.get(i);

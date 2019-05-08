@@ -7,7 +7,7 @@ public class Message {
     /**
      *  ,------,----,------,-----,--------------,
      *  | head | id | next | len |     body     |
-     *  |  1b  | 4b |  4b  |  4b |    65495b    |
+     *  |  1b  | 4b |  4b  |  4b |    65494b    |
      *  '------'----'------'-----'--------------'
      */
     static int currentId;
@@ -18,12 +18,17 @@ public class Message {
     private byte[] arr;
     private int id, next, len;
     private boolean isHeadValue;
+    public static int MAXIMUM = 65507;
+    public static int BODYMAXIMUM = 65494;
 
     static {
         currentId = 0;
     }
 
     private Message(int length, byte[] body, int size){
+        if(size > BODYMAXIMUM) {
+            throw new RuntimeException("Размер превышает максимальный");
+        }
         if(size != -1) {
             bodySize = size;
             maxSize = bodySize + idSize*3 + 1;

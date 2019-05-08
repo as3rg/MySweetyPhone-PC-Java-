@@ -77,6 +77,8 @@ public class MainActivity {
             }
         });
         Resize.start();
+        Receiving receiving = new Receiving();
+        receiving.Start();
     }
 
     @FXML

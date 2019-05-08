@@ -17,11 +17,16 @@ import java.util.TimerTask;
 
 public class SessionServer extends Session{
     Thread onStop;
+    MessageParser messageParser;
 
-    public SessionServer(Type type, int initPort, Runnable doOnStopSession) throws IOException {
+    public SessionServer(Type type, int Port, Runnable doOnStopSession) throws IOException {
         onStop = new Thread(doOnStopSession);
-        this.port = 5001;
+        messageParser = new MessageParser();
         JSONObject message = new JSONObject();
+        socket = new DatagramSocket();
+        port = socket.getLocalPort();
+        if(Port == -1)
+            port = Port;
         message.put("port", port);
         message.put("type", type.ordinal());
         byte[] buf2 = String.format("%-30s", message.toJSONString()).getBytes();
@@ -46,7 +51,6 @@ public class SessionServer extends Session{
             case MOUSE:
                 t = new Thread(() -> {
                     try {
-                        socket = new DatagramSocket(port);
                         socket.setBroadcast(true);
                         Robot r = new Robot();
                         DatagramPacket p;
@@ -64,7 +68,7 @@ public class SessionServer extends Session{
                                         onStop = null;
                                     }
                                     m = new Message(p.getData());
-                                    MessageParser.messageMap.put(m.getId(), m);
+                                    messageParser.messageMap.put(m.getId(), m);
                                     if (head == -1)
                                         head = m.getId();
                                 } catch (SocketException ignored){
@@ -72,8 +76,8 @@ public class SessionServer extends Session{
                                     e.printStackTrace();
                                 }
                             }while (!socket.isClosed() && (m == null || m.getNext() != -1));
-                            if(MessageParser.messageMap.get(head) == null) continue;
-                            String msgString = new String(MessageParser.parse(head));
+                            if(messageParser.messageMap.get(head) == null) continue;
+                            String msgString = new String(messageParser.parse(head));
                             JSONObject msg = (JSONObject) JSONValue.parse(msgString);
                             if(msg!=null)
                                 switch ((String)msg.get("Type")){
