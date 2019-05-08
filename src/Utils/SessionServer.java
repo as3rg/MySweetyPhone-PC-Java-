@@ -48,7 +48,7 @@ public class SessionServer extends Session{
                         socket.setBroadcast(true);
                         if(onStop != null) onStop.start();
                         Robot r = new Robot();
-                        while (true) {
+                        while (!socket.isClosed()) {
                             Message m = null;
                             int head = -1;
                             do{
@@ -63,7 +63,8 @@ public class SessionServer extends Session{
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
-                            }while (m == null || m.getNext() != -1);
+                            }while (!socket.isClosed() && (m == null || m.getNext() != -1));
+                            if(MessageParser.messageMap.get(head) == null) continue;
                             String msgString = new String(MessageParser.parse(head));
                             JSONObject msg = (JSONObject) JSONValue.parse(msgString);
                             Point p = MouseInfo.getPointerInfo().getLocation();
