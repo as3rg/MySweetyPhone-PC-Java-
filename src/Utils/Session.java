@@ -36,7 +36,7 @@ public abstract class Session{
     public void Stop() throws IOException {
         broadcasting.cancel();
         t.interrupt();
-        if(socket!=null) socket.close();
+        if(socket!=null && !socket.isClosed()) socket.close();
     }
 
     public int getPort() {
