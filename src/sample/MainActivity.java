@@ -2,6 +2,7 @@ package sample;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -44,11 +45,6 @@ public class MainActivity {
     @FXML
     private VBox MenuPane;
 
-    @FXML
-    private Pane CallMenu;
-
-    @FXML
-    private VBox LeftPane;
 
     static interface MethodToCall{
         void f() throws IOException;
@@ -64,13 +60,18 @@ public class MainActivity {
             try {
                 while (MainPane.getScene() == null) Thread.sleep(100);
                 Replace.prefHeightProperty().bind(MainPane.getScene().heightProperty().subtract(Header.heightProperty()));
-                MenuPane.prefHeightProperty().bind(MainPane.getScene().heightProperty().subtract(Header.heightProperty()));
-                Replace.prefWidthProperty().bind(MainPane.getScene().widthProperty().subtract(LeftPane.widthProperty()));
-                MainPane.prefWidthProperty().bind(MainPane.getScene().widthProperty());
+                Replace.prefWidthProperty().bind(MainPane.getScene().widthProperty().subtract(MenuPane.widthProperty()));
                 Header.prefWidthProperty().bind(MainPane.getScene().widthProperty());
-                MenuPane.visibleProperty().bind(CallMenu.hoverProperty().or(MenuPane.hoverProperty()));
-                Replace.disableProperty().bind(CallMenu.hoverProperty().or(MenuPane.hoverProperty()));
-                CallMenu.prefHeightProperty().bind(LeftPane.heightProperty().subtract(Reload.heightProperty()));
+                MenuPane.prefHeightProperty().bind(Replace.prefHeightProperty());
+                for (Node b: MenuPane.getChildren()) {
+                    ((Button) b).prefWidthProperty().bind(MenuPane.widthProperty());
+                }
+                MenuPane.hoverProperty().addListener((observableValue, aBoolean, t1) ->{
+                    if(observableValue.getValue())
+                        MenuPane.prefWidthProperty().set(150);
+                    else
+                        MenuPane.prefWidthProperty().set(50);
+                });
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

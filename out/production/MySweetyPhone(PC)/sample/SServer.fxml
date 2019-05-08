@@ -9,7 +9,7 @@
 
 <AnchorPane fx:id="MainPane" prefHeight="610.0" prefWidth="1280.0" style="-fx-background-color: #202020;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SServer">
    <children>
-      <BorderPane fx:id="NewSessionMainPane" prefHeight="613.0" prefWidth="1280.0" style="-fx-border-width: 0 0 0 1; -fx-border-color: #ffffff;">
+      <BorderPane fx:id="NewSessionMainPane" prefHeight="613.0" prefWidth="1280.0">
          <center>
             <VBox alignment="CENTER" prefHeight="699.0" prefWidth="640.0" BorderPane.alignment="CENTER">
                <children>
