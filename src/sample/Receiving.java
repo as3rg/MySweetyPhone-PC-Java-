@@ -6,15 +6,16 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.net.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class Receiving {
-    private static final int PORT = 950;
-    private static final int MESSAGESIZE = Message.BODYMAXIMUM;
-    private static final int BROADCASTINGSIZE = 100;
+    private static final int PORT = 9500;
+    private static final int MESSAGESIZE = Message.BODYMAXIMUM/10;
     MessageParser messageParser;
     Thread broadcasting;
     Thread t;
@@ -22,19 +23,19 @@ public class Receiving {
     Receiving() throws SocketException, UnknownHostException {
         messageParser = new MessageParser();
         JSONObject message = new JSONObject();
-        message.put("port", PORT);
+        socket = new DatagramSocket();
+        message.put("port", socket.getLocalPort());
         message.put("type", "receiving");
-        Message[] messages = Message.getMessages(message.toJSONString().getBytes(), BROADCASTINGSIZE);
+        byte[] buf2 = String.format("%-100s", message.toJSONString()).getBytes();
         DatagramSocket s = new DatagramSocket();
         s.setBroadcast(true);
+        DatagramPacket packet = new DatagramPacket(buf2, buf2.length, Inet4Address.getByName("255.255.255.255"), PORT);
         Timer timer = new Timer();
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
                 try {
-                    for(Message m : messages)
-                        s.send(new DatagramPacket(m.getArr(), m.getArr().length, Inet4Address.getByName("255.255.255.255"), PORT));
-                    System.out.println("sending");
+                    s.send(packet);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -45,8 +46,6 @@ public class Receiving {
         t = new Thread(()->{
 
             try {
-                socket = new DatagramSocket();
-                System.out.println(socket.getLocalPort());
                 socket.setBroadcast(true);
                 DatagramPacket p;
                 while (!socket.isClosed()) {
@@ -73,6 +72,10 @@ public class Receiving {
                     if(msg.containsKey("type")) switch ((String)msg.get("type")){
                         case "openSite":
                             Desktop.getDesktop().browse(new URI((String)msg.get("site")));
+                            break;
+                        case "copy":
+                            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                            clipboard.setContents(new StringSelection((String)msg.get("value")),null);
                             break;
                     }
                 }
