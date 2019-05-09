@@ -49,7 +49,7 @@ public class SessionClient extends Session{
         s.setSoTimeout(60000);
         byte[] buf = new byte[30];
         DatagramPacket p = new DatagramPacket(buf, buf.length);
-        long time = (new Date()).getTime();
+        long time = System.currentTimeMillis();
         Timer t = new Timer();
         searching = new Thread(() -> {
             t.scheduleAtFixedRate(new TimerTask() {
@@ -66,7 +66,7 @@ public class SessionClient extends Session{
                 }
             }, 0, 2000);
             try {
-                while ((new Date()).getTime() - time <= 60000) {
+                while (System.currentTimeMillis() - time <= 60000) {
                     s.receive(p);
                     JSONObject ans = (JSONObject) JSONValue.parse(new String(p.getData()));
                     if (!ips.containsKey(p.getAddress().getHostAddress())) {

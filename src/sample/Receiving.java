@@ -14,6 +14,7 @@ import java.util.TimerTask;
 public class Receiving {
     private static final int PORT = 950;
     private static final int MESSAGESIZE = Message.BODYMAXIMUM;
+    private static final int BROADCASTINGSIZE = 100;
     MessageParser messageParser;
     Thread broadcasting;
     Thread t;
@@ -23,16 +24,17 @@ public class Receiving {
         JSONObject message = new JSONObject();
         message.put("port", PORT);
         message.put("type", "receiving");
-        byte[] buf2 = String.format("%-30s", message.toJSONString()).getBytes();
+        Message[] messages = Message.getMessages(message.toJSONString().getBytes(), BROADCASTINGSIZE);
         DatagramSocket s = new DatagramSocket();
         s.setBroadcast(true);
-        DatagramPacket packet = new DatagramPacket(buf2, buf2.length, Inet4Address.getByName("255.255.255.255"), PORT);
         Timer timer = new Timer();
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
                 try {
-                    s.send(packet);
+                    for(Message m : messages)
+                        s.send(new DatagramPacket(m.getArr(), m.getArr().length, Inet4Address.getByName("255.255.255.255"), PORT));
+                    System.out.println("sending");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
