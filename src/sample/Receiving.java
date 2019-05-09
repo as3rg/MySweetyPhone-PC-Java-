@@ -71,7 +71,7 @@ public class Receiving {
                     JSONObject msg = (JSONObject) JSONValue.parse(msgString);
                     if(msg.containsKey("type")) switch ((String)msg.get("type")){
                         case "openSite":
-                            Desktop.getDesktop().browse(new URI((String)msg.get("site")));
+                            Desktop.getDesktop().browse(new URL((String)msg.get("site")).toURI());
                             break;
                         case "copy":
                             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();

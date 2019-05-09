@@ -52,7 +52,7 @@
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <Button alignment="CENTER" onAction="#DevicesList" prefWidth="150.0" style="-fx-border-color: #ffffff; -fx-border-width: 0 0 1 0; -fx-background-color: #303030; -fx-background-radius: 0;" text="Список Устройств" textFill="WHITE">
+                  <Button alignment="CENTER" onAction="#DevicesList" prefWidth="150.0" style="-fx-border-color: #ffffff; -fx-border-width: 0 0 1 0; -fx-background-color: #303030; -fx-background-radius: 0;" text="Устройства" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font>
