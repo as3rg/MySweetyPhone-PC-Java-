@@ -7,6 +7,8 @@ import javafx.scene.paint.Paint;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -105,17 +107,29 @@ public class SessionClient extends Session{
         s.close();
     }
 
-    public SessionClient(InetAddress address, int Port, Type type) throws SocketException {
+    public SessionClient(InetAddress address, int Port, Type type) throws IOException {
         this.address = address;
         this.port = Port;
         this.type = type;
         socket = new DatagramSocket();
         socket.setBroadcast(true);
+
+        File file = new File("properties.properties");
+        FileInputStream propFile = new FileInputStream(file);
+        Properties props = new Properties();
+        props.load(propFile);
+        propFile.close();
+        String name = (String) props.getOrDefault("name", "");
+
         switch (type) {
             case MOUSE:
                 t = new Thread(() -> {
-                    if(searching != null) StopSearching();
-                    MouseTracker mt = new MouseTracker(this);
+                    try {
+                        if(searching != null) StopSearching();
+                        MouseTracker mt = new MouseTracker(this, name);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 });
                 break;
             default:

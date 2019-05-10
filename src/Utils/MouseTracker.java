@@ -18,10 +18,12 @@ public class MouseTracker{
     double width;
     double height;
     Stage s;
+    String name;
     static final int MESSAGESIZE = 100;
-    public MouseTracker(SessionClient sc){
+    public MouseTracker(SessionClient sc, String name) throws IOException {
+        this.sc = sc;
+        this.name = name;
         Platform.runLater(()-> {
-            this.sc = sc;
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             width = screenSize.getWidth();
             height = screenSize.getHeight();
@@ -48,6 +50,7 @@ public class MouseTracker{
                 try {
                     JSONObject msg = new JSONObject();
                     msg.put("Type", "finish");
+                    msg.put("Name", name);
                     Message[] messages = Message.getMessages(msg.toJSONString().getBytes(), MESSAGESIZE);
                     for (Message m : messages) {
                         sc.getSocket().send(new DatagramPacket(m.getArr(), m.getArr().length, sc.getAddress(), sc.getPort()));
@@ -61,6 +64,10 @@ public class MouseTracker{
             s.show();
             s.getScene().getRoot().requestFocus();
         });
+        JSONObject msg = new JSONObject();
+        msg.put("Type", "start");
+        msg.put("Name", name);
+        Send(msg.toJSONString().getBytes());
     }
 
     public void mousePressed(MouseEvent e)
@@ -69,6 +76,7 @@ public class MouseTracker{
             JSONObject msg = new JSONObject();
             msg.put("Type","mousePressed");
             msg.put("Key",e.getButton().ordinal());
+            msg.put("Name", name);
             Send(msg.toJSONString().getBytes());
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -86,6 +94,7 @@ public class MouseTracker{
             JSONObject msg = new JSONObject();
             msg.put("Type","mouseReleased");
             msg.put("Key",e.getButton().ordinal());
+            msg.put("Name", name);
             Send(msg.toJSONString().getBytes());
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -96,6 +105,7 @@ public class MouseTracker{
         try {
             JSONObject msg = new JSONObject();
             msg.put("Type", "mouseMoved");
+            msg.put("Name", name);
             msg.put("X", t.getX());
             msg.put("Y", t.getY());
             Send(msg.toJSONString().getBytes());
@@ -111,6 +121,7 @@ public class MouseTracker{
             double value = -e.getDeltaY()/10;
             value = value > 0 ? Math.ceil(value) : -Math.ceil(-value);
             msg.put("value",value);
+            msg.put("Name", name);
             Send(msg.toJSONString().getBytes());
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -122,6 +133,7 @@ public class MouseTracker{
             JSONObject msg = new JSONObject();
             if(e.isAltDown() && e.getCode() == KeyCode.S) {
                 msg.put("Type", "swap");
+                msg.put("Name", name);
                 Send(msg.toJSONString().getBytes());
                 sc.socket.close();
                 Thread.sleep(1000);
@@ -133,6 +145,7 @@ public class MouseTracker{
             }else {
                 msg.put("Type", "keyPressed");
                 msg.put("value", e.getCode().getCode());
+                msg.put("Name", name);
                 Send(msg.toJSONString().getBytes());
             }
         } catch (IOException | InterruptedException e1) {
@@ -145,6 +158,7 @@ public class MouseTracker{
             JSONObject msg = new JSONObject();
             msg.put("Type", "keyReleased");
             msg.put("value", e.getCode().getCode());
+            msg.put("Name", name);
             Send(msg.toJSONString().getBytes());
         } catch (IOException ex) {
             ex.printStackTrace();

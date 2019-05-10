@@ -2,6 +2,9 @@ package sample;
 
 import Utils.Message;
 import Utils.MessageParser;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
@@ -10,6 +13,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.net.*;
+import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -69,17 +73,36 @@ public class Receiving {
                     if(messageParser.messageMap.get(head) == null) continue;
                     String msgString = new String(messageParser.parse(head));
                     JSONObject msg = (JSONObject) JSONValue.parse(msgString);
-                    if(msg.containsKey("type")) switch ((String)msg.get("type")){
-                        case "openSite":
-                            Desktop.getDesktop().browse(new URL((String)msg.get("site")).toURI());
-                            break;
-                        case "copy":
-                            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                            clipboard.setContents(new StringSelection((String)msg.get("value")),null);
-                            break;
-                    }
+                    Platform.runLater(()-> {
+                        try {
+                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                            alert.setTitle("Выполнить действие?");
+                            if (msg.containsKey("type")) switch ((String) msg.get("type")) {
+                                case "openSite":
+                                    alert.setHeaderText("Вы действительно хотите перейти по ссылке от \"" + msg.get("Name") + "\"?");
+                                    break;
+                                case "copy":
+                                    alert.setHeaderText("Вы действительно хотите пройти поместить данные от \"" + msg.get("Name") + "\" в буфер обмена?");
+                                    break;
+                            }
+                            Optional<ButtonType> option = alert.showAndWait();
+
+                            if (option.get() == ButtonType.OK)
+                                switch ((String) msg.get("type")) {
+                                    case "openSite":
+                                        Desktop.getDesktop().browse(new URL((String) msg.get("site")).toURI());
+                                        break;
+                                    case "copy":
+                                        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                                        clipboard.setContents(new StringSelection((String) msg.get("value")), null);
+                                        break;
+                                }
+                        } catch (IOException | URISyntaxException e) {
+                            e.printStackTrace();
+                        }
+                    });
                 }
-            } catch (IOException | URISyntaxException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         });

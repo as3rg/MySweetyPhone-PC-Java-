@@ -1,17 +1,22 @@
 package Utils;
 
 import javafx.application.Platform;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.Inet4Address;
-import java.net.SocketException;
+import java.net.*;
+import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -54,7 +59,10 @@ public class SessionServer extends Session{
                         socket.setBroadcast(true);
                         Robot r = new Robot();
                         DatagramPacket p;
+                        SimpleIntegerProperty gotAccess = new SimpleIntegerProperty(0);
                         while (!socket.isClosed()) {
+                            if(gotAccess.get() == 1)
+                                continue;
                             Message m = null;
                             int head = -1;
                             p = null;
@@ -79,10 +87,31 @@ public class SessionServer extends Session{
                             if(messageParser.messageMap.get(head) == null) continue;
                             String msgString = new String(messageParser.parse(head));
                             JSONObject msg = (JSONObject) JSONValue.parse(msgString);
-                            if(msg!=null)
+
+                            if(gotAccess.get() != 2)
+                                Platform.runLater(()-> {
+                                    try {
+                                        gotAccess.set(1);
+                                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                        alert.setTitle("Выполнить действие?");
+                                        alert.setHeaderText("Вы действительно хотите предоставить доступ к управлению компьютером \"" + msg.get("Name") + "\"?");
+                                        Optional<ButtonType> option = alert.showAndWait();
+
+                                        if (option.get() != ButtonType.OK) {
+                                            Stop();
+                                        } else
+                                            gotAccess.set(2);
+
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                });
+
+                            if(gotAccess.get() == 2 && msg!=null)
                                 switch ((String)msg.get("Type")){
                                     case "mouseMoved":
-                                        r.mouseMove(((Double) msg.get("X")).intValue(), ((Double) msg.get("Y")).intValue());
+                                        Point point = MouseInfo.getPointerInfo().getLocation();
+                                        r.mouseMove(((Long) msg.get("X")).intValue() + (int)point.getX(), ((Long) msg.get("Y")).intValue() + (int)point.getY());
                                         break;
                                     case "mouseReleased":
                                         r.mouseRelease(InputEvent.getMaskForButton(((Long) msg.get("Key")).intValue()));
@@ -91,7 +120,7 @@ public class SessionServer extends Session{
                                         r.mousePress(InputEvent.getMaskForButton(((Long) msg.get("Key")).intValue()));
                                         break;
                                     case "mouseWheel":
-                                        r.mouseWheel(((Double)msg.get("value")).intValue());
+                                        r.mouseWheel(((Long)msg.get("value")).intValue());
                                         break;
                                     case "keyReleased":
                                         r.keyRelease(((Long)msg.get("value")).intValue());
@@ -110,10 +139,11 @@ public class SessionServer extends Session{
                                         r.keyRelease(KeyEvent.VK_ALT);
                                         Stop();
                                         return;
+                                    case "start":
+                                        return;
                                     default:
                                         System.out.println(msgString);
                                 }
-
                         }
                     } catch (AWTException | IOException e) {
                         e.printStackTrace();
