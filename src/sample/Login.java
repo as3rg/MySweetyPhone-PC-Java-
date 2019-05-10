@@ -14,6 +14,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import sample.Anims.Shake;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.io.*;
 import java.net.*;
 import java.util.Properties;

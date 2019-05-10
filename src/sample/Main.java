@@ -7,8 +7,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Main extends Application {
@@ -24,14 +29,42 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.setResizable(true);
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("Images/Icon.png")));
-        primaryStage.setOnCloseRequest(event -> Platform.exit());
-        primaryStage.show();
+
         primaryStage.setMinHeight(760);
         primaryStage.setMinWidth(500);
+        Platform.setImplicitExit(false);
+        primaryStage.show();
+
+        TrayIcon icon = new TrayIcon(ImageIO.read(getClass().getResourceAsStream("Images/TrayIcon.png")));
+        SystemTray systemTray = SystemTray.getSystemTray();
+        PopupMenu menu = new PopupMenu();
+
+        primaryStage.setOnCloseRequest(windowEvent -> {
+            primaryStage.hide();
+        });
+        icon.addActionListener(event-> Platform.runLater(()-> {
+            if(primaryStage.isShowing())
+                primaryStage.hide();
+            else
+                primaryStage.show();
+        }));
+        MenuItem Show = new MenuItem("Свернуть/Развернуть");
+        Show.addActionListener(icon.getActionListeners()[0]);
+        MenuItem Close = new MenuItem("Закрыть");
+        Close.addActionListener(actionEvent -> {
+            Platform.exit();
+            System.exit(0);
+        });
+        menu.add(Close);
+        menu.add(Show);
+
+        icon.setPopupMenu(menu);
+
+        systemTray.add(icon);
     }
 
     @Override
-    public void stop() throws Exception{
+    public void stop() {
         if(tempfiles != null)
             for(File f : tempfiles) {
                 f.deleteOnExit();
@@ -39,7 +72,7 @@ public class Main extends Application {
     }
 
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         launch(args);
     }
 }

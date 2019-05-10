@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -10,6 +11,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -46,7 +49,7 @@ public class MainActivity {
     private VBox MenuPane;
 
 
-    static interface MethodToCall{
+    interface MethodToCall{
         void f() throws IOException;
     }
 

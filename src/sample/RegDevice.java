@@ -73,6 +73,11 @@ public class RegDevice {
 
     @FXML
     private void onNextClick() throws IOException {
+        if(!DeviceName.getText().matches("\\w+")) {
+            Error.setVisible(true);
+            Error.setText("Имя содержит недопустимые символы!");
+            return;
+        }
         Next.setDisable(true);
         DeviceName.setDisable(true);
         FileInputStream propFile = new FileInputStream("properties.properties");
