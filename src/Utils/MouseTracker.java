@@ -69,10 +69,7 @@ public class MouseTracker{
             JSONObject msg = new JSONObject();
             msg.put("Type","mousePressed");
             msg.put("Key",e.getButton().ordinal());
-            Message[] messages = Message.getMessages(msg.toJSONString().getBytes(), MESSAGESIZE);
-            for(Message m : messages){
-                    sc.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,sc.getAddress(),sc.getPort()));
-            }
+            Send(msg.toJSONString().getBytes());
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -89,10 +86,7 @@ public class MouseTracker{
             JSONObject msg = new JSONObject();
             msg.put("Type","mouseReleased");
             msg.put("Key",e.getButton().ordinal());
-            Message[] messages = Message.getMessages(msg.toJSONString().getBytes(), MESSAGESIZE);
-            for(Message m : messages){
-                sc.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,sc.getAddress(),sc.getPort()));
-            }
+            Send(msg.toJSONString().getBytes());
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -104,10 +98,7 @@ public class MouseTracker{
             msg.put("Type", "mouseMoved");
             msg.put("X", t.getX());
             msg.put("Y", t.getY());
-            Message[] messages = Message.getMessages(msg.toJSONString().getBytes(), MESSAGESIZE);
-            for(Message m : messages){
-                sc.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,sc.getAddress(),sc.getPort()));
-            }
+            Send(msg.toJSONString().getBytes());
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -120,10 +111,7 @@ public class MouseTracker{
             double value = -e.getDeltaY()/10;
             value = value > 0 ? Math.ceil(value) : -Math.ceil(-value);
             msg.put("value",value);
-            Message[] messages = Message.getMessages(msg.toJSONString().getBytes(), MESSAGESIZE);
-            for(Message m : messages){
-                sc.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,sc.getAddress(),sc.getPort()));
-            }
+            Send(msg.toJSONString().getBytes());
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -134,10 +122,7 @@ public class MouseTracker{
             JSONObject msg = new JSONObject();
             if(e.isAltDown() && e.getCode() == KeyCode.S) {
                 msg.put("Type", "swap");
-                Message[] messages = Message.getMessages(msg.toJSONString().getBytes(), MESSAGESIZE);
-                for (Message m : messages) {
-                    sc.getSocket().send(new DatagramPacket(m.getArr(), m.getArr().length, sc.getAddress(), sc.getPort()));
-                }
+                Send(msg.toJSONString().getBytes());
                 sc.socket.close();
                 Thread.sleep(1000);
                 SessionServer ss = new SessionServer(sc.getType(), sc.getPort(), ()->{});
@@ -148,10 +133,7 @@ public class MouseTracker{
             }else {
                 msg.put("Type", "keyPressed");
                 msg.put("value", e.getCode().getCode());
-                Message[] messages = Message.getMessages(msg.toJSONString().getBytes(), MESSAGESIZE);
-                for (Message m : messages) {
-                    sc.getSocket().send(new DatagramPacket(m.getArr(), m.getArr().length, sc.getAddress(), sc.getPort()));
-                }
+                Send(msg.toJSONString().getBytes());
             }
         } catch (IOException | InterruptedException e1) {
             e1.printStackTrace();
@@ -163,12 +145,16 @@ public class MouseTracker{
             JSONObject msg = new JSONObject();
             msg.put("Type", "keyReleased");
             msg.put("value", e.getCode().getCode());
-            Message[] messages = Message.getMessages(msg.toJSONString().getBytes(), MESSAGESIZE);
-            for (Message m : messages) {
-                sc.getSocket().send(new DatagramPacket(m.getArr(), m.getArr().length, sc.getAddress(), sc.getPort()));
-            }
+            Send(msg.toJSONString().getBytes());
         } catch (IOException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    public void Send(byte[] b) throws IOException {
+        Message[] messages = Message.getMessages(b, MESSAGESIZE);
+        for(Message m : messages){
+            sc.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,sc.getAddress(),sc.getPort()));
         }
     }
 }
