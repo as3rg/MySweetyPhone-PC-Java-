@@ -3,13 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="7b0b3b7f-3008-4d19-81c9-db452a32c3ec" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Login.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Login.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/MainActivity.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/MainActivity.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Login.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/RegDevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/RegDevice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/Utils/SessionServer$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/Utils/SessionServer$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/Utils/SessionServer$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/Utils/SessionServer$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/Utils/SessionServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/Utils/SessionServer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/RegDevice.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/RegDevice.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/properties.properties" beforeDir="false" afterPath="$PROJECT_DIR$/properties.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Utils/SessionServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/SessionServer.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -26,8 +25,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="557">
-              <caret line="52" column="49" selection-start-line="52" selection-start-column="49" selection-end-line="52" selection-end-column="49" />
+            <state relative-caret-position="748">
+              <caret line="58" column="23" selection-start-line="58" selection-start-column="23" selection-end-line="58" selection-end-column="23" />
               <folding>
                 <element signature="e#2342#2343#0" expanded="true" />
                 <element signature="e#2370#2371#0" expanded="true" />
@@ -36,10 +35,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sample/RegDevice.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
+            <state relative-caret-position="1020">
               <caret line="78" column="19" selection-start-line="78" selection-start-column="19" selection-end-line="78" selection-end-column="19" />
             </state>
           </provider>
@@ -57,8 +56,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sample/Receiving.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1020">
-              <caret line="75" column="44" selection-start-line="75" selection-start-column="44" selection-end-line="75" selection-end-column="44" />
+            <state relative-caret-position="411">
+              <caret line="96" column="116" lean-forward="true" selection-start-line="95" selection-start-column="40" selection-end-line="96" selection-end-column="116" />
             </state>
           </provider>
         </entry>
@@ -72,47 +71,26 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/SClient.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="29" selection-start-line="29" selection-end-line="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/Login.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2040">
-              <caret line="139" column="76" selection-start-line="139" selection-start-column="76" selection-end-line="139" selection-end-column="76" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Utils/MouseTracker.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="969">
-              <caret line="67" column="30" selection-start-line="67" selection-start-column="30" selection-end-line="67" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Utils/SessionServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2108">
-              <caret line="142" column="47" selection-start-line="142" selection-start-column="47" selection-end-line="142" selection-end-column="47" />
+            <state relative-caret-position="484">
+              <caret line="235" column="18" selection-start-line="235" selection-start-column="18" selection-end-line="235" selection-end-column="18" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1728#1982#0" expanded="true" />
+                <element signature="e#1981#1982#0" expanded="true" />
+                <marker date="1557758454350" expanded="true" signature="7677:10904" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/Saved.java">
+        <entry file="file://$PROJECT_DIR$/src/Utils/SessionClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="57" column="13" selection-start-line="57" selection-start-column="13" selection-end-line="57" selection-end-column="13" />
+            <state relative-caret-position="-1527">
+              <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -123,6 +101,10 @@
     <findStrings>
       <find>MouseEvents</find>
       <find>name</find>
+      <find>0</find>
+      <find>= 7</find>
+      <find>meta</find>
+      <find>caps</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -131,14 +113,14 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/sample/Receiving.java" />
-        <option value="$PROJECT_DIR$/src/Utils/SessionServer.java" />
-        <option value="$PROJECT_DIR$/src/Utils/MouseTracker.java" />
         <option value="$PROJECT_DIR$/src/Utils/SessionClient.java" />
         <option value="$PROJECT_DIR$/src/sample/Login.java" />
         <option value="$PROJECT_DIR$/src/sample/MainActivity.java" />
         <option value="$PROJECT_DIR$/src/sample/Main.java" />
         <option value="$PROJECT_DIR$/src/sample/RegDevice.java" />
+        <option value="$PROJECT_DIR$/src/Utils/MouseTracker.java" />
+        <option value="$PROJECT_DIR$/src/sample/Receiving.java" />
+        <option value="$PROJECT_DIR$/src/Utils/SessionServer.java" />
       </list>
     </option>
   </component>
@@ -246,17 +228,20 @@
       <updated>1557414312725</updated>
       <workItem from="1557414314733" duration="5728000" />
       <workItem from="1557516021928" duration="697000" />
+      <workItem from="1557562675320" duration="6863000" />
+      <workItem from="1557654194859" duration="19190000" />
+      <workItem from="1557736452192" duration="11197000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22797000" />
+    <option name="totallyTimeSpent" value="60047000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2553305" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26332623" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
@@ -265,7 +250,7 @@
       <window_info id="Image Layers" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32606438" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32917964" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -278,7 +263,7 @@
       <window_info anchor="bottom" id="Messages" order="12" weight="0.32917964" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info active="true" anchor="right" content_ui="combo" id="Hierarchy" order="2" visible="true" weight="0.25" />
       <window_info anchor="right" id="Maven" order="3" />
       <window_info anchor="right" id="Codota" order="4" />
       <window_info anchor="right" id="Palette" order="5" />
@@ -307,42 +292,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Utils/SessionClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="394">
-          <caret line="130" column="24" selection-start-line="130" selection-start-column="24" selection-end-line="130" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="557">
-          <caret line="52" column="49" selection-start-line="52" selection-start-column="49" selection-end-line="52" selection-end-column="49" />
-          <folding>
-            <element signature="e#2342#2343#0" expanded="true" />
-            <element signature="e#2370#2371#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="51" column="4" selection-start-line="51" selection-start-column="4" selection-end-line="51" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Receiving.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1020">
-          <caret line="75" column="44" selection-start-line="75" selection-start-column="44" selection-end-line="75" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/SServer.java">
+    <entry file="file://$PROJECT_DIR$/src/sample/Saved.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
-          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+          <caret line="57" column="13" selection-start-line="57" selection-start-column="13" selection-end-line="57" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Utils/MouseTracker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1689">
+          <caret line="166" lean-forward="true" selection-start-line="166" selection-end-line="166" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/Login.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="564">
+          <caret line="139" column="76" selection-start-line="139" selection-start-column="76" selection-end-line="139" selection-end-column="76" />
         </state>
       </provider>
     </entry>
@@ -353,38 +320,76 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Login.java">
+    <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2040">
-          <caret line="139" column="76" selection-start-line="139" selection-start-column="76" selection-end-line="139" selection-end-column="76" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Utils/MouseTracker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="969">
-          <caret line="67" column="30" selection-start-line="67" selection-start-column="30" selection-end-line="67" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Utils/SessionServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2108">
-          <caret line="142" column="47" selection-start-line="142" selection-start-column="47" selection-end-line="142" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Saved.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="57" column="13" selection-start-line="57" selection-start-column="13" selection-end-line="57" selection-end-column="13" />
+        <state relative-caret-position="748">
+          <caret line="58" column="23" selection-start-line="58" selection-start-column="23" selection-end-line="58" selection-end-column="23" />
+          <folding>
+            <element signature="e#2342#2343#0" expanded="true" />
+            <element signature="e#2370#2371#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/RegDevice.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
+        <state relative-caret-position="1020">
           <caret line="78" column="19" selection-start-line="78" selection-start-column="19" selection-end-line="78" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="51" column="4" selection-start-line="51" selection-start-column="4" selection-end-line="51" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/SServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jrt://C:/Users/Administrator/AppData/Local/JetBrains/Toolbox/apps/IDEA-JDK11/ch-0/191.6707.61/jre64!/java.base/java/lang/Runnable.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="9" column="9" selection-start-line="9" selection-start-column="9" selection-end-line="9" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jrt://C:/Users/Administrator/AppData/Local/JetBrains/Toolbox/apps/IDEA-JDK11/ch-0/191.6707.61/jre64!/java.desktop/java/awt/event/KeyEvent.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="236" column="28" selection-start-line="236" selection-start-column="28" selection-end-line="236" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Utils/SessionClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1527">
+          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/Receiving.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="411">
+          <caret line="96" column="116" lean-forward="true" selection-start-line="95" selection-start-column="40" selection-end-line="96" selection-end-column="116" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Utils/SessionServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="484">
+          <caret line="235" column="18" selection-start-line="235" selection-start-column="18" selection-end-line="235" selection-end-column="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1728#1982#0" expanded="true" />
+            <element signature="e#1981#1982#0" expanded="true" />
+            <marker date="1557758454350" expanded="true" signature="7677:10904" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
