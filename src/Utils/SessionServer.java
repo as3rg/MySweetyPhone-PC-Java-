@@ -139,13 +139,19 @@ public class SessionServer extends Session{
                                         r.keyRelease(((Long)msg.get("value")).intValue());
                                         break;
                                     case "keysTyped":
-                                        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                                        clipboard.setContents(new StringSelection((String)msg.get("value")), null);
+                                        if(msg.get("Subtype").equals("hotkey")){
+                                            for(char i : (((String)msg.get("value")).toCharArray())) {
+                                                r.keyPress(KeyEvent.getExtendedKeyCodeForChar(i));
+                                                r.keyRelease(KeyEvent.getExtendedKeyCodeForChar(i));
+                                            }
+                                        }else {
+                                            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                                            clipboard.setContents(new StringSelection((String) msg.get("value")), null);
 
-                                        r.keyPress(KeyEvent.VK_CONTROL);
-                                        r.keyPress(KeyEvent.VK_V);
-                                        r.keyRelease(KeyEvent.VK_V);
-                                        r.keyRelease(KeyEvent.VK_CONTROL);
+                                            r.keyPress(KeyEvent.VK_CONTROL);
+                                            r.keyPress(KeyEvent.VK_V);
+                                            r.keyRelease(KeyEvent.VK_V);
+                                            r.keyRelease(KeyEvent.VK_CONTROL);
 //                                        for(char Char : ((String) msg.get("value")).toCharArray()) {
 //                                            r.keyPress(KeyEvent.VK_ALT);
 //                                            String Char2 = Integer.toString(charToAltCode(Char));
@@ -193,6 +199,7 @@ public class SessionServer extends Session{
 //                                            r.keyRelease(KeyEvent.VK_ALT);
 //                                            Thread.sleep(100);
 //                                        }
+                                        }
                                         break;
                                     case "swap":
                                         SessionClient sc = new SessionClient(p.getAddress(),port,type);

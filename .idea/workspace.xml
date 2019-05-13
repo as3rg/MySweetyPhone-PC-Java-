@@ -2,12 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7b0b3b7f-3008-4d19-81c9-db452a32c3ec" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/Utils/SessionServer$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/Utils/SessionServer$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/Utils/SessionServer$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/Utils/SessionServer$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/Utils/SessionServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/Utils/SessionServer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/RegDevice.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/RegDevice.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/properties.properties" beforeDir="false" afterPath="$PROJECT_DIR$/properties.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Utils/SessionServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/SessionServer.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -74,13 +68,15 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Utils/SessionServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="484">
-              <caret line="235" column="18" selection-start-line="235" selection-start-column="18" selection-end-line="235" selection-end-column="18" />
+            <state relative-caret-position="189">
+              <caret line="137" selection-start-line="137" selection-end-line="137" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1728#1982#0" expanded="true" />
                 <element signature="e#1981#1982#0" expanded="true" />
-                <marker date="1557758454350" expanded="true" signature="7677:10904" ph="..." />
+                <element signature="e#13607#13608#0" expanded="true" />
+                <element signature="e#13634#13635#0" expanded="true" />
+                <marker date="1557760674892" expanded="true" signature="8180:11407" ph="..." />
               </folding>
             </state>
           </provider>
@@ -230,12 +226,12 @@
       <workItem from="1557516021928" duration="697000" />
       <workItem from="1557562675320" duration="6863000" />
       <workItem from="1557654194859" duration="19190000" />
-      <workItem from="1557736452192" duration="11197000" />
+      <workItem from="1557736452192" duration="12996000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="60047000" />
+    <option name="totallyTimeSpent" value="61846000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
@@ -382,13 +378,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Utils/SessionServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="484">
-          <caret line="235" column="18" selection-start-line="235" selection-start-column="18" selection-end-line="235" selection-end-column="18" />
+        <state relative-caret-position="189">
+          <caret line="137" selection-start-line="137" selection-end-line="137" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1728#1982#0" expanded="true" />
             <element signature="e#1981#1982#0" expanded="true" />
-            <marker date="1557758454350" expanded="true" signature="7677:10904" ph="..." />
+            <element signature="e#13607#13608#0" expanded="true" />
+            <element signature="e#13634#13635#0" expanded="true" />
+            <marker date="1557760674892" expanded="true" signature="8180:11407" ph="..." />
           </folding>
         </state>
       </provider>
