@@ -57,6 +57,7 @@ public class SServer {
         });
         Resize.start();
         SessionType.getItems().add("Эмуляция мыши");
+        SessionType.getItems().add("Просмотр Файлов");
         NewSession.setOnMouseClicked(this::OpenSession);
     }
 

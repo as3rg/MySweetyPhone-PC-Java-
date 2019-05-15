@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
@@ -15,9 +16,11 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.io.IOException;
 import java.net.*;
 import java.security.Key;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -229,6 +232,107 @@ public class SessionServer extends Session{
                                 }
                         }
                     } catch (AWTException | IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                break;
+            case FILEVIEW:
+                t = new Thread(()->{
+                    try {
+                        socket.setBroadcast(true);
+                        DatagramPacket p;
+                        DatagramSocket answerer;
+                        SimpleIntegerProperty gotAccess = new SimpleIntegerProperty(0);
+                        while (!socket.isClosed()) {
+                            if(gotAccess.get() == 1)
+                                continue;
+                            Message m = null;
+                            int head = -1;
+                            p = null;
+                            do{
+                                byte[] buf = new byte[Message.getMessageSize(100)];
+                                p = new DatagramPacket(buf, buf.length);
+                                try {
+                                    socket.receive(p);
+                                    if(onStop != null){
+                                        Platform.runLater(onStop);
+                                        onStop = null;
+                                    }
+                                    m = new Message(p.getData());
+                                    messageParser.messageMap.put(m.getId(), m);
+                                    if (head == -1)
+                                        head = m.getId();
+                                } catch (SocketException ignored){
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }while (!socket.isClosed() && (m == null || m.getNext() != -1));
+                            if(messageParser.messageMap.get(head) == null) continue;
+                            String msgString = new String(messageParser.parse(head));
+                            JSONObject msg = (JSONObject) JSONValue.parse(msgString);
+
+                            if(gotAccess.get() != 2)
+                                Platform.runLater(()-> {
+                                    try {
+                                        gotAccess.set(1);
+                                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                        alert.setTitle("Выполнить действие?");
+                                        alert.setHeaderText("Вы действительно хотите предоставить доступ к файлам \"" + msg.get("Name") + "\"?");
+                                        Optional<ButtonType> option = alert.showAndWait();
+
+                                        if (option.get() != ButtonType.OK) {
+                                            Stop();
+                                        } else {
+                                            gotAccess.set(2);
+                                        }
+
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                });
+
+                            if(gotAccess.get() == 2){
+                                answerer = new DatagramSocket();
+                                answerer.setBroadcast(true);
+                                JSONObject ans = new JSONObject();
+                                if(msg.get("Type").equals("showDir") && ((String)msg.get("Dir")).isEmpty())
+                                    msg.put("Type", "start");
+                                switch ((String)msg.get("Type")){
+                                    case "showDir":
+                                        File[] files = ((String)msg.get("Dir")).isEmpty() ? File.listRoots() : new File((String)msg.get("Dir")).listFiles();
+                                        JSONArray files2 = new JSONArray();
+                                        for(File f : files){
+                                            JSONObject file = new JSONObject();
+                                            file.put("Name", f.getName());
+                                            file.put("Type", f.isDirectory() ? "Folder" : "File");
+                                            files2.add(file);
+                                        }
+                                        ans.put("Inside", files2);
+                                        ans.put("Dir", msg.get("Dir"));
+                                        for(Message ansmsg : Message.getMessages(ans.toJSONString().getBytes(), 100)){
+                                            System.out.println(new String(ansmsg.getBody())+":"+ansmsg.getNext());
+                                            answerer.send(new DatagramPacket(ansmsg.getArr(), ansmsg.getArr().length, p.getAddress(), ((Long)msg.get("BackChatPort")).intValue()));
+                                        }
+                                        break;
+                                    case "start":
+                                        files = File.listRoots();
+                                        files2 = new JSONArray();
+                                        for(File f : files){
+                                            JSONObject file = new JSONObject();
+                                            file.put("Name", f.getPath());
+                                            file.put("Type", "Folder");
+                                            files2.add(file);
+                                        }
+                                        ans.put("Inside", files2);
+                                        ans.put("Dir", "");
+                                        for(Message ansmsg : Message.getMessages(ans.toJSONString().getBytes(), 100)){
+                                            answerer.send(new DatagramPacket(ansmsg.getArr(), ansmsg.getArr().length, p.getAddress(), ((Long)msg.get("BackChatPort")).intValue()));
+                                        }
+                                        break;
+                                }
+                            }
+                        }
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                 });
