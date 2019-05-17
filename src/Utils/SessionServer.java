@@ -124,7 +124,6 @@ public class SessionServer extends Session{
                                     }
                                 });
 
-                            System.out.println(msgString);
                             if(gotAccess.get() == 2 && msg!=null)
                                 switch ((String)msg.get("Type")){
                                     case "mouseMoved":
@@ -259,7 +258,6 @@ public class SessionServer extends Session{
                         SimpleIntegerProperty gotAccess = new SimpleIntegerProperty(0);
                         while (true) {
                             String line = reader.readLine();
-                            System.out.println(line);
                             JSONObject msg = (JSONObject) JSONValue.parse(line);
                             if(gotAccess.get() == 0)
                                 Platform.runLater(()-> {

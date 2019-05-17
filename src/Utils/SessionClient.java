@@ -128,7 +128,6 @@ public class SessionClient extends Session{
         propFile.close();
         String name = (String) props.getOrDefault("name", "");
 
-        System.out.println(type);
         switch (type) {
             case MOUSE:
                 t = new Thread(() -> {

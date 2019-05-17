@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7b0b3b7f-3008-4d19-81c9-db452a32c3ec" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/properties.properties" beforeDir="false" afterPath="$PROJECT_DIR$/properties.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Utils/SessionClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/SessionClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/FileViewer.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/FileViewer.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/FileViewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/FileViewer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Utils/SessionServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/SessionServer.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,11 +20,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Utils/SessionServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1045">
-              <caret line="261" column="46" lean-forward="true" selection-start-line="260" selection-start-column="60" selection-end-line="261" selection-end-column="53" />
+            <state relative-caret-position="-1062">
+              <caret line="259" column="60" lean-forward="true" selection-start-line="259" selection-start-column="60" selection-end-line="259" selection-end-column="60" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <marker date="1558114557863" expanded="true" signature="2524:13832" ph="..." />
+                <marker date="1558117653809" expanded="true" signature="2524:13773" ph="..." />
               </folding>
             </state>
           </provider>
@@ -63,7 +61,7 @@
         <entry file="file://$PROJECT_DIR$/src/Utils/SessionClient.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="482">
-              <caret line="164" column="24" selection-start-line="164" selection-start-column="24" selection-end-line="164" selection-end-column="44" />
+              <caret line="163" column="24" selection-start-line="163" selection-start-column="24" selection-end-line="163" selection-end-column="44" />
               <folding>
                 <element signature="e#6302#6303#0" expanded="true" />
                 <element signature="e#6330#6331#0" expanded="true" />
@@ -75,8 +73,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sample/FileViewer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="485">
-              <caret line="313" column="82" selection-start-line="313" selection-start-column="82" selection-end-line="313" selection-end-column="82" />
+            <state relative-caret-position="17">
+              <caret line="75" column="58" selection-start-line="75" selection-start-column="58" selection-end-line="75" selection-end-column="58" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1722#2109#0" expanded="true" />
@@ -155,6 +153,8 @@
       <find>activity</find>
       <find>tostring</find>
       <find>acti</find>
+      <find>Syst</find>
+      <find>System.out.pri</find>
     </findStrings>
     <replaceStrings>
       <replace>Dsocket</replace>
@@ -176,11 +176,11 @@
         <option value="$PROJECT_DIR$/src/Utils/Session.java" />
         <option value="$PROJECT_DIR$/src/Utils/MouseTracker.java" />
         <option value="$PROJECT_DIR$/src/sample/SServer.java" />
-        <option value="$PROJECT_DIR$/src/Utils/SessionServer.java" />
         <option value="$PROJECT_DIR$/src/sample/SClient.java" />
         <option value="$PROJECT_DIR$/src/sample/FileViewer.fxml" />
-        <option value="$PROJECT_DIR$/src/Utils/SessionClient.java" />
         <option value="$PROJECT_DIR$/src/sample/FileViewer.java" />
+        <option value="$PROJECT_DIR$/src/Utils/SessionServer.java" />
+        <option value="$PROJECT_DIR$/src/Utils/SessionClient.java" />
       </list>
     </option>
   </component>
@@ -307,7 +307,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="137665000" />
+    <option name="totallyTimeSpent" value="137793000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
@@ -527,11 +527,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Utils/SessionServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1045">
-          <caret line="261" column="46" lean-forward="true" selection-start-line="260" selection-start-column="60" selection-end-line="261" selection-end-column="53" />
+        <state relative-caret-position="-1062">
+          <caret line="259" column="60" lean-forward="true" selection-start-line="259" selection-start-column="60" selection-end-line="259" selection-end-column="60" />
           <folding>
             <element signature="imports" expanded="true" />
-            <marker date="1558114557863" expanded="true" signature="2524:13832" ph="..." />
+            <marker date="1558117653809" expanded="true" signature="2524:13773" ph="..." />
           </folding>
         </state>
       </provider>
@@ -539,7 +539,7 @@
     <entry file="file://$PROJECT_DIR$/src/Utils/SessionClient.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="482">
-          <caret line="164" column="24" selection-start-line="164" selection-start-column="24" selection-end-line="164" selection-end-column="44" />
+          <caret line="163" column="24" selection-start-line="163" selection-start-column="24" selection-end-line="163" selection-end-column="44" />
           <folding>
             <element signature="e#6302#6303#0" expanded="true" />
             <element signature="e#6330#6331#0" expanded="true" />
@@ -549,8 +549,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/FileViewer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="485">
-          <caret line="313" column="82" selection-start-line="313" selection-start-column="82" selection-end-line="313" selection-end-column="82" />
+        <state relative-caret-position="17">
+          <caret line="75" column="58" selection-start-line="75" selection-start-column="58" selection-end-line="75" selection-end-column="58" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1722#2109#0" expanded="true" />
