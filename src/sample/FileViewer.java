@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -158,7 +159,7 @@ public class FileViewer {
                                                     TrayIcon trayIcon = new TrayIcon(image, "");
                                                     trayIcon.setImageAutoSize(true);
                                                     tray.add(trayIcon);
-                                                    trayIcon.displayMessage("Закачка завершена", "Файл "+out2.getName()+" скачен", TrayIcon.MessageType.INFO);
+                                                    trayIcon.displayMessage("Загрузка завершена", "Файл \""+out2.getName()+"\" загружен", TrayIcon.MessageType.INFO);
                                                 } catch (AWTException e) {
                                                     e.printStackTrace();
                                                 }
@@ -232,51 +233,43 @@ public class FileViewer {
     }
 
     public void newFolder(MouseEvent mouseEvent){
-//        final TextField input = new TextField();
-//        AlertDialog alert = new AlertDialog.Builder(this)
-//                .setTitle("Имя папки")
-//                .setMessage("Введите имя папки")
-//                .setView(input)
-//                .setPositiveButton("Создать", null)
-//                .setNegativeButton("Отмена", (dialog, which) -> {})
-//                .create();
-//        alert.setOnShowListener(dialog -> {
-//            alert.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v2 -> {
-//                if(
-//                        input.getText().toString().contains("\\")
-//                                || input.getText().toString().contains("/")
-//                                || input.getText().toString().contains(":")
-//                                || input.getText().toString().contains("*")
-//                                || input.getText().toString().contains("?")
-//                                || input.getText().toString().contains("\"")
-//                                || input.getText().toString().contains("<")
-//                                || input.getText().toString().contains(">")
-//                                || input.getText().toString().contains("|")
-//                ) {
-//                    alert.setMessage("Имя содержит недопустимые символы");
-//                }else if(files.contains(input.getText().toString())) {
-//                    alert.setMessage("Такая папка уже существует");
-//                }else if(input.getText().toString().isEmpty()) {
-//                    alert.setMessage("Имя файла не может быть пустым");
-//                }else {
-//                    new Thread(() -> {
-//                        try {
-//                            JSONObject msg2 = new JSONObject();
-//                            msg2.put("Type", "newDir");
-//                            msg2.put("DirName", input.getText().toString());
-//                            msg2.put("Name", name);
-//                            msg2.put("Dir", ((TextView)findViewById(R.id.pathFILEVIEWER)).getText().toString());
-//                            writer.println(msg2.toString());
-//                            writer.flush();
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }).start();
-//                    alert.dismiss();
-//                }
-//            });
-//        });
-//        alert.show();
+        while (true) {
+            final TextField input = new TextField();
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Имя папки");
+            dialog.setHeaderText("Введите имя папки");
+            Optional<String> s = dialog.showAndWait();
+            if (!s.isEmpty()) {
+                if (
+                        s.get().contains("\\")
+                                || s.get().contains("/")
+                                || s.get().contains(":")
+                                || s.get().contains("*")
+                                || s.get().contains("?")
+                                || s.get().contains("\"")
+                                || s.get().contains("<")
+                                || s.get().contains(">")
+                                || s.get().contains("|")
+                ) {
+                    dialog.setContentText("Имя содержит недопустимые символы");
+                } else if (files.contains(s.get())) {
+                    dialog.setContentText("Такая папка уже существует");
+                } else if (s.get().isEmpty()) {
+                    dialog.setContentText("Имя файла не может быть пустым");
+                } else {
+                    new Thread(() -> {
+                        JSONObject msg2 = new JSONObject();
+                        msg2.put("Type", "newDir");
+                        msg2.put("DirName", s.get());
+                        msg2.put("Name", name);
+                        msg2.put("Dir", Path.getText());
+                        writer.println(msg2.toString());
+                        writer.flush();
+                    }).start();
+                    break;
+                }
+            }else break;
+        }
     }
 
     public void uploadFile(MouseEvent mouseEvent){
@@ -310,7 +303,7 @@ public class FileViewer {
                         TrayIcon trayIcon = new TrayIcon(image, "");
                         trayIcon.setImageAutoSize(true);
                         tray.add(trayIcon);
-                        trayIcon.displayMessage("Отправка завершена", "Файл "+file.getName()+" скачен", TrayIcon.MessageType.INFO);
+                        trayIcon.displayMessage("Отправка завершена", "Файл \""+file.getName()+"\" загружен", TrayIcon.MessageType.INFO);
                     } catch (AWTException e) {
                         e.printStackTrace();
                     }
