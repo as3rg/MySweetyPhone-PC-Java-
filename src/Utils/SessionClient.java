@@ -10,10 +10,7 @@ import org.json.simple.JSONValue;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
+import java.net.*;
 import java.util.*;
 
 public class SessionClient extends Session{
@@ -111,8 +108,14 @@ public class SessionClient extends Session{
         this.address = address;
         this.port = Port;
         this.type = type;
-        socket = new DatagramSocket();
-        socket.setBroadcast(true);
+        switch (type){
+            case MOUSE:
+                Dsocket = new DatagramSocket();
+                Dsocket.setBroadcast(true);
+                break;
+            case FILEVIEW:
+                Ssocket = new Socket(address, port);
+        }
 
         File file = new File("properties.properties");
         FileInputStream propFile = new FileInputStream(file);

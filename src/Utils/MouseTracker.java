@@ -53,7 +53,7 @@ public class MouseTracker{
                     msg.put("Name", name);
                     Message[] messages = Message.getMessages(msg.toJSONString().getBytes(), MESSAGESIZE);
                     for (Message m : messages) {
-                        sc.getSocket().send(new DatagramPacket(m.getArr(), m.getArr().length, sc.getAddress(), sc.getPort()));
+                        sc.getDatagramSocket().send(new DatagramPacket(m.getArr(), m.getArr().length, sc.getAddress(), sc.getPort()));
                     }
                     s.close();
                 } catch (IOException ex) {
@@ -135,7 +135,7 @@ public class MouseTracker{
                 msg.put("Type", "swap");
                 msg.put("Name", name);
                 Send(msg.toJSONString().getBytes());
-                sc.socket.close();
+                sc.Dsocket.close();
                 Thread.sleep(1000);
                 SessionServer ss = new SessionServer(sc.getType(), sc.getPort(), ()->{});
                 Session.sessions.add(ss);
@@ -168,7 +168,7 @@ public class MouseTracker{
     public void Send(byte[] b) throws IOException {
         Message[] messages = Message.getMessages(b, MESSAGESIZE);
         for(Message m : messages){
-            sc.getSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,sc.getAddress(),sc.getPort()));
+            sc.getDatagramSocket().send(new DatagramPacket(m.getArr(),m.getArr().length,sc.getAddress(),sc.getPort()));
         }
     }
 }
