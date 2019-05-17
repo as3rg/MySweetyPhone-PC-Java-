@@ -33,7 +33,7 @@ public class SessionServer extends Session{
     double width = screenSize.getWidth();
     double height = screenSize.getHeight();
 
-    public SessionServer(Type type, int Port, Runnable doOnStopSession) throws IOException {
+    public SessionServer(int type, int Port, Runnable doOnStopSession) throws IOException {
         onStop = new Thread(doOnStopSession);
         messageParser = new MessageParser();
         JSONObject message = new JSONObject();
@@ -48,7 +48,7 @@ public class SessionServer extends Session{
                 port = ss.getLocalPort();
         }
         message.put("port", port);
-        message.put("type", type.ordinal());
+        message.put("type", type);
         byte[] buf2 = String.format("%-30s", message.toJSONString()).getBytes();
 
         broadcastingSocket = new DatagramSocket();
@@ -214,7 +214,7 @@ public class SessionServer extends Session{
                                         }
                                         break;
                                     case "swap":
-                                        SessionClient sc = new SessionClient(p.getAddress(),port,type);
+                                        SessionClient sc = new SessionClient(p.getAddress(), port, type);
                                         Dsocket.close();
                                         Session.sessions.add(sc);
                                         Session.sessions.remove(this);

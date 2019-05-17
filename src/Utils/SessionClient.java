@@ -1,12 +1,24 @@
 package Utils;
 
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import sample.FileViewer;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -69,7 +81,7 @@ public class SessionClient extends Session{
                     s.receive(p);
                     JSONObject ans = (JSONObject) JSONValue.parse(new String(p.getData()));
                     if (!ips.containsKey(p.getAddress().getHostAddress())) {
-                        servers.add(new SessionClient(p.getAddress(),((Long)ans.get("port")).intValue(), Type.values()[((Long)ans.get("type")).intValue()]));
+                        servers.add(new SessionClient(p.getAddress(),((Long)ans.get("port")).intValue(), ((Long)ans.get("type")).intValue()));
                         Server s = new Server(null);
                         ips.put(p.getAddress().getHostAddress(),s);
                         Platform.runLater(() -> {
@@ -104,7 +116,7 @@ public class SessionClient extends Session{
         s.close();
     }
 
-    public SessionClient(InetAddress address, int Port, Type type) throws IOException {
+    public SessionClient(InetAddress address, int Port, int type) throws IOException {
         this.address = address;
         this.port = Port;
         this.type = type;
@@ -124,6 +136,7 @@ public class SessionClient extends Session{
         propFile.close();
         String name = (String) props.getOrDefault("name", "");
 
+        System.out.println(type);
         switch (type) {
             case MOUSE:
                 t = new Thread(() -> {
@@ -133,6 +146,25 @@ public class SessionClient extends Session{
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                });
+                break;
+            case FILEVIEW:
+                t = new Thread(()-> {
+                    if (searching != null) StopSearching();
+                    Platform.runLater(() -> {
+                        try {
+                            FileViewer.sessionClients.push(this);
+                            Stage stage = new Stage();
+                            FXMLLoader loader = new FXMLLoader();
+                            loader.setLocation(new File("src\\sample\\FileViewer.fxml").toURL());
+                            BorderPane pane = loader.load();
+                            Scene scene = new Scene(pane, 250, 150);
+                            stage.setScene(scene);
+                            stage.show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
                 });
                 break;
             default:

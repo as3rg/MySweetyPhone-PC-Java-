@@ -17,6 +17,10 @@ import java.util.ResourceBundle;
 
 public class SServer {
 
+    public static final String
+            MOUSE = "Эмуляция мыши",
+            FILEVIEW = "Просмотр Файлов";
+
     @FXML
     private AnchorPane MainPane;
 
@@ -56,8 +60,8 @@ public class SServer {
             }
         });
         Resize.start();
-        SessionType.getItems().add("Эмуляция мыши");
-        SessionType.getItems().add("Просмотр Файлов");
+        SessionType.getItems().add(MOUSE);
+        SessionType.getItems().add(FILEVIEW);
         NewSession.setOnMouseClicked(this::OpenSession);
     }
 
@@ -72,7 +76,7 @@ public class SServer {
             } else {
                 NewSession.setOnMouseClicked(this::CloseSession);
                 NewSession.setText("Закрыть сессию");
-                Utils.SessionServer s = new Utils.SessionServer(Session.Type.values()[SessionType.getItems().indexOf(SessionType.getValue())],0,()->{
+                Utils.SessionServer s = new Utils.SessionServer(GetType(SessionType.getSelectionModel().getSelectedItem()),0,()->{
                     NewSession.setOnMouseClicked(this::OpenSession);
                     NewSession.setText("Открыть сессию");
                     SessionType.setDisable(false);
@@ -82,6 +86,17 @@ public class SServer {
             }
         } catch (IOException err){
             err.printStackTrace();
+        }
+    }
+
+    public int GetType(String s){
+        switch (s){
+            case MOUSE:
+                return Session.MOUSE;
+            case FILEVIEW:
+                return Session.FILEVIEW;
+            default:
+                return Session.NONE;
         }
     }
 
