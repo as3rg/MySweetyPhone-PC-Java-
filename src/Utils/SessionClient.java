@@ -120,14 +120,6 @@ public class SessionClient extends Session{
         this.address = address;
         this.port = Port;
         this.type = type;
-        switch (type){
-            case MOUSE:
-                Dsocket = new DatagramSocket();
-                Dsocket.setBroadcast(true);
-                break;
-            case FILEVIEW:
-                Ssocket = new Socket(address, port);
-        }
 
         File file = new File("properties.properties");
         FileInputStream propFile = new FileInputStream(file);
@@ -141,6 +133,8 @@ public class SessionClient extends Session{
             case MOUSE:
                 t = new Thread(() -> {
                     try {
+                        Dsocket = new DatagramSocket();
+                        Dsocket.setBroadcast(true);
                         if(searching != null) StopSearching();
                         MouseTracker mt = new MouseTracker(this, name);
                     } catch (IOException e) {
@@ -149,22 +143,27 @@ public class SessionClient extends Session{
                 });
                 break;
             case FILEVIEW:
-                t = new Thread(()-> {
-                    if (searching != null) StopSearching();
-                    Platform.runLater(() -> {
-                        try {
-                            FileViewer.sessionClients.push(this);
-                            Stage stage = new Stage();
-                            FXMLLoader loader = new FXMLLoader();
-                            loader.setLocation(new File("src\\sample\\FileViewer.fxml").toURL());
-                            BorderPane pane = loader.load();
-                            Scene scene = new Scene(pane, 250, 150);
-                            stage.setScene(scene);
-                            stage.show();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    });
+                t = new Thread(()->{
+                    try {
+                        if (searching != null) StopSearching();
+                        Ssocket = new Socket(address, port);
+                        Platform.runLater(() -> {
+                            try {
+                                FileViewer.sessionClients.push(this);
+                                Stage stage = new Stage();
+                                FXMLLoader loader = new FXMLLoader();
+                                loader.setLocation(new File("src\\sample\\FileViewer.fxml").toURL());
+                                BorderPane pane = loader.load();
+                                Scene scene = new Scene(pane, 250, 150);
+                                stage.setScene(scene);
+                                stage.show();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 });
                 break;
             default:

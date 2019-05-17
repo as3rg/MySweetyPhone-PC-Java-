@@ -64,7 +64,6 @@ public class FileViewer {
 
         receiving = new Thread(()-> {
             try {
-                sc.setSocket(new Socket(sc.getAddress(), sc.getPort()));
                 writer = new PrintWriter(sc.getSocket().getOutputStream());
                 reader = new BufferedReader(new InputStreamReader(sc.getSocket().getInputStream()));
                 Timer t = new Timer();
@@ -76,13 +75,11 @@ public class FileViewer {
                         msg2.put("Name", name);
                         writer.println(msg2.toJSONString());
                         writer.flush();
-                        System.out.println(sc.getAddress().getHostAddress()+":"+sc.getPort());
                     }
                 },0,2000);
                 while (true) {
                     String line = reader.readLine();
                     t.cancel();
-                    System.out.println(line);
                     JSONObject msg = (JSONObject) JSONValue.parse(line);
                     switch ((String) msg.get("Type")) {
                         case "showDir":
@@ -124,7 +121,7 @@ public class FileViewer {
                                             JSONObject msg3 = new JSONObject();
                                             msg3.put("Type", "showDir");
                                             msg3.put("Name", name);
-                                            msg3.put("Dir", new File((String)msg.get("Dir"), (String)((JSONObject)values.get(i2)).get("Name")).toPath());
+                                            msg3.put("Dir", new File((String)msg.get("Dir"), (String)((JSONObject)values.get(i2)).get("Name")).getPath());
                                             writer.println(msg3.toJSONString());
                                             writer.flush();
                                         }).start());
@@ -206,7 +203,6 @@ public class FileViewer {
 
     static public SessionClient sc;
     Thread receiving;
-    static final int MESSAGESIZE = 100;
     PrintWriter writer;
     BufferedReader reader;
     String name;
@@ -307,6 +303,18 @@ public class FileViewer {
                 fileout.flush();
                 filein.close();
                 socket.close();
+                Platform.runLater(()->{
+                    try {
+                        SystemTray tray = SystemTray.getSystemTray();
+                        Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
+                        TrayIcon trayIcon = new TrayIcon(image, "");
+                        trayIcon.setImageAutoSize(true);
+                        tray.add(trayIcon);
+                        trayIcon.displayMessage("Отправка завершена", "Файл "+file.getName()+" скачен", TrayIcon.MessageType.INFO);
+                    } catch (AWTException e) {
+                        e.printStackTrace();
+                    }
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }
