@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.MouseButton;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -49,7 +50,8 @@ public class SessionServer extends Session{
         }
         message.put("port", port);
         message.put("type", type);
-        byte[] buf2 = String.format("%-30s", message.toJSONString()).getBytes();
+        message.put("os", System.getProperty("os.name"));
+        byte[] buf2 = String.format("%-100s", message.toJSONString()).getBytes();
 
         broadcastingSocket = new DatagramSocket();
         broadcastingSocket.setBroadcast(true);
@@ -148,6 +150,9 @@ public class SessionServer extends Session{
                                     case "keyClicked":
                                         r.keyPress(((Long)msg.get("value")).intValue());
                                         r.keyRelease(((Long)msg.get("value")).intValue());
+                                        break;
+                                    case "winApiClicked":
+                                        Windows.keyboard_event(((Long)msg.get("value")).intValue());
                                         break;
                                     case "keysTyped":
                                         if(msg.get("Subtype").equals("hotkey")){

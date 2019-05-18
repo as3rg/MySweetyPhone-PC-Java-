@@ -58,7 +58,7 @@ public class SessionClient extends Session{
         s = new DatagramSocket(BroadCastingPort);
         s.setBroadcast(true);
         s.setSoTimeout(60000);
-        byte[] buf = new byte[30];
+        byte[] buf = new byte[100];
         DatagramPacket p = new DatagramPacket(buf, buf.length);
         long time = System.currentTimeMillis();
         Timer t = new Timer();
