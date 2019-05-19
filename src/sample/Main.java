@@ -75,13 +75,6 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        System.out.println("VK_VOLUME_MUTE: "+0xAD);
-        System.out.println("VK_VOLUME_DOWN: "+0xAE);
-        System.out.println("VK_VOLUME_UP: "+0xAF);
-        System.out.println("VK_MEDIA_NEXT_TRACK: "+0xB0);
-        System.out.println("VK_MEDIA_PREV_TRACK: "+0xB1);
-        System.out.println("VK_MEDIA_STOP: "+0xB2);
-        System.out.println("VK_MEDIA_PLAY_PAUSE: "+0xB3);
         launch(args);
     }
 }

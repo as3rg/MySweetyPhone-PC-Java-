@@ -105,7 +105,7 @@ public class SessionServer extends Session{
                             }while (!Dsocket.isClosed() && (m == null || m.getNext() != -1));
                             if(messageParser.messageMap.get(head) == null) continue;
                             String msgString = new String(messageParser.parse(head));
-                            JSONObject msg = (JSONObject) JSONValue.parse(msgString);
+                            JSONObject msg = (JSONObject) JSONValue.parse(msgString.strip());
 
                             if(gotAccess.get() == 0)
                                 Platform.runLater(()-> {
@@ -226,6 +226,9 @@ public class SessionServer extends Session{
                                         return;
                                     case "finish":
                                         r.keyRelease(KeyEvent.VK_ALT);
+                                        r.keyRelease(KeyEvent.VK_WINDOWS);
+                                        r.keyRelease(KeyEvent.VK_CONTROL);
+                                        r.keyRelease(KeyEvent.VK_SHIFT);
                                         Stop();
                                         return;
                                     case "startDrawing":
@@ -263,7 +266,7 @@ public class SessionServer extends Session{
                         SimpleIntegerProperty gotAccess = new SimpleIntegerProperty(0);
                         while (true) {
                             String line = reader.readLine();
-                            JSONObject msg = (JSONObject) JSONValue.parse(line);
+                            JSONObject msg = (JSONObject) JSONValue.parse(line.strip());
                             if(gotAccess.get() == 0)
                                 Platform.runLater(()-> {
                                     try {
@@ -358,6 +361,9 @@ public class SessionServer extends Session{
                                                 e.printStackTrace();
                                             }
                                         }).start();
+                                        break;
+                                    case "finish":
+                                        Stop();
                                         break;
                                 }
                             }

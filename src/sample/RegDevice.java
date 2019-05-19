@@ -102,7 +102,7 @@ public class RegDevice {
                 in.close();
 
 
-                JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
                 int i = ((Long)result.getOrDefault("code", 2)).intValue();
                 Platform.runLater(()-> {
                     try {

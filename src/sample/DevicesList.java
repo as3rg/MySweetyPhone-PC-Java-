@@ -135,7 +135,7 @@ public class DevicesList {
                 }
                 in2.close();
 
-                JSONObject result = (JSONObject) JSONValue.parse(response2.toString());
+                JSONObject result = (JSONObject) JSONValue.parse(response2.toString().strip());
                 int i = ((Long) result.getOrDefault("code", 2)).intValue();
                 if(i == 0){
                     for(String device : (ArrayList<String>)result.get("PCs")){

@@ -14,6 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Pair;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import sample.FileViewer;
@@ -49,8 +50,7 @@ public class SessionClient extends Session{
     public static void Search(Pane v, Thread onFinishSearching) throws SocketException {
         v.getChildren().clear();
         if(isSearching) {
-            System.err.println("Поиск уже запущен");
-            return;
+            StopSearching();
         }
         servers = new ArrayList<>();
         ips = new TreeMap<>();
@@ -79,7 +79,8 @@ public class SessionClient extends Session{
             try {
                 while (System.currentTimeMillis() - time <= 60000) {
                     s.receive(p);
-                    JSONObject ans = (JSONObject) JSONValue.parse(new String(p.getData()));
+                    System.out.println(new String(p.getData()));
+                    JSONObject ans = (JSONObject) JSONValue.parse(new String(p.getData()).strip());
                     if (!ips.containsKey(p.getAddress().getHostAddress())) {
                         servers.add(new SessionClient(p.getAddress(),((Long)ans.get("port")).intValue(), ((Long)ans.get("type")).intValue()));
                         Server s = new Server(null);
@@ -98,7 +99,7 @@ public class SessionClient extends Session{
                     }else
                         ips.get(p.getAddress().getHostAddress()).value=5;
                 }
-            } catch (SocketException ignored){
+            } catch (SocketTimeoutException ignored){
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -148,8 +149,8 @@ public class SessionClient extends Session{
                         Ssocket = new Socket(address, port);
                         Platform.runLater(() -> {
                             try {
-                                FileViewer.sessionClients.push(this);
                                 Stage stage = new Stage();
+                                FileViewer.sessionClients.push(new Pair<>(this, stage));
                                 FXMLLoader loader = new FXMLLoader();
                                 loader.setLocation(new File("src\\sample\\FileViewer.fxml").toURL());
                                 BorderPane pane = loader.load();
@@ -173,4 +174,5 @@ public class SessionClient extends Session{
     public boolean isServer(){
         return false;
     }
+
 }

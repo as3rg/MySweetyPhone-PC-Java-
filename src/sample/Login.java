@@ -120,7 +120,7 @@ public class Login {
                         }
                         in.close();
 
-                        JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                        JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
                         int i = ((Long) result.getOrDefault("code", 2)).intValue();
                         if (i == 0) {
                             i = ((Long) result.getOrDefault("result", 0)).intValue();
@@ -192,7 +192,7 @@ public class Login {
 
                 Platform.runLater(()->{
                     try{
-                        JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                        JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
                         int i = ((Long) result.getOrDefault("code", 2)).intValue();
                         Shake onErrorShake = new Shake(LoginButton);
                         if (i == 3) {

@@ -104,8 +104,7 @@ public class SServer {
         try {
             NewSession.setOnMouseClicked(this::OpenSession);
             NewSession.setText("Открыть сессию");
-            Session.sessions.get(Session.sessions.size() - 1).Stop();
-            Session.sessions.remove(Session.sessions.size() - 1);
+            Session.sessions.pop().Stop();
             SessionType.setDisable(false);
         } catch (IOException e1) {
             e1.printStackTrace();

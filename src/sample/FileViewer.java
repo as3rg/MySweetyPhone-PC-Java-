@@ -12,6 +12,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.util.Pair;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -25,14 +27,24 @@ import java.util.*;
 
 
 public class FileViewer {
-    static public Stack<SessionClient> sessionClients;
+    static public Stack<Pair<SessionClient, Stage>> sessionClients;
+    SessionClient sc;
+    Thread receiving;
+    PrintWriter writer;
+    BufferedReader reader;
+    String name;
+    Set<String> files;
+    Stage stage;
 
     static {
         sessionClients = new Stack<>();
     }
 
     {
-        sc = sessionClients.pop();
+        Pair<SessionClient, Stage> p = sessionClients.pop();
+        sc = p.getKey();
+        stage = p.getValue();
+
     }
 
     @FXML
@@ -81,7 +93,7 @@ public class FileViewer {
                 while (true) {
                     String line = reader.readLine();
                     t.cancel();
-                    JSONObject msg = (JSONObject) JSONValue.parse(line);
+                    JSONObject msg = (JSONObject) JSONValue.parse(line.strip());
                     switch ((String) msg.get("Type")) {
                         case "showDir":
                             JSONArray values = (JSONArray) msg.get("Inside");
@@ -200,14 +212,18 @@ public class FileViewer {
             }
         });
         receiving.start();
-    }
 
-    static public SessionClient sc;
-    Thread receiving;
-    PrintWriter writer;
-    BufferedReader reader;
-    String name;
-    Set<String> files;
+        stage.setOnCloseRequest(e ->{
+            receiving.interrupt();
+            new Thread(() -> {
+                JSONObject msg2 = new JSONObject();
+                msg2.put("Type", "finish");
+                msg2.put("Name", name);
+                writer.println(msg2.toJSONString());
+                writer.flush();
+            }).start();
+        });
+    }
 
 //    @Override
 //    public void onDestroy() {

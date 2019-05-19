@@ -2,11 +2,33 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7b0b3b7f-3008-4d19-81c9-db452a32c3ec" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/META-INF/MySweetyPhone(PC).kotlin_module" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/Utils/MouseTracker.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/Utils/MouseTracker.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/Utils/Session.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/Utils/Session.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/Utils/SessionClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/Utils/SessionClient.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/Utils/SessionServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/Utils/SessionServer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/DevicesList.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/DevicesList.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/FileViewer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/FileViewer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Login.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Login.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Receiving.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Receiving.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/RegDevice.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/RegDevice.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/SServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/SServer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Saved.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Saved.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/properties.properties" beforeDir="false" afterPath="$PROJECT_DIR$/properties.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Utils/Session.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/Session.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Utils/SessionClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/SessionClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Utils/SessionServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/SessionServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/DevicesList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/DevicesList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/FileViewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/FileViewer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Login.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/sample/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/Receiving.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Receiving.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/RegDevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/RegDevice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/SServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/SServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/Saved.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Saved.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -32,8 +54,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Utils/MouseTracker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="564">
-              <caret line="172" column="5" selection-start-line="16" selection-start-column="4" selection-end-line="172" selection-end-column="5" />
+            <state relative-caret-position="965">
+              <caret line="155" column="41" lean-forward="true" selection-start-line="155" selection-start-column="41" selection-end-line="155" selection-end-column="41" />
             </state>
           </provider>
         </entry>
@@ -41,8 +63,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Utils/SessionServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="51" column="34" lean-forward="true" selection-start-line="51" selection-start-column="34" selection-end-line="51" selection-end-column="34" />
+            <state relative-caret-position="183">
+              <caret line="366" column="46" selection-start-line="366" selection-start-column="46" selection-end-line="366" selection-end-column="46" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/sample/FileViewer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="185">
+              <caret line="221" column="35" selection-start-line="221" selection-start-column="35" selection-end-line="221" selection-end-column="35" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -53,14 +87,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="479">
-              <caret line="77" column="44" selection-start-line="77" selection-start-column="44" selection-end-line="77" selection-end-column="44" />
-              <caret line="78" column="44" selection-start-line="78" selection-start-column="44" selection-end-line="78" selection-end-column="44" />
-              <caret line="83" column="49" selection-start-line="83" selection-start-column="49" selection-end-line="83" selection-end-column="49" />
-              <caret line="82" column="43" selection-start-line="82" selection-start-column="43" selection-end-line="82" selection-end-column="43" />
-              <caret line="81" column="49" selection-start-line="81" selection-start-column="49" selection-end-line="81" selection-end-column="49" />
-              <caret line="80" column="49" selection-start-line="80" selection-start-column="49" selection-end-line="80" selection-end-column="49" />
-              <caret line="79" column="42" selection-start-line="79" selection-start-column="42" selection-end-line="79" selection-end-column="42" />
+            <state relative-caret-position="428">
+              <caret line="76" column="44" selection-start-line="76" selection-start-column="44" selection-end-line="76" selection-end-column="44" />
+              <folding>
+                <element signature="e#2420#2421#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -68,17 +99,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Utils/Session.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="14" selection-start-column="14" selection-end-column="14" />
+            <state relative-caret-position="391">
+              <caret line="29" column="29" selection-start-line="29" selection-start-column="29" selection-end-line="29" selection-end-column="29" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Utils/SessionClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="71">
-              <caret line="60" column="32" selection-start-line="60" selection-start-column="32" selection-end-line="60" selection-end-column="32" />
+            <state relative-caret-position="64">
+              <caret line="152" column="88" selection-start-line="152" selection-start-column="88" selection-end-line="152" selection-end-column="88" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -86,8 +120,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sample/SServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1153">
-              <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+            <state relative-caret-position="350">
+              <caret line="106" column="34" selection-start-line="106" selection-start-column="34" selection-end-line="106" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -95,8 +129,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Utils/Windows.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="349">
-              <caret line="114" column="4" selection-start-line="114" selection-start-column="4" selection-end-line="120" selection-end-column="55" />
+            <state relative-caret-position="326">
+              <caret line="100" column="45" lean-forward="true" selection-start-line="100" selection-start-column="45" selection-end-line="100" selection-end-column="45" />
             </state>
           </provider>
         </entry>
@@ -135,6 +169,8 @@
       <find>Syst</find>
       <find>System.out.pri</find>
       <find>tray</find>
+      <find>JSONValue.parse</find>
+      <find>.strip()</find>
     </findStrings>
     <replaceStrings>
       <replace>Dsocket</replace>
@@ -146,23 +182,24 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/sample/Login.java" />
         <option value="$PROJECT_DIR$/src/sample/MainActivity.java" />
-        <option value="$PROJECT_DIR$/src/sample/RegDevice.java" />
-        <option value="$PROJECT_DIR$/src/sample/Receiving.java" />
         <option value="$PROJECT_DIR$/src/Utils/Message.java" />
-        <option value="$PROJECT_DIR$/src/sample/Saved.java" />
-        <option value="$PROJECT_DIR$/src/Utils/Session.java" />
         <option value="$PROJECT_DIR$/src/Utils/MouseTracker.java" />
-        <option value="$PROJECT_DIR$/src/sample/SServer.java" />
         <option value="$PROJECT_DIR$/src/sample/SClient.java" />
         <option value="$PROJECT_DIR$/src/sample/FileViewer.fxml" />
-        <option value="$PROJECT_DIR$/src/sample/FileViewer.java" />
         <option value="$PROJECT_DIR$/src/Utils/Utils_Windows.h" />
         <option value="$PROJECT_DIR$/src/Utils/Windows.java" />
         <option value="$PROJECT_DIR$/src/sample/Main.java" />
+        <option value="$PROJECT_DIR$/src/sample/Receiving.java" />
+        <option value="$PROJECT_DIR$/src/sample/DevicesList.java" />
+        <option value="$PROJECT_DIR$/src/sample/Saved.java" />
+        <option value="$PROJECT_DIR$/src/sample/Login.java" />
+        <option value="$PROJECT_DIR$/src/sample/RegDevice.java" />
+        <option value="$PROJECT_DIR$/src/Utils/Session.java" />
+        <option value="$PROJECT_DIR$/src/sample/SServer.java" />
         <option value="$PROJECT_DIR$/src/Utils/SessionServer.java" />
         <option value="$PROJECT_DIR$/src/Utils/SessionClient.java" />
+        <option value="$PROJECT_DIR$/src/sample/FileViewer.java" />
       </list>
     </option>
   </component>
@@ -177,6 +214,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -232,15 +270,10 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="Utils" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="MySweetyPhone-PC" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -252,11 +285,11 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/Utils" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.externalTools" />
+    <property name="settings.editor.selected.configurable" value="play.paths.configuration" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -321,11 +354,14 @@
       <workItem from="1558178763263" duration="821000" />
       <workItem from="1558180367522" duration="334000" />
       <workItem from="1558181341450" duration="8455000" />
+      <workItem from="1558283281533" duration="610000" />
+      <workItem from="1558284014647" duration="338000" />
+      <workItem from="1558284382138" duration="6246000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="151175000" />
+    <option name="totallyTimeSpent" value="158369000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -340,7 +376,7 @@
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26599148" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2739872" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
@@ -349,8 +385,8 @@
       <window_info id="Image Layers" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32917964" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32917964" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3997923" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32917964" />
@@ -406,6 +442,18 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Utils/SessionClient.java</url>
+          <line>84</line>
+          <properties />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
@@ -493,61 +541,25 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/Login.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="34" selection-start-column="34" selection-end-column="34" />
         </state>
       </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/FileViewer.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-102">
           <caret column="38" lean-forward="true" selection-start-column="38" selection-end-column="38" />
         </state>
       </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/FileViewer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="597">
-          <caret line="305" column="107" selection-start-line="305" selection-start-column="107" selection-end-line="305" selection-end-column="107" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1767#2154#0" expanded="true" />
-            <element signature="e#2153#2154#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Utils/Windows.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2285">
-          <caret line="16" column="42" lean-forward="true" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Utils/Utils_Windows.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="36" selection-start-line="2" selection-start-column="36" selection-end-line="2" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/out/production/MySweetyPhone(PC)/Utils/Utils_Windows.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5712">
-          <caret line="336" column="20" lean-forward="true" selection-start-line="336" selection-start-column="20" selection-end-line="336" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Utils/Session.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="14" selection-start-column="14" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Utils/Windows.class" />
+    <entry file="file://$PROJECT_DIR$/src/Utils/Utils_Windows.h" />
+    <entry file="file://$PROJECT_DIR$/out/production/MySweetyPhone(PC)/Utils/Utils_Windows.h" />
+    <entry file="jrt://C:/Users/Administrator/AppData/Local/JetBrains/Toolbox/apps/IDEA-JDK11/ch-0/191.6707.61/jre64!/javafx.graphics/javafx/scene/input/MouseButton.class" />
     <entry file="file://$PROJECT_DIR$/src/sample/SClient.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
@@ -555,51 +567,48 @@
         </state>
       </provider>
     </entry>
-    <entry file="jrt://C:/Users/Administrator/AppData/Local/JetBrains/Toolbox/apps/IDEA-JDK11/ch-0/191.6707.61/jre64!/javafx.graphics/javafx/scene/input/MouseButton.class">
+    <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
+        <state relative-caret-position="428">
+          <caret line="76" column="44" selection-start-line="76" selection-start-column="44" selection-end-line="76" selection-end-column="44" />
+          <folding>
+            <element signature="e#2420#2421#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Utils/Windows.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="349">
-          <caret line="114" column="4" selection-start-line="114" selection-start-column="4" selection-end-line="120" selection-end-column="55" />
+        <state relative-caret-position="326">
+          <caret line="100" column="45" lean-forward="true" selection-start-line="100" selection-start-column="45" selection-end-line="100" selection-end-column="45" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/SServer.java">
+    <entry file="file://$PROJECT_DIR$/src/Utils/Session.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1153">
-          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="479">
-          <caret line="77" column="44" selection-start-line="77" selection-start-column="44" selection-end-line="77" selection-end-column="44" />
-          <caret line="78" column="44" selection-start-line="78" selection-start-column="44" selection-end-line="78" selection-end-column="44" />
-          <caret line="83" column="49" selection-start-line="83" selection-start-column="49" selection-end-line="83" selection-end-column="49" />
-          <caret line="82" column="43" selection-start-line="82" selection-start-column="43" selection-end-line="82" selection-end-column="43" />
-          <caret line="81" column="49" selection-start-line="81" selection-start-column="49" selection-end-line="81" selection-end-column="49" />
-          <caret line="80" column="49" selection-start-line="80" selection-start-column="49" selection-end-line="80" selection-end-column="49" />
-          <caret line="79" column="42" selection-start-line="79" selection-start-column="42" selection-end-line="79" selection-end-column="42" />
+        <state relative-caret-position="391">
+          <caret line="29" column="29" selection-start-line="29" selection-start-column="29" selection-end-line="29" selection-end-column="29" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Utils/MouseTracker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="564">
-          <caret line="172" column="5" selection-start-line="16" selection-start-column="4" selection-end-line="172" selection-end-column="5" />
+        <state relative-caret-position="965">
+          <caret line="155" column="41" lean-forward="true" selection-start-line="155" selection-start-column="41" selection-end-line="155" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/SServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="106" column="34" selection-start-line="106" selection-start-column="34" selection-end-line="106" selection-end-column="34" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Utils/SessionServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="51" column="34" lean-forward="true" selection-start-line="51" selection-start-column="34" selection-end-line="51" selection-end-column="34" />
+        <state relative-caret-position="183">
+          <caret line="366" column="46" selection-start-line="366" selection-start-column="46" selection-end-line="366" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -608,8 +617,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Utils/SessionClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="71">
-          <caret line="60" column="32" selection-start-line="60" selection-start-column="32" selection-end-line="60" selection-end-column="32" />
+        <state relative-caret-position="64">
+          <caret line="152" column="88" selection-start-line="152" selection-start-column="88" selection-end-line="152" selection-end-column="88" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/FileViewer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="221" column="35" selection-start-line="221" selection-start-column="35" selection-end-line="221" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -667,6 +689,18 @@
       <state key="ModuleStructureConfigurable.UI">
         <settings>
           <last-edited>MySweetyPhone(PC)</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>11</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

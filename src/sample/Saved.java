@@ -140,7 +140,7 @@ public class Saved {
                     response.append(inputLine);
                 }
                 in.close();
-                JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
                 int i = ((Long) result.getOrDefault("code", 2)).intValue();
                 if(i == 2){
                     throw new RuntimeException("Ошибка приложения!");
@@ -233,7 +233,7 @@ public class Saved {
                     }
                     in.close();
 
-                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
                     int i = ((Long) result.getOrDefault("code", 2)).intValue();
                     if(i == 2){
                         throw new RuntimeException("Ошибка приложения!");
@@ -336,7 +336,7 @@ public class Saved {
                     }
                     in.close();
 
-                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
                     int i = ((Long) result.getOrDefault("code", 2)).intValue();
                     if(i == 2){
                         throw new RuntimeException("Ошибка приложения!");
@@ -385,7 +385,7 @@ public class Saved {
                     }
                     in.close();
 
-                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
                     String filebody = (String)result.get("filebody");
                     File out2 = new File(out,"MySweetyPhone");
                     out2.mkdirs();
@@ -454,7 +454,7 @@ public class Saved {
                     }
                     in.close();
 
-                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
                     String filebody = (String)result.get("filebody");
 
                     BufferedImage image = ImageIO.read(new ByteArrayInputStream(Hex.decodeHex(filebody.substring(2).toCharArray())));
@@ -494,7 +494,7 @@ public class Saved {
                     }
                     in.close();
 
-                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
                     int i = ((Long) result.getOrDefault("code", 2)).intValue();
                     if(i == 2){
                         throw new RuntimeException("Ошибка приложения!");
@@ -541,7 +541,7 @@ public class Saved {
                     }
                     in.close();
 
-                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
                     String filebody = (String)result.get("filebody");
                     File out2 = new File(out,"MySweetyPhone");
                     out2.mkdirs();
@@ -616,7 +616,7 @@ public class Saved {
                     }
                     in.close();
 
-                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
                     String filebody = (String)result.get("filebody");
 
                     File out = File.createTempFile(text, ".tmp");
@@ -677,7 +677,7 @@ public class Saved {
                     }
                     in.close();
 
-                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
                     int i = ((Long) result.getOrDefault("code", 2)).intValue();
                     if(i == 2){
                         throw new RuntimeException("Ошибка приложения!");
@@ -724,7 +724,7 @@ public class Saved {
                     }
                     in.close();
 
-                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
                     String filebody = (String)result.get("filebody");
                     File out2 = new File(out,"MySweetyPhone");
                     out2.mkdirs();
@@ -812,7 +812,7 @@ public class Saved {
                     }
                     in.close();
 
-                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
                     String filebody = (String) result.get("filebody");
 
                     File out = File.createTempFile(text, ".tmp");
@@ -870,7 +870,7 @@ public class Saved {
                     }
                     in.close();
 
-                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
                     int i = ((Long) result.getOrDefault("code", 2)).intValue();
                     if(i == 2){
                         throw new RuntimeException("Ошибка приложения!");
@@ -917,7 +917,7 @@ public class Saved {
                     }
                     in.close();
 
-                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
                     String filebody = (String)result.get("filebody");
                     File out2 = new File(out,"MySweetyPhone");
                     out2.mkdirs();
@@ -961,7 +961,7 @@ public class Saved {
                 }
                 in.close();
 
-                JSONObject result = (JSONObject) JSONValue.parse(response.toString());
+                JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
                 int i = ((Long) result.getOrDefault("code", 2)).intValue();
                 if(i == 2){
                     throw new RuntimeException("Ошибка приложения!");
@@ -1018,7 +1018,7 @@ public class Saved {
                         entity.addPart("submit", new StringBody(""));
                         post.setEntity(entity);
                         String response = EntityUtils.toString(client.execute(post).getEntity(), "UTF-8");
-                        JSONObject result = (JSONObject) JSONValue.parse(response);
+                        JSONObject result = (JSONObject) JSONValue.parse(response.strip());
                         int i = ((Long) result.getOrDefault("code", 2)).intValue();
                         if (i == 2) {
                             throw new RuntimeException("Ошибка приложения!");

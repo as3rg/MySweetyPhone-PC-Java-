@@ -72,7 +72,7 @@ public class Receiving {
                     }while (!socket.isClosed() && (m == null || m.getNext() != -1));
                     if(messageParser.messageMap.get(head) == null) continue;
                     String msgString = new String(messageParser.parse(head));
-                    JSONObject msg = (JSONObject) JSONValue.parse(msgString);
+                    JSONObject msg = (JSONObject) JSONValue.parse(msgString.strip());
                     Platform.runLater(()-> {
                         try {
                             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
