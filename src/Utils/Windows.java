@@ -1,5 +1,6 @@
 package Utils;
 
+import java.io.File;
 import java.nio.file.Paths;
 
 public class Windows {
@@ -167,7 +168,7 @@ public class Windows {
     public static final int VK_OEM_CLEAR = 0xFE;
 
     static  {
-        System.load(Paths.get("src\\Utils\\Utils_Windows.so").toAbsolutePath().toString());
+        System.load(new File(new File("src","Utils"),"Utils_Windows.so").getAbsolutePath());
     }
 
     static public native void keyboard_event(int key);

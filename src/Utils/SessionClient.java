@@ -79,7 +79,6 @@ public class SessionClient extends Session{
             try {
                 while (System.currentTimeMillis() - time <= 60000) {
                     s.receive(p);
-                    System.out.println(new String(p.getData()));
                     JSONObject ans = (JSONObject) JSONValue.parse(new String(p.getData()).strip());
                     if (!ips.containsKey(p.getAddress().getHostAddress())) {
                         servers.add(new SessionClient(p.getAddress(),((Long)ans.get("port")).intValue(), ((Long)ans.get("type")).intValue()));
@@ -152,7 +151,7 @@ public class SessionClient extends Session{
                                 Stage stage = new Stage();
                                 FileViewer.sessionClients.push(new Pair<>(this, stage));
                                 FXMLLoader loader = new FXMLLoader();
-                                loader.setLocation(new File("src\\sample\\FileViewer.fxml").toURL());
+                                loader.setLocation(new File(new File("src","sample"),"FileViewer.fxml").toURL());
                                 BorderPane pane = loader.load();
                                 Scene scene = new Scene(pane, 250, 150);
                                 stage.setScene(scene);

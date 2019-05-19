@@ -138,48 +138,49 @@ public class FileViewer {
                                             writer.println(msg3.toJSONString());
                                             writer.flush();
                                         }).start());
-                                    else folder.setOnMouseClicked(v -> new Thread(() -> {
-                                        try {
-                                            DirectoryChooser fc = new DirectoryChooser();
-                                            fc.setTitle("Выберите папку для сохранения");
-                                            final File out = fc.showDialog(null);
-                                            if(out == null) return;
-                                            File out3 = new File(out,"MySweetyPhone");
-                                            out.mkdirs();
-                                            File out2 = new File(out3, (String)((JSONObject)values.get(i2)).get("Name"));
-                                            out2.createNewFile();
+                                    else folder.setOnMouseClicked(v -> {
+                                        DirectoryChooser fc = new DirectoryChooser();
+                                        fc.setTitle("Выберите папку для сохранения");
+                                        final File out = fc.showDialog(null);
+                                        if (out == null) return;
+                                        new Thread(() -> {
+                                            try {
+                                                File out3 = new File(out, "MySweetyPhone");
+                                                out3.mkdirs();
+                                                File out2 = new File(out3, (String) ((JSONObject) values.get(i2)).get("Name"));
 
-                                            ServerSocket ss = new ServerSocket(0);
-                                            JSONObject msg2 = new JSONObject();
-                                            msg2.put("Type", "downloadFile");
-                                            msg2.put("Name", name);
-                                            msg2.put("FileName", ((JSONObject)values.get(i2)).get("Name"));
-                                            msg2.put("FileSocketPort", ss.getLocalPort());
-                                            msg2.put("Dir", Path.getText());
-                                            writer.println(msg2.toJSONString());
-                                            writer.flush();
-                                            Socket socket = ss.accept();
-                                            DataInputStream filein = new DataInputStream(socket.getInputStream());
-                                            FileOutputStream fileout = new FileOutputStream(out2);
-                                            IOUtils.copy(filein, fileout);
-                                            fileout.close();
-                                            socket.close();
-                                            Platform.runLater(()->{
-                                                try {
-                                                    SystemTray tray = SystemTray.getSystemTray();
-                                                    Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
-                                                    TrayIcon trayIcon = new TrayIcon(image, "");
-                                                    trayIcon.setImageAutoSize(true);
-                                                    tray.add(trayIcon);
-                                                    trayIcon.displayMessage("Загрузка завершена", "Файл \""+out2.getName()+"\" загружен", TrayIcon.MessageType.INFO);
-                                                } catch (AWTException e) {
-                                                    e.printStackTrace();
-                                                }
-                                            });
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }).start());
+                                                ServerSocket ss = new ServerSocket(0);
+                                                JSONObject msg2 = new JSONObject();
+                                                msg2.put("Type", "downloadFile");
+                                                msg2.put("Name", name);
+                                                msg2.put("FileName", ((JSONObject) values.get(i2)).get("Name"));
+                                                msg2.put("FileSocketPort", ss.getLocalPort());
+                                                msg2.put("Dir", Path.getText());
+                                                writer.println(msg2.toJSONString());
+                                                writer.flush();
+                                                Socket socket = ss.accept();
+                                                DataInputStream filein = new DataInputStream(socket.getInputStream());
+                                                FileOutputStream fileout = new FileOutputStream(out2);
+                                                IOUtils.copy(filein, fileout);
+                                                fileout.close();
+                                                socket.close();
+                                                Platform.runLater(() -> {
+                                                    try {
+                                                        SystemTray tray = SystemTray.getSystemTray();
+                                                        Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
+                                                        TrayIcon trayIcon = new TrayIcon(image, "");
+                                                        trayIcon.setImageAutoSize(true);
+                                                        tray.add(trayIcon);
+                                                        trayIcon.displayMessage("Загрузка завершена", "Файл \"" + out2.getName() + "\" загружен", TrayIcon.MessageType.INFO);
+                                                    } catch (AWTException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                });
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }).start();
+                                    });
                                 }
                             });
                             break;
