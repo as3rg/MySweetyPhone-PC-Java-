@@ -15,6 +15,7 @@
       <root url="jar://$PROJECT_DIR$/libs/zxing-1.7-javase.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/zxing-core-2.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/commons-io-2.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/sikulixapi.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

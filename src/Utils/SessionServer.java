@@ -1,5 +1,6 @@
 package Utils;
 
+import com.sun.jna.platform.unix.X11;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -11,6 +12,7 @@ import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import org.sikuli.script.Screen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -76,6 +78,7 @@ public class SessionServer extends Session{
                     try {
                         Dsocket.setBroadcast(true);
                         Robot r = new Robot();
+                        Screen s = new Screen();
                         DatagramPacket p;
                         SimpleIntegerProperty gotAccess = new SimpleIntegerProperty(0);
                         while (!Dsocket.isClosed()) {
@@ -161,13 +164,7 @@ public class SessionServer extends Session{
                                                 r.keyRelease(KeyEvent.getExtendedKeyCodeForChar(i));
                                             }
                                         }else {
-                                            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                                            clipboard.setContents(new StringSelection((String) msg.get("value")), null);
-
-                                            r.keyPress(KeyEvent.VK_CONTROL);
-                                            r.keyPress(KeyEvent.VK_V);
-                                            r.keyRelease(KeyEvent.VK_V);
-                                            r.keyRelease(KeyEvent.VK_CONTROL);
+                                            s.paste((String) msg.get("value"));
 //                                        for(char Char : ((String) msg.get("value")).toCharArray()) {
 //                                            r.keyPress(KeyEvent.VK_ALT);
 //                                            String Char2 = Integer.toString(charToAltCode(Char));
