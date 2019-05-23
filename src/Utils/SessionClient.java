@@ -3,6 +3,7 @@ package Utils;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyEvent;
@@ -18,6 +19,8 @@ import javafx.util.Pair;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import sample.FileViewer;
+import sample.Main;
+import sample.SMSViewer;
 
 import java.awt.*;
 import java.io.File;
@@ -151,14 +154,59 @@ public class SessionClient extends Session{
                                 Stage stage = new Stage();
                                 FileViewer.sessionClients.push(new Pair<>(this, stage));
                                 FXMLLoader loader = new FXMLLoader();
-                                loader.setLocation(new File(new File("src","sample"),"FileViewer.fxml").toURL());
+                                loader.setLocation(new File(new File("src", "sample"), "FileViewer.fxml").toURL());
                                 BorderPane pane = loader.load();
-                                Scene scene = new Scene(pane, 250, 150);
+                                stage.setMinHeight(760);
+                                stage.setMinWidth(500);
+                                Scene scene = new Scene(pane, 1270, 720);
                                 stage.setScene(scene);
                                 stage.show();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
+                        });
+                    } catch (ConnectException e){
+                        Platform.runLater(() -> {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Ошибка");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Сессия закрыта");
+                            alert.show();
+                        });
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                break;
+            case SMSVIEW:
+                t = new Thread(()->{
+                    try {
+                        if (searching != null) StopSearching();
+                        Ssocket = new Socket(address, port);
+                        Platform.runLater(() -> {
+                            try {
+                                Stage stage = new Stage();
+                                SMSViewer.sessionClients.push(new Pair<>(this, stage));
+                                FXMLLoader loader = new FXMLLoader();
+                                loader.setLocation(new File(new File("src", "sample"), "SMSViewer.fxml").toURL());
+                                AnchorPane pane = loader.load();
+                                stage.setMinHeight(760);
+                                stage.setMinWidth(500);
+                                Scene scene = new Scene(pane, 1270, 720);
+                                scene.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
+                                stage.setScene(scene);
+                                stage.show();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    } catch (ConnectException e){
+                        Platform.runLater(() -> {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Ошибка");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Сессия закрыта");
+                            alert.show();
                         });
                     } catch (IOException e) {
                         e.printStackTrace();

@@ -6,10 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -28,7 +25,7 @@ public class MainActivity {
     public URL location;
 
     @FXML
-    public FlowPane MainPane;
+    public BorderPane MainPane;
 
     @FXML
     private Button Reload;
@@ -62,9 +59,9 @@ public class MainActivity {
         Thread Resize = new Thread(()->{
             try {
                 while (MainPane.getScene() == null) Thread.sleep(100);
-                Replace.prefHeightProperty().bind(MainPane.getScene().heightProperty().subtract(Header.heightProperty()));
-                Replace.prefWidthProperty().bind(MainPane.getScene().widthProperty().subtract(MenuPane.widthProperty()));
-                Header.prefWidthProperty().bind(MainPane.getScene().widthProperty());
+                Replace.prefHeightProperty().bind(MainPane.getScene().getWindow().heightProperty().subtract(Header.heightProperty()));
+                Replace.prefWidthProperty().bind(MainPane.getScene().getWindow().widthProperty().subtract(MenuPane.widthProperty()));
+                Header.prefWidthProperty().bind(MainPane.getScene().getWindow().widthProperty());
                 MenuPane.prefHeightProperty().bind(Replace.prefHeightProperty());
                 for (Node b: MenuPane.getChildren()) {
                     ((Button) b).prefWidthProperty().bind(MenuPane.widthProperty());

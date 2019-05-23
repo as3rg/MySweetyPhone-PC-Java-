@@ -36,6 +36,7 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EncodingUtils;
 import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -48,6 +49,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -101,7 +103,7 @@ public class Saved {
                 LoadButton.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty().divide(5).multiply(2));
                 SendBar.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
                 MainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
-                MainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
+                MainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty().subtract(40));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -197,10 +199,6 @@ public class Saved {
         DateLabel.setPadding(new Insets(0, 10, 0, 10));
         textLabel.setText(text);
         textLabel.setFont(Font.font(15));
-        textLabel.setStyle("-fx-text-fill: #ffffff;");
-        textLabel.setStyle("-fx-text-fill: #ffffff;");
-        textLabel.setStyle("-fx-text-fill: #ffffff;");
-        textLabel.setStyle("-fx-text-fill: #ffffff;");
         textLabel.setWrapText(true);
         textLabel.setStyle("-fx-text-fill: #ffffff;");
         if(text.isEmpty()){
@@ -297,10 +295,6 @@ public class Saved {
         textLabel.setText(text);
         vBox.setPadding(new Insets(10, 10, 10, 10));
         textLabel.setFont(Font.font(15));
-        textLabel.setStyle("-fx-text-fill: #ffffff;");
-        textLabel.setStyle("-fx-text-fill: #ffffff;");
-        textLabel.setStyle("-fx-text-fill: #ffffff;");
-        textLabel.setStyle("-fx-text-fill: #ffffff;");
         textLabel.setStyle("-fx-text-fill: #ffffff;");
         vBox.getChildren().add(textLabel);
         vBox.getChildren().add(DateLabel);
@@ -427,9 +421,6 @@ public class Saved {
         textLabel.setText(text);
         TextVBox.setPadding(new Insets(5, 10, 10, 10));
         textLabel.setFont(Font.font(15));
-        textLabel.setStyle("-fx-text-fill: #ffffff;");
-        textLabel.setStyle("-fx-text-fill: #ffffff;");
-        textLabel.setStyle("-fx-text-fill: #ffffff;");
         textLabel.setStyle("-fx-text-fill: #ffffff;");
         TextVBox.getChildren().add(textLabel);
         TextVBox.getChildren().add(DateLabel);
@@ -585,9 +576,6 @@ public class Saved {
         textLabel.setText(text);
         TextVBox.setPadding(new Insets(5, 10, 10, 10));
         textLabel.setFont(Font.font(15));
-        textLabel.setStyle("-fx-text-fill: #ffffff;");
-        textLabel.setStyle("-fx-text-fill: #ffffff;");
-        textLabel.setStyle("-fx-text-fill: #ffffff;");
         textLabel.setStyle("-fx-text-fill: #ffffff;");
         TextVBox.getChildren().add(textLabel);
         TextVBox.getChildren().add(DateLabel);
@@ -769,9 +757,6 @@ public class Saved {
         TextVBox.setPadding(new Insets(5, 10, 10, 10));
         textLabel.setFont(Font.font(15));
         textLabel.setStyle("-fx-text-fill: #ffffff;");
-        textLabel.setStyle("-fx-text-fill: #ffffff;");
-        textLabel.setStyle("-fx-text-fill: #ffffff;");
-        textLabel.setStyle("-fx-text-fill: #ffffff;");
         TextVBox.getChildren().add(textLabel);
         TextVBox.getChildren().add(DateLabel);
 
@@ -948,7 +933,7 @@ public class Saved {
         Runnable r;
         r = () -> {
             try {
-                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=SendMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Msg="+MessageText.getText().replace(" ","%20").replace("\n","\\n"));
+                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=SendMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Msg="+MessageText.getText());
                 HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                 connection.setRequestMethod("GET");
 
@@ -968,7 +953,7 @@ public class Saved {
                 }else if(i == 1){
                     throw new RuntimeException("Неверные данные");
                 }else if(i == 0){
-                    Draw(MessageText.getText(), (Integer) result.getOrDefault("time", 2), name, false, true);
+                    Draw(MessageText.getText(), ((Long) result.getOrDefault("time", 2)).intValue(), name, false, true);
                     MessageText.setText("");
                 }else if(i == 4){
                     Platform.runLater(() -> {

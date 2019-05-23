@@ -22,7 +22,8 @@ public abstract class Session{
     public static final int
             NONE = 0,
             MOUSE = 1,
-            FILEVIEW = 2;
+            FILEVIEW = 2,
+            SMSVIEW = 3;
 
     public static Stack<Session> sessions;
 

@@ -44,3 +44,16 @@
 .check-box{
     -fx-background-color: #ff0000;
 }
+
+.list-view .list-cell{
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 15;
+}
+
+.list-view .list-cell:odd {
+    -fx-background-color: #202020;
+}
+
+.list-view .list-cell:even {
+    -fx-background-color: #222222;
+}
