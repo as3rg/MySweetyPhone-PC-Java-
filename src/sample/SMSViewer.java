@@ -3,6 +3,7 @@ package sample;
 import Utils.Request;
 import Utils.SessionClient;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -46,7 +47,10 @@ public class SMSViewer {
     private URL location;
 
     @FXML
-    private Button SendButton;
+    private Button SendButton1;
+
+    @FXML
+    private Button SendButton2;
 
     @FXML
     private FlowPane SendBar;
@@ -62,6 +66,9 @@ public class SMSViewer {
 
     @FXML
     private BorderPane MainPane;
+
+    @FXML
+    private BorderPane MainPane2;
 
     @FXML
     private TextArea MessageText;
@@ -100,7 +107,8 @@ public class SMSViewer {
                 Contacts.prefHeightProperty().bind(stage.heightProperty());
                 Contacts.prefWidthProperty().bind(stage.widthProperty().divide(5));
                 MessageText.prefWidthProperty().bind(stage.widthProperty().divide(10).multiply(8).subtract(50).subtract(Contacts.widthProperty()));
-                SendButton.prefWidthProperty().bind(stage.widthProperty().divide(5));
+                SendButton1.prefWidthProperty().bind(stage.widthProperty().divide(10));
+                SendButton2.prefWidthProperty().bind(stage.widthProperty().divide(10));
                 SendBar.prefWidthProperty().bind(stage.widthProperty());
                 MainPane.prefWidthProperty().bind(stage.widthProperty());
                 MainPane.prefHeightProperty().bind(stage.heightProperty().subtract(40));
@@ -120,6 +128,7 @@ public class SMSViewer {
         name = (String) props.getOrDefault("name", "");
 
         Contacts.setOnMouseClicked(event -> new Thread(()->{
+            if(Contacts.getItems().isEmpty()) return;
             JSONObject msg = new JSONObject();
             msg.put("Type", "showSMSs");
             msg.put("Name", name);
@@ -143,11 +152,32 @@ public class SMSViewer {
                 msg2.put("Name", name);
                 writer.println(msg2.toJSONString());
                 writer.flush();
+                SimpleStringProperty Sim1 = new SimpleStringProperty(""), Sim2 = new SimpleStringProperty("");
                 while (true) {
                     String line = reader.readLine();
                     System.out.println(line);
                     JSONObject msg = (JSONObject) JSONValue.parse(line.strip());
                     switch ((String) msg.get("Type")) {
+                        case "start":
+                            Sim1.set((String) msg.get("Sim1"));
+                            Sim2.set((String) msg.get("Sim2"));
+                            Platform.runLater(()->{
+                                if(Sim1.get().isEmpty() && Sim2.get().isEmpty()){
+                                    MainPane2.getChildren().remove(SendBar);
+                                }else if(Sim1.get().isEmpty()){
+                                    SendBar.getChildren().remove(SendButton1);
+                                    SendButton2.prefWidthProperty().bind(stage.widthProperty().divide(5));
+                                    SendButton2.setText(Sim2.get());
+                                }else if(Sim2.get().isEmpty()){
+                                    SendBar.getChildren().remove(SendButton2);
+                                    SendButton1.prefWidthProperty().bind(stage.widthProperty().divide(5));
+                                    SendButton1.setText(Sim1.get());
+                                }else {
+                                    SendButton1.setText(Sim1.get());
+                                    SendButton2.setText(Sim2.get());
+                                }
+                            });
+                            break;
                         case "accepted":
                             writer.println(msg2.toJSONString());
                             writer.flush();
@@ -168,7 +198,7 @@ public class SMSViewer {
                                 Messages.getChildren().clear();
                                 for (int i = 0; i < values.size(); i++) {
                                     JSONObject message = (JSONObject)values.get(i);
-                                    DrawText((String)message.get("text"), ((Long)message.get("date")).longValue(), false, ((Long)message.get("type")).intValue());
+                                    DrawText((String)message.get("text"), ((Long)message.get("date")).longValue(), false, ((Long)message.get("type")).intValue(), ((Long)message.get("sim")).intValue() == 1 ? Sim1.get() : Sim2.get());
                                 }
                             });
                             break;
@@ -177,7 +207,7 @@ public class SMSViewer {
                             Platform.runLater(() -> {
                                 for (int i = 0; i < values.size(); i++) {
                                     JSONObject message = (JSONObject)values.get(i);
-                                    DrawText((String)message.get("text"), ((Long)message.get("date")).longValue(), true, ((Long)message.get("type")).intValue());
+                                    DrawText((String)message.get("text"), ((Long)message.get("date")).longValue(), true, ((Long)message.get("type")).intValue(), ((Long)message.get("sim")).intValue() == 1 ? Sim1.get() : Sim2.get());
                                 }
                             });
                             break;
@@ -201,7 +231,7 @@ public class SMSViewer {
         });
     }
 
-    private void DrawText(String text, long date, Boolean needsAnim, int type) {
+    private void DrawText(String text, long date, Boolean needsAnim, int type, String sender) {
         Date Date = new Date(date * 1000L);
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd.MM.yyyy");
         VBox vBox = new VBox();
@@ -209,7 +239,7 @@ public class SMSViewer {
         Label DateLabel = new Label();
         vBox.maxWidthProperty().bind(Messages.widthProperty().divide(2));
         DateLabel.setStyle("-fx-text-fill: #ffffff;");
-        DateLabel.setText(sdf.format(Date));
+        DateLabel.setText(sdf.format(Date)+", "+sender);
         DateLabel.setPadding(new Insets(0, 10, 0, 10));
         textLabel.setText(text);
         textLabel.setFont(Font.font(15));
@@ -232,9 +262,10 @@ public class SMSViewer {
         }else if(type == 2){
             vBox.setStyle("-fx-background-color: linear-gradient(from 0% 100% to 100% 0%, #CF8BF3, #FDB99B); -fx-background-radius: 10;");
             hBox.setAlignment(Pos.CENTER_RIGHT);
-        }else {
-            System.out.println(type);
-        }
+        }else if(type == 5){
+            vBox.setStyle("-fx-background-color: #FF0000; -fx-background-radius: 10;");
+            hBox.setAlignment(Pos.CENTER_RIGHT);
+        }else return;
         Platform.runLater(() -> {
             Messages.getChildren().add(hBox);
             if (needsAnim) {
@@ -246,23 +277,29 @@ public class SMSViewer {
     }
 
     @FXML
-    private void onSendClick(){
+    private void onSendClick1(){
+        onSendClick(1);
+    }
+
+    @FXML
+    private void onSendClick2(){
+        onSendClick(2);
+    }
+
+
+
+    @FXML
+    private void onSendClick(int i){
         new Thread(() -> {
             JSONObject msg2 = new JSONObject();
             msg2.put("Type", "sendSMS");
             msg2.put("Number", Contacts.getSelectionModel().getSelectedItem());
             msg2.put("Text",MessageText.getText());
             msg2.put("Name", name);
+            msg2.put("Sim", i);
             writer.println(msg2.toJSONString());
             writer.flush();
             Platform.runLater(()->MessageText.setText(""));
         }).start();
-    }
-
-    @FXML
-    private void onKeyPressed(KeyEvent value){
-        if(value.isShiftDown() && value.getCode() == KeyCode.ENTER){
-            onSendClick();
-        }
     }
 }
