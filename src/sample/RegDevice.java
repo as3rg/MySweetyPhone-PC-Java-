@@ -1,5 +1,6 @@
 package sample;
 
+import Utils.Request;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +12,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import org.apache.http.entity.mime.MultipartEntity;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
@@ -86,54 +88,53 @@ public class RegDevice {
         int id = Integer.parseInt((String)props.getOrDefault("id","-1"));
         String login = (String)props.getOrDefault("login","");
         Runnable r = () -> {
-            try {
-                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=AddDevice&DeviceType=PC&Id="+id+"&Login="+login+"&Name="+DeviceName.getText());
-
-                HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
-                connection.setRequestMethod("GET");
-
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-
-
-                JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
-                int i = ((Long)result.getOrDefault("code", 2)).intValue();
-                Platform.runLater(()-> {
-                    try {
-                        if (i == 3) {
-                            Error.setVisible(true);
-                            Error.setText("Вы должны указать имя!!");
-                        } else if (i == 2) {
-                            Error.setVisible(true);
-                            Error.setText("Ошибка приложения!");
-                        } else if (i == 1) {
-                            Error.setVisible(true);
-                            Error.setText("Вы уже используете это имя!");
-                        } else if (i == 0) {
-                            props.setProperty("name", DeviceName.getText());
-                            props.setProperty("regdate", ((Long) result.get("regdate")).toString());
-                            props.store(new FileOutputStream("properties.properties"), "");
-                            AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
-                            MainPane.getChildren().setAll(pane);
-                        } else {
-                            Error.setVisible(true);
-                            Error.setText("Ошибка приложения!");
+            Request request = new Request() {
+                @Override
+                protected void On0() {
+                    Platform.runLater(()-> {
+                        try {
+                                props.setProperty("name", DeviceName.getText());
+                                props.setProperty("regdate", ((Long) result.get("regdate")).toString());
+                                props.store(new FileOutputStream("properties.properties"), "");
+                                AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
+                                MainPane.getChildren().setAll(pane);
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                        Next.setDisable(false);
-                        DeviceName.setDisable(false);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                    });
+                }
+
+                @Override
+                protected void On1() {
+                    Platform.runLater(()-> {
+                        Error.setVisible(true);
+                        Error.setText("Вы уже используете это имя!");
+                    });
+                }
+
+                @Override
+                protected void On2() {
+                    Platform.runLater(()-> {
+                        Error.setVisible(true);
+                        Error.setText("Ошибка приложения!");
+                    });
+                }
+
+                @Override
+                protected void On3() {
+                    Platform.runLater(()-> {
+                        Error.setVisible(true);
+                        Error.setText("Вы должны указать имя!!");
+
+                    });
+                }
+
+                @Override
+                protected void On4() {
+
+                }
+            };
+            request.Start("http://mysweetyphone.herokuapp.com/?Type=AddDevice&DeviceType=PC&Id="+id+"&Login="+login+"&Name="+DeviceName.getText(), new MultipartEntity());
         };
         Thread t = new Thread(r);
         t.start();

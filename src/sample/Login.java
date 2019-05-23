@@ -1,15 +1,17 @@
 package sample;
 
+import Utils.Request;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
+import org.apache.http.entity.mime.MultipartEntity;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import sample.Anims.Shake;
@@ -106,24 +108,10 @@ public class Login {
             if (Long.parseLong((String) props.getOrDefault("id", "-1")) != -1L) {
 
                 Runnable r = () -> {
-                    try {
-                        URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate=" + regdate + "&Login=" + login + "&Id=" + id + "&Name=" + name);
-                        HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
-                        connection.setRequestMethod("GET");
-
-                        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                        String inputLine;
-                        StringBuffer response = new StringBuffer();
-
-                        while ((inputLine = in.readLine()) != null) {
-                            response.append(inputLine);
-                        }
-                        in.close();
-
-                        JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
-                        int i = ((Long) result.getOrDefault("code", 2)).intValue();
-                        if (i == 0) {
-                            i = ((Long) result.getOrDefault("result", 0)).intValue();
+                    Request request = new Request(){
+                        @Override
+                        protected void On0() {
+                            int i = ((Long) result.getOrDefault("result", 0)).intValue();
                             if (i == 2) {
                                 Platform.runLater(() -> {
                                     try {
@@ -145,11 +133,32 @@ public class Login {
 
                             }
                         }
-                        LoginButton.setDisable(false);
-                        Nick.setDisable(false);
-                        Pass.setDisable(false);
-                        Type.setDisable(false);
-                    } catch (IOException e) {}
+
+                        @Override
+                        protected void On1() {
+                            throw new RuntimeException("Неверные данные");
+                        }
+
+                        @Override
+                        protected void On2() {
+                            throw new RuntimeException("Ошибка приложения!");
+                        }
+
+                        @Override
+                        protected void On3() {
+                            throw new RuntimeException("Файл не отправлен!");
+                        }
+
+                        @Override
+                        protected void On4() {
+
+                        }
+                    };
+                    request.Start("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate=" + regdate + "&Login=" + login + "&Id=" + id + "&Name=" + name, new MultipartEntity());
+                    LoginButton.setDisable(false);
+                    Nick.setDisable(false);
+                    Pass.setDisable(false);
+                    Type.setDisable(false);
                 };
                 Thread t = new Thread(r);
                 t.start();
@@ -174,36 +183,11 @@ public class Login {
 
     private void RegOrLogin(String url, boolean IsLogin){
         Runnable r = () -> {
-            try {
-                URL obj = new URL(url);
-
-                HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
-                connection.setRequestMethod("GET");
-
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-
-
-                Platform.runLater(()->{
-                    try{
-                        JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
-                        int i = ((Long) result.getOrDefault("code", 2)).intValue();
-                        Shake onErrorShake = new Shake(LoginButton);
-                        if (i == 3) {
-                            Error.setVisible(true);
-                            Error.setText("Имя и Пароль должны быть заполнены!");
-                            onErrorShake.play();
-                        } else if (i == 1) {
-                            Error.setVisible(true);
-                            Error.setText(IsLogin ? "Ошибка! Неверное имя или пароль" : "Ошибка! Это имя уже используется");
-                            onErrorShake.play();
-                        } else if (i == 0) {
+            Request request = new Request() {
+                @Override
+                protected void On0() {
+                    Platform.runLater(()->{
+                        try {
                             File file = new File("properties.properties");
                             if (!file.exists())
                                 file.createNewFile();
@@ -215,16 +199,43 @@ public class Login {
                             propFile.close();
                             AnchorPane pane = FXMLLoader.load(getClass().getResource("RegDevice.fxml"));
                             MainPane.getChildren().setAll(pane);
-                        }else {
-                            throw new RuntimeException("Ошибка приложения!");
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                    });
+                }
+
+                @Override
+                protected void On1() {
+                    Platform.runLater(()->{
+                        Shake onErrorShake = new Shake(LoginButton);
+                        Error.setVisible(true);
+                        Error.setText(IsLogin ? "Ошибка! Неверное имя или пароль" : "Ошибка! Это имя уже используется");
+                        onErrorShake.play();
+                    });
+                }
+
+                @Override
+                protected void On2() {
+
+                }
+
+                @Override
+                protected void On3() {
+                    Platform.runLater(()->{
+                        Shake onErrorShake = new Shake(LoginButton);
+                        Error.setVisible(true);
+                        Error.setText("Имя и Пароль должны быть заполнены!");
+                        onErrorShake.play();
+                    });
+                }
+
+                @Override
+                protected void On4() {
+
+                }
+            };
+            request.Start(url, new MultipartEntity());
         };
         Thread t = new Thread(r);
         t.start();

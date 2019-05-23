@@ -1,5 +1,6 @@
 package sample;
 
+import Utils.Request;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.util.Callback;
+import org.apache.http.entity.mime.MultipartEntity;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
@@ -105,51 +107,68 @@ public class DevicesList {
         regdate = Integer.parseInt((String)props.getOrDefault("regdate","-1"));
         login = (String)props.getOrDefault("login","");
         name = (String)props.getOrDefault("name","");
-        URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate="+regdate+"&Login=" + login + "&Id=" + id + "&Name=" + name);
 
-        HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
-        connection.setRequestMethod("GET");
+        Request request = new Request() {
+            @Override
+            protected void On0() {
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
+            }
 
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        in.close();
+            @Override
+            protected void On1() {
+
+            }
+
+            @Override
+            protected void On2() {
+
+            }
+
+            @Override
+            protected void On3() {
+
+            }
+
+            @Override
+            protected void On4() {
+
+            }
+        };
+        request.Start("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate="+regdate+"&Login=" + login + "&Id=" + id + "&Name=" + name, new MultipartEntity());
 
         Runnable r = () -> {
-            try {
-                URL obj2 = new URL("http://mysweetyphone.herokuapp.com/?Type=ShowDevices&RegDate="+regdate+"&Login=" + login + "&Id=" + id + "&MyName=" + name);
-
-                HttpURLConnection connection2 = (HttpURLConnection) obj2.openConnection();
-                connection2.setRequestMethod("GET");
-
-                BufferedReader in2 = new BufferedReader(new InputStreamReader(connection2.getInputStream()));
-                String inputLine2;
-                StringBuffer response2 = new StringBuffer();
-
-                while ((inputLine2 = in2.readLine()) != null) {
-                    response2.append(inputLine2);
-                }
-                in2.close();
-
-                JSONObject result = (JSONObject) JSONValue.parse(response2.toString().strip());
-                int i = ((Long) result.getOrDefault("code", 2)).intValue();
-                if(i == 0){
+            Request request2 = new Request() {
+                @Override
+                protected void On0() {
                     for(String device : (ArrayList<String>)result.get("PCs")){
                         devices.add(new Device(device, false));
                     }
                     for(String device : (ArrayList<String>)result.get("Phones")){
                         devices.add(new Device(device, true));
                     }
-                }else if(i == 4){
+                }
+
+                @Override
+                protected void On1() {
+
+                }
+
+                @Override
+                protected void On2() {
+
+                }
+
+                @Override
+                protected void On3() {
+
+                }
+
+                @Override
+                protected void On4() {
                     throw new RuntimeException("Ваше устройство не зарегистрировано!");
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            };
+            request2.Start("http://mysweetyphone.herokuapp.com/?Type=ShowDevices&RegDate="+regdate+"&Login=" + login + "&Id=" + id + "&MyName=" + name, new MultipartEntity());
         };
         Thread t = new Thread(r);
         t.start();
@@ -179,24 +198,38 @@ public class DevicesList {
                             }
                         button.setOnMouseClicked(event -> {
                             Runnable r = () -> {
-                                try {
-                                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=RemoveDevice&RegDate="+regdate+"&Login=" + login + "&MyName=" + name + "&Id=" + id + "&Name=" + devices.get(getIndex()).getName());
+                                Request request = new Request() {
+                                    @Override
+                                    protected void On0() {
 
-                                    HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
-                                    connection.setRequestMethod("GET");
-                                    connection.getInputStream();
-                                    if (name.equals(devices.get(getIndex()).getName())){
-                                        devices.remove(getIndex());
-                                        throw new RuntimeException("Ваше устройство не зарегистрировано!");
                                     }
+
+                                    @Override
+                                    protected void On1() {
+
+                                    }
+
+                                    @Override
+                                    protected void On2() {
+
+                                    }
+
+                                    @Override
+                                    protected void On3() {
+
+                                    }
+
+                                    @Override
+                                    protected void On4() {
+
+                                    }
+                                };
+                                request.Start("http://mysweetyphone.herokuapp.com/?Type=RemoveDevice&RegDate="+regdate+"&Login=" + login + "&MyName=" + name + "&Id=" + id + "&Name=" + devices.get(getIndex()).getName(), new MultipartEntity());
+                                if (name.equals(devices.get(getIndex()).getName())){
                                     devices.remove(getIndex());
-                                } catch (ProtocolException e) {
-                                    e.printStackTrace();
-                                } catch (MalformedURLException e) {
-                                    e.printStackTrace();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
+                                    throw new RuntimeException("Ваше устройство не зарегистрировано!");
                                 }
+                                devices.remove(getIndex());
                             };
                             Thread t = new Thread(r);
                             t.start();

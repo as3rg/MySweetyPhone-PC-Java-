@@ -1,5 +1,6 @@
 package sample;
 
+import Utils.Request;
 import Utils.SessionClient;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
@@ -18,6 +19,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import org.apache.http.entity.mime.MultipartEntity;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -28,6 +30,7 @@ import java.awt.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -118,7 +121,7 @@ public class SMSViewer {
 
         Contacts.setOnMouseClicked(event -> new Thread(()->{
             JSONObject msg = new JSONObject();
-            msg.put("Type", "showSMS");
+            msg.put("Type", "showSMSs");
             msg.put("Name", name);
             Pattern r = Pattern.compile(".*\\((.+)\\)");
             Matcher m = r.matcher(Contacts.getSelectionModel().getSelectedItem());
@@ -142,6 +145,7 @@ public class SMSViewer {
                 writer.flush();
                 while (true) {
                     String line = reader.readLine();
+                    System.out.println(line);
                     JSONObject msg = (JSONObject) JSONValue.parse(line.strip());
                     switch ((String) msg.get("Type")) {
                         case "accepted":
@@ -158,13 +162,22 @@ public class SMSViewer {
                                 }
                             });
                             break;
-                        case "showSMS":
+                        case "showSMSs":
                             values = (JSONArray) msg.get("SMS");
                             Platform.runLater(() -> {
                                 Messages.getChildren().clear();
                                 for (int i = 0; i < values.size(); i++) {
                                     JSONObject message = (JSONObject)values.get(i);
                                     DrawText((String)message.get("text"), ((Long)message.get("date")).longValue(), false, ((Long)message.get("type")).intValue());
+                                }
+                            });
+                            break;
+                        case "newSMSs":
+                            values = (JSONArray) msg.get("SMS");
+                            Platform.runLater(() -> {
+                                for (int i = 0; i < values.size(); i++) {
+                                    JSONObject message = (JSONObject)values.get(i);
+                                    DrawText((String)message.get("text"), ((Long)message.get("date")).longValue(), true, ((Long)message.get("type")).intValue());
                                 }
                             });
                             break;
@@ -222,55 +235,6 @@ public class SMSViewer {
         }else {
             System.out.println(type);
         }
-
-//        final ContextMenu contextMenu = new ContextMenu();
-//        MenuItem delete = new MenuItem("Удалить");
-//        contextMenu.getItems().addAll(delete);
-//        delete.setOnAction(event -> {
-//            EventHandler r = (event1) -> {
-//                try {
-//                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+text.replace(" ","%20").replace("\n","\\n"));
-//
-//                    HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
-//                    connection.setRequestMethod("GET");
-//
-//                    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-//                    String inputLine;
-//                    StringBuffer response = new StringBuffer();
-//
-//                    while ((inputLine = in.readLine()) != null) {
-//                        response.append(inputLine);
-//                    }
-//                    in.close();
-//
-//                    JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
-//                    int i = ((Long) result.getOrDefault("code", 2)).intValue();
-//                    if(i == 2){
-//                        throw new RuntimeException("Ошибка приложения!");
-//                    }else if(i == 1){
-//                        throw new RuntimeException("Неверные данные");
-//                    }else if(i == 0){
-//                    }else if(i == 4){
-//                        Alert alert = new Alert(Alert.AlertType.ERROR);
-//                        alert.setTitle("Ошибка");
-//                        alert.setHeaderText(null);
-//                        alert.setContentText("Ваше устройство не зарегистрировано!");
-//                        alert.setOnCloseRequest(event2 -> Platform.exit());
-//                        alert.show();
-//                    }else{
-//                        throw new RuntimeException("Ошибка приложения!");
-//                    }
-//                    Messages.getChildren().remove(vBox);
-//                    if(Messages.getChildren().size() < 10)
-//                        LoadMore(10 - Messages.getChildren().size() + 1);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            };
-//            Destroy anim = new Destroy(vBox);
-//            anim.play(r);
-//        });
-//        vBox.setOnContextMenuRequested((EventHandler<Event>) event -> contextMenu.show(vBox, MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y));
         Platform.runLater(() -> {
             Messages.getChildren().add(hBox);
             if (needsAnim) {
@@ -283,49 +247,16 @@ public class SMSViewer {
 
     @FXML
     private void onSendClick(){
-        Runnable r;
-        r = () -> {
-            try {
-                URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=SendMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Msg="+MessageText.getText().replace(" ","%20").replace("\n","\\n"));
-                HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
-                connection.setRequestMethod("GET");
-
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-
-                JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
-                int i = ((Long) result.getOrDefault("code", 2)).intValue();
-                if(i == 2){
-                    throw new RuntimeException("Ошибка приложения!");
-                }else if(i == 1){
-                    throw new RuntimeException("Неверные данные");
-                }else if(i == 0){
-                    DrawText(MessageText.getText(), (Integer) result.getOrDefault("time", 2), false, 2);
-                    MessageText.setText("");
-                }else if(i == 4){
-                    Platform.runLater(() -> {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Ошибка");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Ваше устройство не зарегистрировано!");
-                        alert.setOnCloseRequest(event -> Platform.exit());
-                        alert.show();
-                    });
-                }else{
-                    throw new RuntimeException("Ошибка приложения!");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        };
-        Thread t = new Thread(r);
-        t.start();
+        new Thread(() -> {
+            JSONObject msg2 = new JSONObject();
+            msg2.put("Type", "sendSMS");
+            msg2.put("Number", Contacts.getSelectionModel().getSelectedItem());
+            msg2.put("Text",MessageText.getText());
+            msg2.put("Name", name);
+            writer.println(msg2.toJSONString());
+            writer.flush();
+            Platform.runLater(()->MessageText.setText(""));
+        }).start();
     }
 
     @FXML
