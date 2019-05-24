@@ -49,6 +49,7 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
@@ -168,7 +169,7 @@ public class Saved {
                         });
                     }
                 };
-                request.Start("http://mysweetyphone.herokuapp.com/?Type=GetMessages&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Count="+(Messages.getChildren().size()+Count), new MultipartEntity());
+                request.Start("http://mysweetyphone.herokuapp.com/?Type=GetMessages&RegDate="+regdate+"&MyName="+URLEncoder.encode(name, StandardCharsets.UTF_8)+"&Login="+URLEncoder.encode(login, StandardCharsets.UTF_8)+"&Id="+id+"&Count="+(Messages.getChildren().size()+Count), new MultipartEntity());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -214,47 +215,43 @@ public class Saved {
         contextMenu.getItems().addAll(delete);
         delete.setOnAction(event -> {
             EventHandler r = (event1) -> {
-                try {
-                    MultipartEntity entity = new MultipartEntity();
-                    Request request = new Request(){
-                        @Override
-                        protected void On0() {
-                            Messages.getChildren().remove(vBox);
-                            if(Messages.getChildren().size() < 10)
-                                LoadMore(10 - Messages.getChildren().size() + 1);
-                        }
+                MultipartEntity entity = new MultipartEntity();
+                Request request = new Request(){
+                    @Override
+                    protected void On0() {
+                        Messages.getChildren().remove(vBox);
+                        if(Messages.getChildren().size() < 10)
+                            LoadMore(10 - Messages.getChildren().size() + 1);
+                    }
 
-                        @Override
-                        protected void On1() {
-                            throw new RuntimeException("Неверные данные");
-                        }
+                    @Override
+                    protected void On1() {
+                        throw new RuntimeException("Неверные данные");
+                    }
 
-                        @Override
-                        protected void On2() {
-                            throw new RuntimeException("Ошибка приложения!");
-                        }
+                    @Override
+                    protected void On2() {
+                        throw new RuntimeException("Ошибка приложения!");
+                    }
 
-                        @Override
-                        protected void On3() {
-                            throw new RuntimeException("Файл не отправлен!");
-                        }
+                    @Override
+                    protected void On3() {
+                        throw new RuntimeException("Файл не отправлен!");
+                    }
 
-                        @Override
-                        protected void On4() {
-                            Platform.runLater(()-> {
-                                Alert alert = new Alert(Alert.AlertType.ERROR);
-                                alert.setTitle("Ошибка");
-                                alert.setHeaderText(null);
-                                alert.setContentText("Ваше устройство не зарегистрировано!");
-                                alert.setOnCloseRequest(event2 -> Platform.exit());
-                                alert.show();
-                            });
-                        }
-                    };
-                    request.Start("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+URLEncoder.encode(text, "UTF-8"), entity);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    @Override
+                    protected void On4() {
+                        Platform.runLater(()-> {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Ошибка");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Ваше устройство не зарегистрировано!");
+                            alert.setOnCloseRequest(event2 -> Platform.exit());
+                            alert.show();
+                        });
+                    }
+                };
+                request.Start("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+URLEncoder.encode(name, StandardCharsets.UTF_8)+"&Login="+URLEncoder.encode(login, StandardCharsets.UTF_8)+"&Id="+id+"&Date="+date+"&Msg="+URLEncoder.encode(text, StandardCharsets.UTF_8), entity);
             };
             Destroy anim = new Destroy(vBox);
             anim.play(r);
@@ -316,47 +313,43 @@ public class Saved {
         contextMenu.getItems().addAll(save);
         delete.setOnAction(event -> {
             EventHandler r = (event1) -> {
-                try {
-                    MultipartEntity entity = new MultipartEntity();
-                    Request request = new Request(){
-                        @Override
-                        protected void On0() {
-                            Messages.getChildren().remove(vBox);
-                            if(Messages.getChildren().size() < 10)
-                                LoadMore(10 - Messages.getChildren().size() + 1);
-                        }
+                MultipartEntity entity = new MultipartEntity();
+                Request request = new Request(){
+                    @Override
+                    protected void On0() {
+                        Messages.getChildren().remove(vBox);
+                        if(Messages.getChildren().size() < 10)
+                            LoadMore(10 - Messages.getChildren().size() + 1);
+                    }
 
-                        @Override
-                        protected void On1() {
-                            throw new RuntimeException("Неверные данные");
-                        }
+                    @Override
+                    protected void On1() {
+                        throw new RuntimeException("Неверные данные");
+                    }
 
-                        @Override
-                        protected void On2() {
-                            throw new RuntimeException("Ошибка приложения!");
-                        }
+                    @Override
+                    protected void On2() {
+                        throw new RuntimeException("Ошибка приложения!");
+                    }
 
-                        @Override
-                        protected void On3() {
-                            throw new RuntimeException("Файл не отправлен!");
-                        }
+                    @Override
+                    protected void On3() {
+                        throw new RuntimeException("Файл не отправлен!");
+                    }
 
-                        @Override
-                        protected void On4() {
-                            Platform.runLater(()-> {
-                                Alert alert = new Alert(Alert.AlertType.ERROR);
-                                alert.setTitle("Ошибка");
-                                alert.setHeaderText(null);
-                                alert.setContentText("Ваше устройство не зарегистрировано!");
-                                alert.setOnCloseRequest(event2 -> Platform.exit());
-                                alert.show();
-                            });
-                        }
-                    };
-                    request.Start("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+URLEncoder.encode(text, "UTF-8"), entity);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    @Override
+                    protected void On4() {
+                        Platform.runLater(()-> {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Ошибка");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Ваше устройство не зарегистрировано!");
+                            alert.setOnCloseRequest(event2 -> Platform.exit());
+                            alert.show();
+                        });
+                    }
+                };
+                request.Start("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+URLEncoder.encode(name, StandardCharsets.UTF_8)+"&Login="+URLEncoder.encode(login, StandardCharsets.UTF_8)+"&Id="+id+"&Date="+date+"&Msg="+URLEncoder.encode(text, StandardCharsets.UTF_8), entity);
             };
             Destroy anim = new Destroy(vBox);
             anim.play(r);
@@ -369,7 +362,7 @@ public class Saved {
             if (out == null) return;
             Runnable r = () -> {
                 try {
-                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
+                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + URLEncoder.encode(name, StandardCharsets.UTF_8) + "&Login=" + URLEncoder.encode(login, StandardCharsets.UTF_8) + "&Id=" + id + "&FileName=" + URLEncoder.encode(text, StandardCharsets.UTF_8) + "&Date=" + date);
 
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
@@ -436,7 +429,7 @@ public class Saved {
         (new Thread(() -> {
             while (true)
                 try {
-                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
+                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + URLEncoder.encode(name, StandardCharsets.UTF_8) + "&Login=" + URLEncoder.encode(login, StandardCharsets.UTF_8) + "&Id=" + id + "&FileName=" + URLEncoder.encode(text, StandardCharsets.UTF_8) + "&Date=" + date);
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
 
@@ -474,46 +467,42 @@ public class Saved {
         contextMenu.getItems().add(save);
         delete.setOnAction(event -> {
             EventHandler r = (event1) -> {
-                try {
-                    Request request = new Request(){
-                        @Override
-                        protected void On0() {
-                            Messages.getChildren().remove(vBox);
-                            if(Messages.getChildren().size() < 10)
-                                LoadMore(10 - Messages.getChildren().size() + 1);
-                        }
+                Request request = new Request(){
+                    @Override
+                    protected void On0() {
+                        Messages.getChildren().remove(vBox);
+                        if(Messages.getChildren().size() < 10)
+                            LoadMore(10 - Messages.getChildren().size() + 1);
+                    }
 
-                        @Override
-                        protected void On1() {
-                            throw new RuntimeException("Неверные данные");
-                        }
+                    @Override
+                    protected void On1() {
+                        throw new RuntimeException("Неверные данные");
+                    }
 
-                        @Override
-                        protected void On2() {
-                            throw new RuntimeException("Ошибка приложения!");
-                        }
+                    @Override
+                    protected void On2() {
+                        throw new RuntimeException("Ошибка приложения!");
+                    }
 
-                        @Override
-                        protected void On3() {
-                            throw new RuntimeException("Файл не отправлен!");
-                        }
+                    @Override
+                    protected void On3() {
+                        throw new RuntimeException("Файл не отправлен!");
+                    }
 
-                        @Override
-                        protected void On4() {
-                            Platform.runLater(()-> {
-                                Alert alert = new Alert(Alert.AlertType.ERROR);
-                                alert.setTitle("Ошибка");
-                                alert.setHeaderText(null);
-                                alert.setContentText("Ваше устройство не зарегистрировано!");
-                                alert.setOnCloseRequest(event2 -> Platform.exit());
-                                alert.show();
-                            });
-                        }
-                    };
-                    request.Start("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+URLEncoder.encode(text, "UTF-8"), new MultipartEntity());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    @Override
+                    protected void On4() {
+                        Platform.runLater(()-> {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Ошибка");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Ваше устройство не зарегистрировано!");
+                            alert.setOnCloseRequest(event2 -> Platform.exit());
+                            alert.show();
+                        });
+                    }
+                };
+                request.Start("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+URLEncoder.encode(name, StandardCharsets.UTF_8)+"&Login="+URLEncoder.encode(login, StandardCharsets.UTF_8)+"&Id="+id+"&Date="+date+"&Msg="+URLEncoder.encode(text, StandardCharsets.UTF_8), new MultipartEntity());
             };
             Destroy anim = new Destroy(vBox);
             anim.play(r);
@@ -525,7 +514,7 @@ public class Saved {
             if(out == null) return;
             Runnable r = () -> {
                 try {
-                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
+                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" +URLEncoder.encode(name, StandardCharsets.UTF_8)+ "&Login=" +URLEncoder.encode(login, StandardCharsets.UTF_8)+ "&Id=" + id + "&FileName=" + URLEncoder.encode(text, StandardCharsets.UTF_8) + "&Date=" + date);
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
 
@@ -597,7 +586,7 @@ public class Saved {
         new Thread(() -> {
             while (true)
                 try {
-                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
+                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" +URLEncoder.encode(name, StandardCharsets.UTF_8)+ "&Login=" +URLEncoder.encode(login, StandardCharsets.UTF_8)+ "&Id=" + id + "&FileName=" + URLEncoder.encode(text, StandardCharsets.UTF_8) + "&Date=" + date);
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
 
@@ -656,47 +645,43 @@ public class Saved {
         delete.setOnAction(event -> {
             if(Video.getMediaPlayer() != null) Video.getMediaPlayer().stop();
             EventHandler r = (event1) -> {
-                try {
-                    MultipartEntity entity = new MultipartEntity();
-                    Request request = new Request(){
-                        @Override
-                        protected void On0() {
-                            Messages.getChildren().remove(vBox);
-                            if(Messages.getChildren().size() < 10)
-                                LoadMore(10 - Messages.getChildren().size() + 1);
-                        }
+                MultipartEntity entity = new MultipartEntity();
+                Request request = new Request(){
+                    @Override
+                    protected void On0() {
+                        Messages.getChildren().remove(vBox);
+                        if(Messages.getChildren().size() < 10)
+                            LoadMore(10 - Messages.getChildren().size() + 1);
+                    }
 
-                        @Override
-                        protected void On1() {
-                            throw new RuntimeException("Неверные данные");
-                        }
+                    @Override
+                    protected void On1() {
+                        throw new RuntimeException("Неверные данные");
+                    }
 
-                        @Override
-                        protected void On2() {
-                            throw new RuntimeException("Ошибка приложения!");
-                        }
+                    @Override
+                    protected void On2() {
+                        throw new RuntimeException("Ошибка приложения!");
+                    }
 
-                        @Override
-                        protected void On3() {
-                            throw new RuntimeException("Файл не отправлен!");
-                        }
+                    @Override
+                    protected void On3() {
+                        throw new RuntimeException("Файл не отправлен!");
+                    }
 
-                        @Override
-                        protected void On4() {
-                            Platform.runLater(()-> {
-                                Alert alert = new Alert(Alert.AlertType.ERROR);
-                                alert.setTitle("Ошибка");
-                                alert.setHeaderText(null);
-                                alert.setContentText("Ваше устройство не зарегистрировано!");
-                                alert.setOnCloseRequest(event2 -> Platform.exit());
-                                alert.show();
-                            });
-                        }
-                    };
-                    request.Start("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+URLEncoder.encode(text, "UTF-8"), entity);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    @Override
+                    protected void On4() {
+                        Platform.runLater(()-> {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Ошибка");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Ваше устройство не зарегистрировано!");
+                            alert.setOnCloseRequest(event2 -> Platform.exit());
+                            alert.show();
+                        });
+                    }
+                };
+                request.Start("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+URLEncoder.encode(name, StandardCharsets.UTF_8)+"&Login="+URLEncoder.encode(login, StandardCharsets.UTF_8)+"&Id="+id+"&Date="+date+"&Msg="+URLEncoder.encode(text, StandardCharsets.UTF_8), entity);
             };
             Destroy anim = new Destroy(vBox);
             anim.play(r);
@@ -708,7 +693,7 @@ public class Saved {
             if(out == null) return;
             Runnable r = () -> {
                 try {
-                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
+                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" +URLEncoder.encode(name, StandardCharsets.UTF_8)+ "&Login=" +URLEncoder.encode(login, StandardCharsets.UTF_8)+ "&Id=" + id + "&FileName=" + URLEncoder.encode(text, StandardCharsets.UTF_8) + "&Date=" + date);
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
 
@@ -792,7 +777,7 @@ public class Saved {
 
             while (true) {
                 try {
-                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate=" + regdate + "&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ", "%20") + "&Date=" + date);
+                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate=" + regdate + "&MyName=" +URLEncoder.encode(name, StandardCharsets.UTF_8)+ "&Login=" +URLEncoder.encode(login, StandardCharsets.UTF_8)+ "&Id=" + id + "&FileName=" + URLEncoder.encode(text, StandardCharsets.UTF_8) + "&Date=" + date);
 
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
@@ -849,47 +834,43 @@ public class Saved {
         delete.setOnAction(event -> {
             Video.getMediaPlayer().stop();
             EventHandler r = (event1) -> {
-                try {
-                    MultipartEntity entity = new MultipartEntity();
-                    Request request = new Request(){
-                        @Override
-                        protected void On0() {
-                            Messages.getChildren().remove(vBox);
-                            if(Messages.getChildren().size() < 10)
-                                LoadMore(10 - Messages.getChildren().size() + 1);
-                        }
+                MultipartEntity entity = new MultipartEntity();
+                Request request = new Request(){
+                    @Override
+                    protected void On0() {
+                        Messages.getChildren().remove(vBox);
+                        if(Messages.getChildren().size() < 10)
+                            LoadMore(10 - Messages.getChildren().size() + 1);
+                    }
 
-                        @Override
-                        protected void On1() {
-                            throw new RuntimeException("Неверные данные");
-                        }
+                    @Override
+                    protected void On1() {
+                        throw new RuntimeException("Неверные данные");
+                    }
 
-                        @Override
-                        protected void On2() {
-                            throw new RuntimeException("Ошибка приложения!");
-                        }
+                    @Override
+                    protected void On2() {
+                        throw new RuntimeException("Ошибка приложения!");
+                    }
 
-                        @Override
-                        protected void On3() {
-                            throw new RuntimeException("Файл не отправлен!");
-                        }
+                    @Override
+                    protected void On3() {
+                        throw new RuntimeException("Файл не отправлен!");
+                    }
 
-                        @Override
-                        protected void On4() {
-                            Platform.runLater(()-> {
-                                Alert alert = new Alert(Alert.AlertType.ERROR);
-                                alert.setTitle("Ошибка");
-                                alert.setHeaderText(null);
-                                alert.setContentText("Ваше устройство не зарегистрировано!");
-                                alert.setOnCloseRequest(event2 -> Platform.exit());
-                                alert.show();
-                            });
-                        }
-                    };
-                    request.Start("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Date="+date+"&Msg="+URLEncoder.encode(text, "UTF-8"), entity);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    @Override
+                    protected void On4() {
+                        Platform.runLater(()-> {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Ошибка");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Ваше устройство не зарегистрировано!");
+                            alert.setOnCloseRequest(event2 -> Platform.exit());
+                            alert.show();
+                        });
+                    }
+                };
+                request.Start("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+URLEncoder.encode(name, StandardCharsets.UTF_8)+"&Login="+URLEncoder.encode(login, StandardCharsets.UTF_8)+"&Id="+id+"&Date="+date+"&Msg="+URLEncoder.encode(text, StandardCharsets.UTF_8), entity);
             };
             Destroy anim = new Destroy(vBox);
             anim.play(r);
@@ -901,7 +882,7 @@ public class Saved {
             if(out == null) return;
             Runnable r = () -> {
                 try {
-                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + name + "&Login=" + login + "&Id=" + id + "&FileName=" + text.replace(" ","%20") + "&Date=" + date);
+                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" +URLEncoder.encode(name, StandardCharsets.UTF_8)+ "&Login=" +URLEncoder.encode(login, StandardCharsets.UTF_8)+ "&Id=" + id + "&FileName=" + URLEncoder.encode(text, StandardCharsets.UTF_8) + "&Date=" + date);
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
 
@@ -944,46 +925,42 @@ public class Saved {
     private void onSendClick(){
         Runnable r;
         r = () -> {
-            try {
-                MultipartEntity entity = new MultipartEntity();
-                Request request = new Request(){
-                    @Override
-                    protected void On0() {
-                        Draw(MessageText.getText(), ((Long) result.getOrDefault("time", 2)).intValue(), name, false, true);
-                        MessageText.setText("");
-                    }
+            MultipartEntity entity = new MultipartEntity();
+            Request request = new Request(){
+                @Override
+                protected void On0() {
+                    Draw(MessageText.getText(), ((Long) result.getOrDefault("time", 2)).intValue(), name, false, true);
+                    MessageText.setText("");
+                }
 
-                    @Override
-                    protected void On1() {
-                        throw new RuntimeException("Неверные данные");
-                    }
+                @Override
+                protected void On1() {
+                    throw new RuntimeException("Неверные данные");
+                }
 
-                    @Override
-                    protected void On2() {
-                        throw new RuntimeException("Ошибка приложения!");
-                    }
+                @Override
+                protected void On2() {
+                    throw new RuntimeException("Ошибка приложения!");
+                }
 
-                    @Override
-                    protected void On3() {
-                        throw new RuntimeException("Файл не отправлен!");
-                    }
+                @Override
+                protected void On3() {
+                    throw new RuntimeException("Файл не отправлен!");
+                }
 
-                    @Override
-                    protected void On4() {
-                        Platform.runLater(() -> {
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("Ошибка");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Ваше устройство не зарегистрировано!");
-                            alert.setOnCloseRequest(event -> Platform.exit());
-                            alert.show();
-                        });
-                    }
-                };
-                request.Start("http://mysweetyphone.herokuapp.com/?Type=SendMessage&RegDate="+regdate+"&MyName="+name+"&Login="+login+"&Id="+id+"&Msg="+URLEncoder.encode(MessageText.getText(), "UTF-8"), entity);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                @Override
+                protected void On4() {
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Ошибка");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Ваше устройство не зарегистрировано!");
+                        alert.setOnCloseRequest(event -> Platform.exit());
+                        alert.show();
+                    });
+                }
+            };
+            request.Start("http://mysweetyphone.herokuapp.com/?Type=SendMessage&RegDate="+regdate+"&MyName="+URLEncoder.encode(name, StandardCharsets.UTF_8)+"&Login="+URLEncoder.encode(login, StandardCharsets.UTF_8)+"&Id="+id+"&Msg="+URLEncoder.encode(MessageText.getText(), StandardCharsets.UTF_8), entity);
         };
         Thread t = new Thread(r);
         t.start();
@@ -1046,7 +1023,7 @@ public class Saved {
                                 });
                             }
                         };
-                        request.Start("http://mysweetyphone.herokuapp.com/?Type=UploadFile&RegDate=" + regdate + "&MyName=" + name + "&Login=" + login + "&Id=" + id, entity);
+                        request.Start("http://mysweetyphone.herokuapp.com/?Type=UploadFile&RegDate=" + regdate + "&MyName=" +URLEncoder.encode(name, StandardCharsets.UTF_8)+ "&Login=" +URLEncoder.encode(login, StandardCharsets.UTF_8)+ "&Id=" + id, entity);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

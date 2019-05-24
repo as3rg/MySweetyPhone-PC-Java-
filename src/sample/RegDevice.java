@@ -19,6 +19,8 @@ import org.json.simple.JSONValue;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -134,7 +136,7 @@ public class RegDevice {
 
                 }
             };
-            request.Start("http://mysweetyphone.herokuapp.com/?Type=AddDevice&DeviceType=PC&Id="+id+"&Login="+login+"&Name="+DeviceName.getText(), new MultipartEntity());
+            request.Start("http://mysweetyphone.herokuapp.com/?Type=AddDevice&DeviceType=PC&Id="+id+"&Login="+ URLEncoder.encode(login, StandardCharsets.UTF_8)+"&Name="+URLEncoder.encode(DeviceName.getText(), StandardCharsets.UTF_8), new MultipartEntity());
         };
         Thread t = new Thread(r);
         t.start();

@@ -274,6 +274,12 @@ public class SessionServer extends Session{
                                         Optional<ButtonType> option = alert.showAndWait();
 
                                         if (option.get() != ButtonType.OK) {
+                                            new Thread(()->{
+                                                JSONObject ans = new JSONObject();
+                                                ans.put("Type", "finish");
+                                                writer.println(ans.toJSONString());
+                                                writer.flush();
+                                            }).start();
                                             Stop();
                                         } else {
                                             gotAccess.set(2);

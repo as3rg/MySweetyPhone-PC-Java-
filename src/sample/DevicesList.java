@@ -16,14 +16,9 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
+import java.io.*;
+import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -134,16 +129,16 @@ public class DevicesList {
 
             }
         };
-        request.Start("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate="+regdate+"&Login=" + login + "&Id=" + id + "&Name=" + name, new MultipartEntity());
+        request.Start("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate="+regdate+"&Login=" + URLEncoder.encode(login, StandardCharsets.UTF_8) + "&Id=" + id + "&Name=" + URLEncoder.encode(name, StandardCharsets.UTF_8), new MultipartEntity());
 
         Runnable r = () -> {
             Request request2 = new Request() {
                 @Override
                 protected void On0() {
-                    for(String device : (ArrayList<String>)result.get("PCs")){
+                    for (String device : (ArrayList<String>) result.get("PCs")) {
                         devices.add(new Device(device, false));
                     }
-                    for(String device : (ArrayList<String>)result.get("Phones")){
+                    for (String device : (ArrayList<String>) result.get("Phones")) {
                         devices.add(new Device(device, true));
                     }
                 }
@@ -168,7 +163,7 @@ public class DevicesList {
                     throw new RuntimeException("Ваше устройство не зарегистрировано!");
                 }
             };
-            request2.Start("http://mysweetyphone.herokuapp.com/?Type=ShowDevices&RegDate="+regdate+"&Login=" + login + "&Id=" + id + "&MyName=" + name, new MultipartEntity());
+            request2.Start("http://mysweetyphone.herokuapp.com/?Type=ShowDevices&RegDate=" + regdate + "&Login=" + URLEncoder.encode(login, StandardCharsets.UTF_8) + "&Id=" + id + "&MyName=" + URLEncoder.encode(name, StandardCharsets.UTF_8), new MultipartEntity());
         };
         Thread t = new Thread(r);
         t.start();
@@ -224,8 +219,8 @@ public class DevicesList {
 
                                     }
                                 };
-                                request.Start("http://mysweetyphone.herokuapp.com/?Type=RemoveDevice&RegDate="+regdate+"&Login=" + login + "&MyName=" + name + "&Id=" + id + "&Name=" + devices.get(getIndex()).getName(), new MultipartEntity());
-                                if (name.equals(devices.get(getIndex()).getName())){
+                                request.Start("http://mysweetyphone.herokuapp.com/?Type=RemoveDevice&RegDate=" + regdate + "&Login=" + URLEncoder.encode(login, StandardCharsets.UTF_8) + "&MyName=" + URLEncoder.encode(name, StandardCharsets.UTF_8) + "&Id=" + id + "&Name=" + URLEncoder.encode(devices.get(getIndex()).getName(), StandardCharsets.UTF_8), new MultipartEntity());
+                                if (name.equals(devices.get(getIndex()).getName())) {
                                     devices.remove(getIndex());
                                     throw new RuntimeException("Ваше устройство не зарегистрировано!");
                                 }

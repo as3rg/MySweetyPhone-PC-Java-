@@ -20,6 +20,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -154,7 +155,7 @@ public class Login {
 
                         }
                     };
-                    request.Start("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate=" + regdate + "&Login=" + login + "&Id=" + id + "&Name=" + name, new MultipartEntity());
+                    request.Start("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate=" + regdate + "&Login=" +URLEncoder.encode(login, StandardCharsets.UTF_8)+ "&Id=" + id + "&Name=" + URLEncoder.encode(name, StandardCharsets.UTF_8), new MultipartEntity());
                     LoginButton.setDisable(false);
                     Nick.setDisable(false);
                     Pass.setDisable(false);
@@ -166,19 +167,19 @@ public class Login {
         }
 
         LoginButton.setOnMouseClicked(event ->
-                RegOrLogin("http://mysweetyphone.herokuapp.com/?Type=Login&Login="+Nick.getText()+"&Pass="+Pass.getText(),true));
+                RegOrLogin("http://mysweetyphone.herokuapp.com/?Type=Login&Login="+URLEncoder.encode(Nick.getText(), StandardCharsets.UTF_8)+"&Pass="+URLEncoder.encode(Pass.getText(), StandardCharsets.UTF_8),true));
     }
 
     @FXML
     void ChangeToReg(){
         LoginButton.setText("Зарегистрироваться");
-        LoginButton.setOnMouseClicked(event -> RegOrLogin("http://mysweetyphone.herokuapp.com/?Type=Reg&Login="+Nick.getText()+"&Pass="+Pass.getText(), false));
+        LoginButton.setOnMouseClicked(event -> RegOrLogin("http://mysweetyphone.herokuapp.com/?Type=Reg&Login="+URLEncoder.encode(Nick.getText(), StandardCharsets.UTF_8)+"&Pass="+URLEncoder.encode(Pass.getText(), StandardCharsets.UTF_8), false));
     }
 
     @FXML
     void ChangeToLogin(){
         LoginButton.setText("Войти");
-        LoginButton.setOnMouseClicked(event -> RegOrLogin("http://mysweetyphone.herokuapp.com/?Type=Login&Login="+Nick.getText()+"&Pass="+Pass.getText(),true));
+        LoginButton.setOnMouseClicked(event -> RegOrLogin("http://mysweetyphone.herokuapp.com/?Type=Login&Login="+URLEncoder.encode(Nick.getText(), StandardCharsets.UTF_8)+"&Pass="+URLEncoder.encode(Pass.getText(), StandardCharsets.UTF_8),true));
     }
 
     private void RegOrLogin(String url, boolean IsLogin){
