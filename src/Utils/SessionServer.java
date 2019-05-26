@@ -1,29 +1,20 @@
 package Utils;
 
-import com.sun.jna.platform.unix.X11;
 import javafx.application.Platform;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.input.MouseButton;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.sikuli.script.Screen;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.*;
 import java.net.*;
-import java.security.Key;
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -81,6 +72,9 @@ public class SessionServer extends Session{
                         Screen s = new Screen();
                         DatagramPacket p;
                         SimpleIntegerProperty gotAccess = new SimpleIntegerProperty(0);
+                        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                        double width = screenSize.getWidth();
+                        double height = screenSize.getHeight();
                         while (!Dsocket.isClosed()) {
                             if(gotAccess.get() == 1)
                                 continue;
@@ -108,7 +102,8 @@ public class SessionServer extends Session{
                             }while (!Dsocket.isClosed() && (m == null || m.getNext() != -1));
                             if(messageParser.messageMap.get(head) == null) continue;
                             String msgString = new String(messageParser.parse(head));
-                            JSONObject msg = (JSONObject) JSONValue.parse(msgString.strip());
+                            System.out.println(msgString);
+                            JSONObject msg = (JSONObject) JSONValue.parse(msgString);
 
                             if(gotAccess.get() == 0)
                                 Platform.runLater(()-> {
@@ -133,29 +128,29 @@ public class SessionServer extends Session{
                                 switch ((String)msg.get("Type")){
                                     case "mouseMoved":
                                         Point point = MouseInfo.getPointerInfo().getLocation();
-                                        r.mouseMove(((Long) msg.get("X")).intValue() + (int)point.getX(), ((Long) msg.get("Y")).intValue() + (int)point.getY());
+                                        r.mouseMove(((Number) msg.get("X")).intValue() + (int)point.getX(), ((Number) msg.get("Y")).intValue() + (int)point.getY());
                                         break;
                                     case "mouseReleased":
-                                        r.mouseRelease(InputEvent.getMaskForButton(((Long) msg.get("Key")).intValue()));
+                                        r.mouseRelease(InputEvent.getMaskForButton(((Number) msg.get("Key")).intValue()));
                                         break;
                                     case "mousePressed":
-                                        r.mousePress(InputEvent.getMaskForButton(((Long) msg.get("Key")).intValue()));
+                                        r.mousePress(InputEvent.getMaskForButton(((Number) msg.get("Key")).intValue()));
                                         break;
                                     case "mouseWheel":
-                                        r.mouseWheel(((Long)msg.get("value")).intValue());
+                                        r.mouseWheel(((Number)msg.get("value")).intValue());
                                         break;
                                     case "keyReleased":
-                                        r.keyRelease(((Long)msg.get("value")).intValue());
+                                        r.keyRelease(((Number)msg.get("value")).intValue());
                                         break;
                                     case "keyPressed":
-                                        r.keyPress(((Long)msg.get("value")).intValue());
+                                        r.keyPress(((Number)msg.get("value")).intValue());
                                         break;
                                     case "keyClicked":
-                                        r.keyPress(((Long)msg.get("value")).intValue());
-                                        r.keyRelease(((Long)msg.get("value")).intValue());
+                                        r.keyPress(((Number)msg.get("value")).intValue());
+                                        r.keyRelease(((Number)msg.get("value")).intValue());
                                         break;
                                     case "winApiClicked":
-                                        Windows.keyboard_event(((Long)msg.get("value")).intValue());
+                                        Windows.keyboard_event(((Number)msg.get("value")).intValue());
                                         break;
                                     case "keysTyped":
                                         if(msg.get("Subtype").equals("hotkey")){
@@ -229,14 +224,11 @@ public class SessionServer extends Session{
                                         Stop();
                                         return;
                                     case "startDrawing":
-                                        r.mouseMove((int)((Double) msg.get("X") * width), (int)((Double) msg.get("Y") * height));
+                                        r.mouseMove((int)(((Number) msg.get("X")).doubleValue() * width), (int)(((Number) msg.get("Y")).doubleValue() * height));
                                         break;
                                     case "draw":
                                         r.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-                                        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                                        double width = screenSize.getWidth();
-                                        double height = screenSize.getHeight();
-                                        r.mouseMove((int)((Double) msg.get("X") * width), (int)((Double) msg.get("Y") * height));
+                                        r.mouseMove((int)(((Number) msg.get("X")).doubleValue() * width), (int)(((Number) msg.get("Y")).doubleValue() * height));
                                         break;
                                     case "start":
                                         return;
@@ -263,31 +255,31 @@ public class SessionServer extends Session{
                         SimpleIntegerProperty gotAccess = new SimpleIntegerProperty(0);
                         while (true) {
                             String line = reader.readLine();
-                            JSONObject msg = (JSONObject) JSONValue.parse(line.strip());
+                            JSONObject msg = (JSONObject) JSONValue.parse(line);
                             if(gotAccess.get() == 0)
                                 Platform.runLater(()-> {
-                                    try {
-                                        gotAccess.set(1);
-                                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                                        alert.setTitle("Выполнить действие?");
-                                        alert.setHeaderText("Вы действительно хотите предоставить доступ к файлам \"" + msg.get("Name") + "\"?");
-                                        Optional<ButtonType> option = alert.showAndWait();
+                                    gotAccess.set(1);
+                                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                    alert.setTitle("Выполнить действие?");
+                                    alert.setHeaderText("Вы действительно хотите предоставить доступ к файлам \"" + msg.get("Name") + "\"?");
+                                    Optional<ButtonType> option = alert.showAndWait();
 
-                                        if (option.get() != ButtonType.OK) {
-                                            new Thread(()->{
+                                    if (option.get() != ButtonType.OK) {
+                                        new Thread(()->{
+                                            try {
                                                 JSONObject ans = new JSONObject();
                                                 ans.put("Type", "finish");
                                                 writer.println(ans.toJSONString());
                                                 writer.flush();
-                                            }).start();
-                                            Stop();
-                                        } else {
-                                            gotAccess.set(2);
-                                        }
-
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
+                                                Stop();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }).start();
+                                    } else {
+                                        gotAccess.set(2);
                                     }
+
                                 });
 
                             if(gotAccess.get() == 2){
@@ -336,7 +328,7 @@ public class SessionServer extends Session{
                                     case "uploadFile":
                                         new Thread(()->{
                                             try {
-                                                Socket s = new Socket(((InetSocketAddress) Ssocket.getRemoteSocketAddress()).getAddress(), ((Long) msg.get("FileSocketPort")).intValue());
+                                                Socket s = new Socket(((InetSocketAddress) Ssocket.getRemoteSocketAddress()).getAddress(), ((Number) msg.get("FileSocketPort")).intValue());
                                                 File getFile = new File((String) msg.get("Dir"), (String) msg.get("FileName"));
                                                 getFile.createNewFile();
                                                 FileOutputStream fileout = new FileOutputStream(getFile);
@@ -352,7 +344,7 @@ public class SessionServer extends Session{
                                     case "downloadFile":
                                         new Thread(()->{
                                             try {
-                                                Socket s = new Socket(((InetSocketAddress) Ssocket.getRemoteSocketAddress()).getAddress(), ((Long) msg.get("FileSocketPort")).intValue());
+                                                Socket s = new Socket(((InetSocketAddress) Ssocket.getRemoteSocketAddress()).getAddress(), ((Number) msg.get("FileSocketPort")).intValue());
                                                 File getFile = new File((String) msg.get("Dir"), (String) msg.get("FileName"));
                                                 FileInputStream filein = new FileInputStream(getFile);
                                                 DataOutputStream fileout = new DataOutputStream(s.getOutputStream());

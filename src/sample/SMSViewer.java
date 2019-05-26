@@ -155,8 +155,11 @@ public class SMSViewer {
                 SimpleStringProperty Sim1 = new SimpleStringProperty(""), Sim2 = new SimpleStringProperty("");
                 while (true) {
                     String line = reader.readLine();
-                    System.out.println(line);
-                    JSONObject msg = (JSONObject) JSONValue.parse(line.strip());
+                    if(line == null){
+                        sc.Stop();
+                        stage.close();
+                    }
+                    JSONObject msg = (JSONObject) JSONValue.parse(line);
                     switch ((String) msg.get("Type")) {
                         case "start":
                             Sim1.set((String) msg.get("Sim1"));
@@ -210,6 +213,10 @@ public class SMSViewer {
                                     DrawText((String)message.get("text"), ((Long)message.get("date")).longValue(), true, ((Long)message.get("type")).intValue(), ((Long)message.get("sim")).intValue() == 1 ? Sim1.get() : Sim2.get());
                                 }
                             });
+                            break;
+                        case "finish":
+                            sc.Stop();
+                            Platform.runLater(()->stage.close());
                             break;
                     }
                 }

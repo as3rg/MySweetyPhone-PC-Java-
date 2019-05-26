@@ -82,7 +82,7 @@ public class SessionClient extends Session{
             try {
                 while (System.currentTimeMillis() - time <= 60000) {
                     s.receive(p);
-                    JSONObject ans = (JSONObject) JSONValue.parse(new String(p.getData()).strip());
+                    JSONObject ans = (JSONObject) JSONValue.parse(new String(p.getData()));
                     if (!ips.containsKey(p.getAddress().getHostAddress())) {
                         servers.add(new SessionClient(p.getAddress(),((Long)ans.get("port")).intValue(), ((Long)ans.get("type")).intValue()));
                         Server s = new Server(null);
@@ -159,6 +159,7 @@ public class SessionClient extends Session{
                                 stage.setMinHeight(760);
                                 stage.setMinWidth(500);
                                 Scene scene = new Scene(pane, 1270, 720);
+                                scene.getStylesheets().add(Main.class.getResource("Style.css").toExternalForm());
                                 stage.setScene(scene);
                                 stage.show();
                             } catch (IOException e) {

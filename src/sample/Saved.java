@@ -376,7 +376,7 @@ public class Saved {
                     }
                     in.close();
 
-                    JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
                     String filebody = (String)result.get("filebody");
                     File out2 = new File(out,"MySweetyPhone");
                     out2.mkdirs();
@@ -442,7 +442,7 @@ public class Saved {
                     }
                     in.close();
 
-                    JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
                     String filebody = (String)result.get("filebody");
 
                     BufferedImage image = ImageIO.read(new ByteArrayInputStream(Hex.decodeHex(filebody.substring(2).toCharArray())));
@@ -527,7 +527,7 @@ public class Saved {
                     }
                     in.close();
 
-                    JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
                     String filebody = (String)result.get("filebody");
                     File out2 = new File(out,"MySweetyPhone");
                     out2.mkdirs();
@@ -599,7 +599,7 @@ public class Saved {
                     }
                     in.close();
 
-                    JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
                     String filebody = (String)result.get("filebody");
 
                     File out = File.createTempFile(text, ".tmp");
@@ -706,7 +706,7 @@ public class Saved {
                     }
                     in.close();
 
-                    JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
                     String filebody = (String)result.get("filebody");
                     File out2 = new File(out,"MySweetyPhone");
                     out2.mkdirs();
@@ -791,7 +791,7 @@ public class Saved {
                     }
                     in.close();
 
-                    JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
                     String filebody = (String) result.get("filebody");
 
                     File out = File.createTempFile(text, ".tmp");
@@ -895,7 +895,7 @@ public class Saved {
                     }
                     in.close();
 
-                    JSONObject result = (JSONObject) JSONValue.parse(response.toString().strip());
+                    JSONObject result = (JSONObject) JSONValue.parse(response.toString());
                     String filebody = (String)result.get("filebody");
                     File out2 = new File(out,"MySweetyPhone");
                     out2.mkdirs();

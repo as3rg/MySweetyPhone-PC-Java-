@@ -92,9 +92,18 @@ public class FileViewer {
                 },0,2000);
                 while (true) {
                     String line = reader.readLine();
+                    System.out.println(line);
+                    if(line == null){
+                        sc.Stop();
+                        stage.close();
+                    }
                     t.cancel();
-                    JSONObject msg = (JSONObject) JSONValue.parse(line.strip());
+                    JSONObject msg = (JSONObject) JSONValue.parse(line);
                     switch ((String) msg.get("Type")) {
+                        case "finish":
+                            sc.Stop();
+                            Platform.runLater(()->stage.close());
+                            break;
                         case "showDir":
                             JSONArray values = (JSONArray) msg.get("Inside");
                             files.clear();

@@ -19,7 +19,7 @@ public abstract class Request {
             HttpPost post = new HttpPost(address);
             post.setEntity(entity);
             String response = EntityUtils.toString(client.execute(post).getEntity(), "UTF-8");
-            result = (JSONObject) JSONValue.parse(response.strip());
+            result = (JSONObject) JSONValue.parse(response);
             int i = ((Long) result.getOrDefault("code", 2)).intValue();
             switch (i){
                 case 0:
