@@ -104,10 +104,10 @@ public class MouseTracker{
     private void mouseMoved(MouseEvent t) {
         try {
             JSONObject msg = new JSONObject();
-            msg.put("Type", "mouseMoved");
+            msg.put("Type", "startDrawing");
             msg.put("Name", name);
-            msg.put("X", t.getX());
-            msg.put("Y", t.getY());
+            msg.put("X", t.getX()/width);
+            msg.put("Y", t.getY()/height);
             Send(msg.toJSONString().getBytes());
         } catch (IOException ex) {
             ex.printStackTrace();
