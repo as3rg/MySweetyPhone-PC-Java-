@@ -95,7 +95,8 @@ public class FileViewer {
                     System.out.println(line);
                     if(line == null){
                         sc.Stop();
-                        stage.close();
+                        Platform.runLater(()-> stage.close());
+                        break;
                     }
                     t.cancel();
                     JSONObject msg = (JSONObject) JSONValue.parse(line);
@@ -131,65 +132,69 @@ public class FileViewer {
                                     Label folder = new Label((String)((JSONObject)values.get(i)).get("Name"));
                                     files.add((String)((JSONObject)values.get(i)).get("Name"));
                                     folder.setPadding(new Insets(20, 20, 20, 20));
-                                    folder.setFont(new Font(20));
+                                    folder.setFont(new Font(14));
 //                                        Drawable d = getDrawable(values.getJSONObject(i).getString("Type").equals("Folder") ? R.drawable.ic_file_viewer_folder : R.drawable.ic_file_viewer_file);
 //                                        d.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
 //                                        folder.setCompoundDrawablesWithIntrinsicBounds(d, null, null, null);
                                     Folders.getChildren().add(folder);
                                     final int i2 = i;
 
-                                    if(((JSONObject)values.get(i)).get("Type").equals("Folder"))
+                                    if(((JSONObject)values.get(i)).get("Type").equals("Folder")) {
+                                        folder.setText("📁 " + folder.getText());
                                         folder.setOnMouseClicked(v -> new Thread(() -> {
                                             JSONObject msg3 = new JSONObject();
                                             msg3.put("Type", "showDir");
                                             msg3.put("Name", name);
-                                            msg3.put("Dir", new File((String)msg.get("Dir"), (String)((JSONObject)values.get(i2)).get("Name")).getPath());
+                                            msg3.put("Dir", new File((String) msg.get("Dir"), (String) ((JSONObject) values.get(i2)).get("Name")).getPath());
                                             writer.println(msg3.toJSONString());
                                             writer.flush();
                                         }).start());
-                                    else folder.setOnMouseClicked(v -> {
-                                        DirectoryChooser fc = new DirectoryChooser();
-                                        fc.setTitle("Выберите папку для сохранения");
-                                        final File out = fc.showDialog(null);
-                                        if (out == null) return;
-                                        new Thread(() -> {
-                                            try {
-                                                File out3 = new File(out, "MySweetyPhone");
-                                                out3.mkdirs();
-                                                File out2 = new File(out3, (String) ((JSONObject) values.get(i2)).get("Name"));
+                                    }else {
+                                        folder.setText("📄 "+folder.getText());
+                                        folder.setOnMouseClicked(v -> {
+                                            DirectoryChooser fc = new DirectoryChooser();
+                                            fc.setTitle("Выберите папку для сохранения");
+                                            final File out = fc.showDialog(null);
+                                            if (out == null) return;
+                                            new Thread(() -> {
+                                                try {
+                                                    File out3 = new File(out, "MySweetyPhone");
+                                                    out3.mkdirs();
+                                                    File out2 = new File(out3, (String) ((JSONObject) values.get(i2)).get("Name"));
 
-                                                ServerSocket ss = new ServerSocket(0);
-                                                JSONObject msg2 = new JSONObject();
-                                                msg2.put("Type", "downloadFile");
-                                                msg2.put("Name", name);
-                                                msg2.put("FileName", ((JSONObject) values.get(i2)).get("Name"));
-                                                msg2.put("FileSocketPort", ss.getLocalPort());
-                                                msg2.put("Dir", Path.getText());
-                                                writer.println(msg2.toJSONString());
-                                                writer.flush();
-                                                Socket socket = ss.accept();
-                                                DataInputStream filein = new DataInputStream(socket.getInputStream());
-                                                FileOutputStream fileout = new FileOutputStream(out2);
-                                                IOUtils.copy(filein, fileout);
-                                                fileout.close();
-                                                socket.close();
-                                                Platform.runLater(() -> {
-                                                    try {
-                                                        SystemTray tray = SystemTray.getSystemTray();
-                                                        Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
-                                                        TrayIcon trayIcon = new TrayIcon(image, "");
-                                                        trayIcon.setImageAutoSize(true);
-                                                        tray.add(trayIcon);
-                                                        trayIcon.displayMessage("Загрузка завершена", "Файл \"" + out2.getName() + "\" загружен", TrayIcon.MessageType.INFO);
-                                                    } catch (AWTException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                });
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }).start();
-                                    });
+                                                    ServerSocket ss = new ServerSocket(0);
+                                                    JSONObject msg2 = new JSONObject();
+                                                    msg2.put("Type", "downloadFile");
+                                                    msg2.put("Name", name);
+                                                    msg2.put("FileName", ((JSONObject) values.get(i2)).get("Name"));
+                                                    msg2.put("FileSocketPort", ss.getLocalPort());
+                                                    msg2.put("Dir", Path.getText());
+                                                    writer.println(msg2.toJSONString());
+                                                    writer.flush();
+                                                    Socket socket = ss.accept();
+                                                    DataInputStream filein = new DataInputStream(socket.getInputStream());
+                                                    FileOutputStream fileout = new FileOutputStream(out2);
+                                                    IOUtils.copy(filein, fileout);
+                                                    fileout.close();
+                                                    socket.close();
+                                                    Platform.runLater(() -> {
+                                                        try {
+                                                            SystemTray tray = SystemTray.getSystemTray();
+                                                            Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
+                                                            TrayIcon trayIcon = new TrayIcon(image, "");
+                                                            trayIcon.setImageAutoSize(true);
+                                                            tray.add(trayIcon);
+                                                            trayIcon.displayMessage("Загрузка завершена", "Файл \"" + out2.getName() + "\" загружен", TrayIcon.MessageType.INFO);
+                                                        } catch (AWTException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    });
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }).start();
+                                        });
+                                    }
                                 }
                             });
                             break;

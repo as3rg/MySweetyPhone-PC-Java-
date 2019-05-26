@@ -10,7 +10,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.FileViewer">
    <top>
-      <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <ToolBar prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #202020;" BorderPane.alignment="CENTER">
         <items>
             <Button fx:id="Back" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#back" text="←">
                <font>
@@ -41,9 +41,9 @@
       </ToolBar>
    </top>
    <center>
-      <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #202020;" BorderPane.alignment="CENTER">
          <content>
-            <VBox fx:id="Folders" prefHeight="200.0" prefWidth="392.0" />
+            <VBox fx:id="Folders" prefHeight="200.0" prefWidth="392.0" style="-fx-background-color: #202020;" />
          </content>
       </ScrollPane>
    </center>

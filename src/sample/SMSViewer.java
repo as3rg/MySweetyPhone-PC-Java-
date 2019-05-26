@@ -157,7 +157,8 @@ public class SMSViewer {
                     String line = reader.readLine();
                     if(line == null){
                         sc.Stop();
-                        stage.close();
+                        Platform.runLater(()-> stage.close());
+                        break;
                     }
                     JSONObject msg = (JSONObject) JSONValue.parse(line);
                     switch ((String) msg.get("Type")) {
