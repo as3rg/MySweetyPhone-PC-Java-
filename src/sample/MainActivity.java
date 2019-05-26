@@ -1,5 +1,6 @@
 package sample;
 
+import Utils.Request;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,11 +8,17 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import org.apache.http.entity.mime.MultipartEntity;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 public class MainActivity {
@@ -116,5 +123,49 @@ public class MainActivity {
         Pane pane = fxmlLoader.load();
         Replace.getChildren().setAll(pane);
         mtc = this::SServer;
+    }
+
+    @FXML
+    void Exit() throws IOException {
+        FileInputStream propFile = new FileInputStream("properties.properties");
+        Properties props = new Properties();
+        props.load(propFile);
+        propFile.close();
+        int id = Integer.parseInt((String)props.getOrDefault("id","-1"));
+        String name = (String)props.getOrDefault("name","");
+        String login = (String)props.getOrDefault("login","");
+        new Thread(()-> {
+            Request request = new Request() {
+                @Override
+                protected void On0() {
+
+                }
+
+                @Override
+                protected void On1() {
+
+                }
+
+                @Override
+                protected void On2() {
+
+                }
+
+                @Override
+                protected void On3() {
+
+                }
+
+                @Override
+                protected void On4() {
+
+                }
+            };
+            request.Start("http://mysweetyphone.herokuapp.com/?Type=RemoveDevice&Login=" + URLEncoder.encode(login, StandardCharsets.UTF_8) + "&Id=" + id + "&Name=" + URLEncoder.encode(name, StandardCharsets.UTF_8), new MultipartEntity());
+        }).start();
+        File file = new File("properties.properties");
+        file.delete();
+        Platform.exit();
+        System.exit(0);
     }
 }

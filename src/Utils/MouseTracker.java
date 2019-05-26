@@ -2,7 +2,9 @@ package Utils;
 
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -28,7 +30,7 @@ public class MouseTracker{
             width = screenSize.getWidth();
             height = screenSize.getHeight();
             s = new Stage();
-            Pane p = new Pane();
+            BorderPane p = new BorderPane();
             p.addEventFilter(MouseEvent.MOUSE_MOVED, this::mouseMoved);
             p.addEventFilter(MouseEvent.MOUSE_DRAGGED, this::mouseMoved);
             p.addEventFilter(MouseEvent.MOUSE_PRESSED, this::mousePressed);
@@ -62,7 +64,10 @@ public class MouseTracker{
             });
             s.setScene(new Scene(p, 600, 600));
             s.show();
-            s.getScene().getRoot().requestFocus();
+            p.requestFocus();
+            p.setStyle("-fx-background-color: #202020;");
+            Label label = new Label("Для выхода нажмите Alt+F4\nДля смены ролей нажмите Alt+S");
+            p.setCenter(label);
         });
         JSONObject msg = new JSONObject();
         msg.put("Type", "start");

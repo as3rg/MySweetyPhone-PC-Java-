@@ -42,6 +42,8 @@ import sample.Anims.Destroy;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -255,6 +257,13 @@ public class Saved {
             };
             Destroy anim = new Destroy(vBox);
             anim.play(r);
+        });
+        MenuItem copy = new MenuItem("Копировать");
+        contextMenu.getItems().addAll(copy);
+        copy.setOnAction(event -> {
+            StringSelection selection = new StringSelection(text);
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(selection, selection);
         });
         vBox.setOnContextMenuRequested((EventHandler<Event>) event -> contextMenu.show(vBox, MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y));
         Platform.runLater(() -> {
