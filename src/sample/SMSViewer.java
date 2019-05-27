@@ -163,16 +163,16 @@ public class SMSViewer {
                     JSONObject msg = (JSONObject) JSONValue.parse(line);
                     switch ((String) msg.get("Type")) {
                         case "start":
-                            Sim1.set((String) msg.get("Sim1"));
-                            Sim2.set((String) msg.get("Sim2"));
+                            Sim1.set((String) msg.getOrDefault("Sim1", "Sim1"));
+                            Sim2.set((String) msg.getOrDefault("Sim2", "Sim2"));
                             Platform.runLater(()->{
-                                if(Sim1.get().isEmpty() && Sim2.get().isEmpty()){
+                                if(!msg.containsKey("Sim1") && !msg.containsKey("Sim2")){
                                     MainPane2.getChildren().remove(SendBar);
-                                }else if(Sim1.get().isEmpty()){
+                                }else if(!msg.containsKey("Sim1")){
                                     SendBar.getChildren().remove(SendButton1);
                                     SendButton2.prefWidthProperty().bind(stage.widthProperty().divide(5));
                                     SendButton2.setText(Sim2.get());
-                                }else if(Sim2.get().isEmpty()){
+                                }else if(!msg.containsKey("Sim12")){
                                     SendBar.getChildren().remove(SendButton2);
                                     SendButton1.prefWidthProperty().bind(stage.widthProperty().divide(5));
                                     SendButton1.setText(Sim1.get());
