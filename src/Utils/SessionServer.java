@@ -133,6 +133,10 @@ public class SessionServer extends Session{
                                     case "mouseReleased":
                                         r.mouseRelease(InputEvent.getMaskForButton(((Number) msg.get("Key")).intValue()));
                                         break;
+                                    case "mouseClicked":
+                                        r.mousePress(InputEvent.getMaskForButton(((Number) msg.get("Key")).intValue()));
+                                        r.mouseRelease(InputEvent.getMaskForButton(((Number) msg.get("Key")).intValue()));
+                                        break;
                                     case "mousePressed":
                                         r.mousePress(InputEvent.getMaskForButton(((Number) msg.get("Key")).intValue()));
                                         break;
