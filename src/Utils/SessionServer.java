@@ -102,7 +102,6 @@ public class SessionServer extends Session{
                             }while (!Dsocket.isClosed() && (m == null || m.getNext() != -1));
                             if(messageParser.messageMap.get(head) == null) continue;
                             String msgString = new String(messageParser.parse(head));
-                            System.out.println(msgString);
                             JSONObject msg = (JSONObject) JSONValue.parse(msgString);
 
                             if(gotAccess.get() == 0)
@@ -237,7 +236,7 @@ public class SessionServer extends Session{
                                     case "start":
                                         return;
                                     default:
-                                        System.out.println(msgString);
+                                        System.err.println(msgString);
                                 }
                         }
                     } catch (AWTException | IOException e) {

@@ -92,7 +92,6 @@ public class FileViewer {
                 },0,2000);
                 while (true) {
                     String line = reader.readLine();
-                    System.out.println(line);
                     if(line == null){
                         sc.Stop();
                         Platform.runLater(()-> stage.close());

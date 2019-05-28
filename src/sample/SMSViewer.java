@@ -5,12 +5,15 @@ import Utils.SessionClient;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
@@ -25,13 +28,17 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import sample.Anims.Create;
+import sample.Anims.Destroy;
 
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -77,14 +84,12 @@ public class SMSViewer {
     private AnchorPane RootPane;
 
     private String name;
-    private String login;
-    private int id;
-    private int regdate;
     Thread receiving;
     PrintWriter writer;
     BufferedReader reader;
     SessionClient sc;
     Stage stage;
+    boolean newContact = false;
     static public Stack<Pair<SessionClient, Stage>> sessionClients;
 
     static {
@@ -95,12 +100,11 @@ public class SMSViewer {
         Pair<SessionClient, Stage> p = sessionClients.pop();
         sc = p.getKey();
         stage = p.getValue();
-
     }
 
     @FXML
     void initialize() throws IOException {
-        Thread Resize = new Thread(()->{
+        Thread Resize = new Thread(() -> {
             try {
                 while (Messages.getScene() == null) Thread.sleep(100);
                 scrollPane.prefWidthProperty().bind(stage.widthProperty());
@@ -127,21 +131,22 @@ public class SMSViewer {
         propFile.close();
         name = (String) props.getOrDefault("name", "");
 
-        Contacts.setOnMouseClicked(event -> new Thread(()->{
-            if(Contacts.getItems().isEmpty()) return;
-            JSONObject msg = new JSONObject();
-            msg.put("Type", "showSMSs");
-            msg.put("Name", name);
-            Pattern r = Pattern.compile(".*\\((.+)\\)");
-            Matcher m = r.matcher(Contacts.getSelectionModel().getSelectedItem());
-            if(m.find())
-                msg.put("Number", m.group(1));
-            else
-                msg.put("Number", Contacts.getSelectionModel().getSelectedItem());
-            System.out.println(msg.toJSONString());
-            writer.println(msg.toJSONString());
-            writer.flush();
-        }).start());
+        Contacts.setOnMouseClicked(event -> {
+            if (Contacts.getItems().isEmpty()) return;
+            if (newContact && Messages.getChildren().isEmpty())
+                Contacts.getItems().remove(Contacts.getItems().size() - 1);
+            newContact = false;
+            SendBar.setVisible(true);
+            //if(Messages.getChildren().isEmpty()) Platform.runLater(()->Contacts.getItems().remove(Contacts.getItems().size()-1));
+            new Thread(()->{
+                JSONObject msg = new JSONObject();
+                msg.put("Type", "showSMSs");
+                msg.put("Name", name);
+                msg.put("Number", getNumber(Contacts.getSelectionModel().getSelectedItem()));
+                writer.println(msg.toJSONString());
+                writer.flush();
+            }).start();
+        });
 
         receiving = new Thread(()-> {
             try {
@@ -172,7 +177,7 @@ public class SMSViewer {
                                     SendBar.getChildren().remove(SendButton1);
                                     SendButton2.prefWidthProperty().bind(stage.widthProperty().divide(5));
                                     SendButton2.setText(Sim2.get());
-                                }else if(!msg.containsKey("Sim12")){
+                                }else if(!msg.containsKey("Sim2")){
                                     SendBar.getChildren().remove(SendButton2);
                                     SendButton1.prefWidthProperty().bind(stage.widthProperty().divide(5));
                                     SendButton1.setText(Sim1.get());
@@ -204,6 +209,17 @@ public class SMSViewer {
                                     JSONObject message = (JSONObject)values.get(i);
                                     DrawText((String)message.get("text"), ((Long)message.get("date")).longValue(), false, ((Long)message.get("type")).intValue(), ((Long)message.get("sim")).intValue() == 1 ? Sim1.get() : Sim2.get());
                                 }
+                            });
+                            break;
+                        case "getContact":
+                            Platform.runLater(() -> {
+                                String name = (String) msg.get("Contact");
+                                if(!Contacts.getItems().contains(name)) {
+                                    Contacts.getItems().add(name);
+                                    newContact = true;
+                                }
+                                Contacts.getSelectionModel().select(Contacts.getItems().indexOf(name));
+                                Contacts.getOnMouseClicked().handle(null);
                             });
                             break;
                         case "newSMSs":
@@ -264,6 +280,17 @@ public class SMSViewer {
         HBox hBox = new HBox();
         hBox.setPadding(new Insets(5, 10,0,10));
         hBox.getChildren().add(vBox);
+
+        final ContextMenu contextMenu = new ContextMenu();
+        MenuItem copy = new MenuItem("Копировать");
+        contextMenu.getItems().addAll(copy);
+        copy.setOnAction(event -> {
+            StringSelection selection = new StringSelection(text);
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(selection, selection);
+        });
+        vBox.setOnContextMenuRequested((EventHandler<Event>) event -> contextMenu.show(vBox, MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y));
+
         if(type == 1){
             vBox.setStyle("-fx-background-color: linear-gradient(from 0% 100% to 100% 0%, #d53369, #cbad6d); -fx-background-radius: 10;");
             hBox.setAlignment(Pos.CENTER_LEFT);
@@ -294,8 +321,6 @@ public class SMSViewer {
         onSendClick(2);
     }
 
-
-
     @FXML
     private void onSendClick(int i){
         new Thread(() -> {
@@ -309,5 +334,30 @@ public class SMSViewer {
             writer.flush();
             Platform.runLater(()->MessageText.setText(""));
         }).start();
+    }
+
+    @FXML
+    private void onNewContact(){
+        final TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Введите номер телефона...");
+        dialog.setHeaderText("Введите номер телефона...");
+        final Optional<String> result = dialog.showAndWait();
+        if(!result.isPresent()) return;
+        new Thread(() -> {
+            JSONObject msg2 = new JSONObject();
+            msg2.put("Type", "getContact");
+            msg2.put("Number", result.get());
+            writer.println(msg2.toJSONString());
+            writer.flush();
+        }).start();
+    }
+
+    static String getNumber(String s){
+        Pattern r = Pattern.compile(".*\\((.+)\\)");
+        Matcher m = r.matcher(s);
+        if(m.find())
+            return m.group(1);
+        else
+            return s;
     }
 }
