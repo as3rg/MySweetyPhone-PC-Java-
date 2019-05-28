@@ -7,6 +7,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -17,10 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -620,6 +618,7 @@ public class Saved {
                     Video.getMediaPlayer().setOnEndOfMedia(()->{
                         Video.getMediaPlayer().seek(Duration.ZERO);
                         Video.getMediaPlayer().pause();
+                        slider.setValue(0);
                     });
                     Video.getMediaPlayer().setOnReady(() -> {
                         slider.setMax(Video.getMediaPlayer().getMedia().getDuration().toMillis());
@@ -745,6 +744,7 @@ public class Saved {
         Date Date = new java.util.Date(date * 1000L);
         SimpleDateFormat sdf = new java.text.SimpleDateFormat("HH:mm dd.MM.yyyy");
         VBox vBox = new VBox();
+        HBox PlayerHBox = new HBox();
         VBox TextVBox = new VBox();
         Label textLabel = new Label();
         Label DateLabel = new Label();
@@ -765,22 +765,27 @@ public class Saved {
 
         MediaView Video = new MediaView();
 
+        PlayerHBox.setAlignment(Pos.CENTER);
         Slider slider = new Slider(0,10,0);
-        TextVBox.getChildren().add(0,slider);
-
-        File file = new File("src/sample/Images/Download.png");
-        javafx.scene.image.Image pause = new Image(file.toURI().toString());
-        ImageView Icon = new ImageView(pause);
-        Icon.setFitWidth(150);
-        Icon.setFitHeight(150);
-
+        Button Icon = new Button("▶");
+        Icon.setFont(Font.font(40));
+        Icon.setPrefWidth(50);
+        Icon.setPadding(new Insets(2,2,2,2));
+        Icon.setStyle("-fx-background-color: #00000000; -fx-text-fill: #ffffff");
+        slider.prefWidthProperty().bind(PlayerHBox.widthProperty().subtract(Icon.widthProperty()));
         Icon.setOnMouseClicked(event1 -> {
-            if(Video.getMediaPlayer().getStatus().equals(MediaPlayer.Status.PLAYING))
+            if(Video == null || Video.getMediaPlayer() == null)
+                return;
+            if(Video.getMediaPlayer().getStatus().equals(MediaPlayer.Status.PLAYING)) {
                 Video.getMediaPlayer().pause();
-            else
+                Icon.setText("▶");
+            }else {
                 Video.getMediaPlayer().play();
+                Icon.setText("⬛");
+            }
         });
-        TextVBox.getChildren().add(0,Icon);
+        PlayerHBox.getChildren().addAll(Icon, slider);
+        TextVBox.getChildren().add(0,PlayerHBox);
 
         new Thread(() -> {
 
@@ -812,6 +817,8 @@ public class Saved {
                     Video.getMediaPlayer().setOnEndOfMedia(() -> {
                         Video.getMediaPlayer().seek(Duration.ZERO);
                         Video.getMediaPlayer().pause();
+                        Icon.setText("▶");
+                        slider.setValue(0);
                     });
                     Video.getMediaPlayer().setOnReady(() -> {
                         slider.setMax(Video.getMediaPlayer().getMedia().getDuration().toMillis());
