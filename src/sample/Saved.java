@@ -2,6 +2,8 @@ package sample;
 
 import Utils.Request;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -39,6 +41,7 @@ import sample.Anims.Create;
 import sample.Anims.Destroy;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -294,9 +297,12 @@ public class Saved {
         Label DateLabel = new Label();
         vBox.setStyle("-fx-background-color: linear-gradient(from 0% 100% to 100% 0%, #d53369, #cbad6d); -fx-background-radius: 10;");
         vBox.maxWidthProperty().bind(Messages.widthProperty().divide(2));
+//        vBox.setAlignment(Pos.CENTER);
+//        vBox.setFillWidth(true);
         DateLabel.setStyle("-fx-text-fill: #ffffff;");
         DateLabel.setText(sdf.format(Date) + ", " + sender);
         DateLabel.setPadding(new Insets(0, 10, 0, 10));
+//        DateLabel.setAlignment(Pos.CENTER_RIGHT);
         textLabel.setText(text);
         vBox.setPadding(new Insets(10, 10, 10, 10));
         textLabel.setFont(Font.font(15));
@@ -306,11 +312,14 @@ public class Saved {
 
         File file = new File("src/sample/Images/Download.png");
         javafx.scene.image.Image image = new Image(file.toURI().toString());
+        BorderPane IconPane = new BorderPane();
         ImageView Icon = new ImageView(image);
         Icon.setFitWidth(150);
         Icon.setFitHeight(150);
+        IconPane.setCenter(Icon);
+        IconPane.prefWidthProperty().bind(vBox.widthProperty().subtract(40));
 
-        vBox.getChildren().add(0,Icon);
+        vBox.getChildren().add(0,IconPane);
         VBox.setMargin(vBox, new Insets(5, 0, 0, 0));
 
         final ContextMenu contextMenu = new ContextMenu();
