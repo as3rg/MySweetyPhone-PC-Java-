@@ -265,6 +265,10 @@ public class SessionServer extends Session{
                         SimpleIntegerProperty gotAccess = new SimpleIntegerProperty(0);
                         while (true) {
                             String line = reader.readLine();
+                            System.out.println(line);
+                            if(line == null){
+                                Stop();
+                            }
                             JSONObject msg = (JSONObject) JSONValue.parse(line);
                             if(gotAccess.get() == 0) {
                                 gotAccess.set(1);

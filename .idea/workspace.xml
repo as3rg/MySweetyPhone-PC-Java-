@@ -6,7 +6,11 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="151c7cb7-fc2c-468e-833c-aebeb0419258" name="Default Changelist" comment="" />
+    <list default="true" id="151c7cb7-fc2c-468e-833c-aebeb0419258" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/Utils/SessionServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/SessionServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/FileViewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/FileViewer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/SMSViewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/SMSViewer.java" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -58,11 +62,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sample/FileViewer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2502">
-              <caret line="157" column="46" lean-forward="true" selection-start-line="157" selection-start-column="46" selection-end-line="157" selection-end-column="115" />
+            <state relative-caret-position="510">
+              <caret line="103" column="21" selection-start-line="103" selection-start-column="21" selection-end-line="103" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -89,17 +93,17 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Utils/SessionServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="188">
-              <caret line="138" column="50" selection-start-line="138" selection-start-column="50" selection-end-line="138" selection-end-column="50" />
+            <state relative-caret-position="530">
+              <caret line="408" column="1" selection-start-line="408" selection-start-column="1" selection-end-line="408" selection-end-column="1" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2077#2348#0" expanded="true" />
                 <element signature="e#2347#2348#0" expanded="true" />
-                <element signature="e#23278#23279#0" expanded="true" />
-                <element signature="e#23305#23306#0" expanded="true" />
+                <element signature="e#23452#23453#0" expanded="true" />
+                <element signature="e#23479#23480#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -132,8 +136,9 @@
       <find>Sys</find>
       <find>TimerTask</find>
       <find>p.getAddress().getHostAddress()</find>
-      <find>name</find>
       <find>reload</find>
+      <find>name</find>
+      <find>readline</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -147,19 +152,19 @@
         <option value="$PROJECT_DIR$/src/sample/Saved.java" />
         <option value="$PROJECT_DIR$/src/sample/SClient.java" />
         <option value="$PROJECT_DIR$/src/sample/DevicesList.java" />
-        <option value="$PROJECT_DIR$/src/sample/SMSViewer.java" />
         <option value="$PROJECT_DIR$/src/Utils/Session.java" />
         <option value="$PROJECT_DIR$/src/Utils/SessionClient.java" />
         <option value="$PROJECT_DIR$/src/Utils/MouseTracker.java" />
         <option value="$PROJECT_DIR$/src/sample/Anims/Destroy.java" />
         <option value="$PROJECT_DIR$/src/sample/Receiving.java" />
         <option value="$PROJECT_DIR$/src/sample/MainActivity.fxml" />
-        <option value="$PROJECT_DIR$/src/sample/FileViewer.java" />
         <option value="$PROJECT_DIR$/src/Utils/SessionServer.java" />
+        <option value="$PROJECT_DIR$/src/sample/SMSViewer.java" />
+        <option value="$PROJECT_DIR$/src/sample/FileViewer.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="953" />
     <option name="width" value="974" />
     <option name="height" value="1087" />
@@ -281,11 +286,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="41400000" />
+    <option name="totallyTimeSpent" value="44793000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="953" y="0" width="974" height="1087" extended-state="0" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.50656456" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -296,7 +300,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4989059" visible="true" weight="0.33542976" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4989059" visible="true" weight="0.3322949" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -486,20 +490,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Utils/SessionServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="138" column="50" selection-start-line="138" selection-start-column="50" selection-end-line="138" selection-end-column="50" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2077#2348#0" expanded="true" />
-            <element signature="e#2347#2348#0" expanded="true" />
-            <element signature="e#23278#23279#0" expanded="true" />
-            <element signature="e#23305#23306#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Utils/MouseTracker.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -512,8 +502,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/FileViewer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2502">
-          <caret line="157" column="46" lean-forward="true" selection-start-line="157" selection-start-column="46" selection-end-line="157" selection-end-column="115" />
+        <state relative-caret-position="510">
+          <caret line="103" column="21" selection-start-line="103" selection-start-column="21" selection-end-line="103" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Utils/SessionServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="530">
+          <caret line="408" column="1" selection-start-line="408" selection-start-column="1" selection-end-line="408" selection-end-column="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2077#2348#0" expanded="true" />
+            <element signature="e#2347#2348#0" expanded="true" />
+            <element signature="e#23452#23453#0" expanded="true" />
+            <element signature="e#23479#23480#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

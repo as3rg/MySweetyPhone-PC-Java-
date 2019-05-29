@@ -256,11 +256,15 @@ public class SMSViewer {
         stage.setOnCloseRequest(e ->{
             receiving.interrupt();
             new Thread(() -> {
-                JSONObject msg2 = new JSONObject();
-                msg2.put("Type", "finish");
-                msg2.put("Name", name);
-                writer.println(msg2.toJSONString());
-                writer.flush();
+                try {
+                    JSONObject msg2 = new JSONObject();
+                    msg2.put("Type", "finish");
+                    msg2.put("Name", name);
+                    writer.println(msg2.toJSONString());
+                    writer.flush();
+                }catch (NullPointerException e2){
+                    e2.printStackTrace();
+                }
             }).start();
         });
     }
