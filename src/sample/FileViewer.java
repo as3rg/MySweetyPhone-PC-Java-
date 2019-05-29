@@ -2,10 +2,14 @@ package sample;
 
 import Utils.SessionClient;
 import javafx.application.Platform;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -104,6 +108,21 @@ public class FileViewer {
                             sc.Stop();
                             Platform.runLater(()->stage.close());
                             break;
+                        case "deleteFile":
+                            if (((Long)msg.get("State")).intValue() == 1)
+                                Platform.runLater(() -> {
+                                    try {
+                                        SystemTray tray = SystemTray.getSystemTray();
+                                        Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
+                                        TrayIcon trayIcon = new TrayIcon(image, "");
+                                        trayIcon.setImageAutoSize(true);
+                                        tray.add(trayIcon);
+                                        trayIcon.displayMessage("Ошибка", "Нет доступа", TrayIcon.MessageType.INFO);
+                                    } catch (AWTException e) {
+                                        e.printStackTrace();
+                                    }
+                                });
+                            break;
                         case "showDir":
                             JSONArray values = (JSONArray) msg.get("Inside");
                             files.clear();
@@ -138,6 +157,22 @@ public class FileViewer {
                                     Folders.getChildren().add(folder);
                                     final int i2 = i;
 
+                                    final ContextMenu contextMenu = new ContextMenu();
+                                    javafx.scene.control.MenuItem delete = new javafx.scene.control.MenuItem("Удалить");
+                                    contextMenu.getItems().addAll(delete);
+                                    delete.setOnAction(event -> {
+                                        new Thread(()-> {
+                                            JSONObject msg2 = new JSONObject();
+                                            msg2.put("Type", "deleteFile");
+                                            msg2.put("Name", name);
+                                            msg2.put("FileName", ((JSONObject) values.get(i2)).get("Name"));
+                                            msg2.put("Dir", Path.getText());
+                                            writer.println(msg2.toJSONString());
+                                            writer.flush();
+                                        }).start();
+                                    });
+                                    folder.setOnContextMenuRequested((EventHandler<Event>) event -> contextMenu.show(folder, MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y));
+
                                     if(((JSONObject)values.get(i)).get("Type").equals("Folder")) {
                                         folder.setText("📁 " + folder.getText());
                                         folder.setOnMouseClicked(v -> new Thread(() -> {
@@ -150,7 +185,9 @@ public class FileViewer {
                                         }).start());
                                     }else {
                                         folder.setText("📄 "+folder.getText());
-                                        folder.setOnMouseClicked(v -> {
+                                        javafx.scene.control.MenuItem save = new javafx.scene.control.MenuItem("Сохранить как");
+                                        contextMenu.getItems().addAll(save);
+                                        save.setOnAction(v -> {
                                             DirectoryChooser fc = new DirectoryChooser();
                                             fc.setTitle("Выберите папку для сохранения");
                                             final File out = fc.showDialog(null);
@@ -264,7 +301,6 @@ public class FileViewer {
 
     public void newFolder(MouseEvent mouseEvent){
         while (true) {
-            final TextField input = new TextField();
             TextInputDialog dialog = new TextInputDialog();
             dialog.setTitle("Имя папки");
             dialog.setHeaderText("Введите имя папки");

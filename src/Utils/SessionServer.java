@@ -324,9 +324,17 @@ public class SessionServer extends Session{
                                         writer.println(ans.toJSONString());
                                         writer.flush();
                                         break;
+                                    case "deleteFile":
+                                        File file = new File((String)msg.get("Dir"), (String)msg.get("FileName"));
+                                        boolean result = file.delete();
+                                        ans.put("State", result ? 0 : 1);        //0 - без ошибок, 1 - нет доступа
+                                        ans.put("Type", "State");
+                                        writer.println(ans.toJSONString());
+                                        writer.flush();
+                                        break;
                                     case "newDir":
                                         ans.put("Type", "newDirAnswer");
-                                        File file = new File((String)msg.get("Dir"), (String)msg.get("DirName"));
+                                        file = new File((String)msg.get("Dir"), (String)msg.get("DirName"));
                                         boolean state = file.mkdirs();
                                         ans.put("State", state ? 1 : 0);
                                         ans.put("Dir", msg.get("Dir"));
