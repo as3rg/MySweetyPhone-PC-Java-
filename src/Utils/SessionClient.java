@@ -99,7 +99,7 @@ public class SessionClient extends Session{
                             v.getChildren().add(ip);
                         });
                     }else
-                        ips.get(p.getAddress().getHostAddress()).value=5;
+                        ips.get(name).value=5;
                 }
             } catch (SocketException ignored){
             } catch (IOException e) {

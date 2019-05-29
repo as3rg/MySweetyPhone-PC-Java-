@@ -66,7 +66,7 @@ public class MouseTracker{
             s.show();
             p.requestFocus();
             p.setStyle("-fx-background-color: #202020;");
-            Label label = new Label("Для выхода нажмите Alt+F4\nДля смены ролей нажмите Alt+S");
+            Label label = new Label("Для выхода нажмите Ctrl+F4\nДля смены ролей нажмите Alt+S");
             p.setCenter(label);
         });
         JSONObject msg = new JSONObject();
@@ -75,8 +75,7 @@ public class MouseTracker{
         Send(msg.toJSONString().getBytes());
     }
 
-    public void mousePressed(MouseEvent e)
-    {
+    public void mousePressed(MouseEvent e) {
         try {
             JSONObject msg = new JSONObject();
             msg.put("Type","mousePressed");
@@ -93,8 +92,7 @@ public class MouseTracker{
         mouseReleased(me);
     }
 
-    public void mouseReleased(MouseEvent e)
-    {
+    public void mouseReleased(MouseEvent e) {
         try{
             JSONObject msg = new JSONObject();
             msg.put("Type","mouseReleased");
@@ -136,7 +134,7 @@ public class MouseTracker{
     public void keyPressed(KeyEvent e) {
         try {
             JSONObject msg = new JSONObject();
-            if(e.isAltDown() && e.getCode() == KeyCode.S) {
+            if(e.isControlDown() && e.getCode() == KeyCode.S) {
                 msg.put("Type", "swap");
                 msg.put("Name", name);
                 Send(msg.toJSONString().getBytes());

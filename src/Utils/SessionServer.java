@@ -111,9 +111,9 @@ public class SessionServer extends Session{
                             JSONObject msg = (JSONObject) JSONValue.parse(msgString);
 
                             if(gotAccess.get() == 0)
+                                gotAccess.set(1);
                                 Platform.runLater(()-> {
                                     try {
-                                        gotAccess.set(1);
                                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                                         alert.setTitle("Выполнить действие?");
                                         alert.setHeaderText("Вы действительно хотите предоставить доступ к управлению компьютером \"" + msg.get("Name") + "\"?");
@@ -266,8 +266,8 @@ public class SessionServer extends Session{
                             String line = reader.readLine();
                             JSONObject msg = (JSONObject) JSONValue.parse(line);
                             if(gotAccess.get() == 0)
+                                gotAccess.set(1);
                                 Platform.runLater(()-> {
-                                    gotAccess.set(1);
                                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                                     alert.setTitle("Выполнить действие?");
                                     alert.setHeaderText("Вы действительно хотите предоставить доступ к файлам \"" + msg.get("Name") + "\"?");
