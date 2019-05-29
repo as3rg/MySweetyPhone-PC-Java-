@@ -31,6 +31,7 @@ import sample.Anims.Create;
 import sample.Anims.Destroy;
 
 import javax.swing.event.ChangeListener;
+import javax.swing.text.Position;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -89,7 +90,7 @@ public class SMSViewer {
     BufferedReader reader;
     SessionClient sc;
     Stage stage;
-    boolean newContact = false;
+    int newContact = -1;
     static public Stack<Pair<SessionClient, Stage>> sessionClients;
 
     static {
@@ -133,19 +134,20 @@ public class SMSViewer {
 
         Contacts.setOnMouseClicked(event -> {
             if (Contacts.getItems().isEmpty()) return;
-            if (newContact && Messages.getChildren().isEmpty())
+            if (newContact != -1 && Messages.getChildren().isEmpty())
                 Contacts.getItems().remove(Contacts.getItems().size() - 1);
-            newContact = false;
-            SendBar.setVisible(true);
+            if(Contacts.getSelectionModel().getSelectedIndex() != newContact) newContact = -1;
             //if(Messages.getChildren().isEmpty()) Platform.runLater(()->Contacts.getItems().remove(Contacts.getItems().size()-1));
             new Thread(()->{
                 JSONObject msg = new JSONObject();
                 msg.put("Type", "showSMSs");
                 msg.put("Name", name);
+                msg.put("Contact", Contacts.getSelectionModel().getSelectedItem());
                 msg.put("Number", getNumber(Contacts.getSelectionModel().getSelectedItem()));
                 writer.println(msg.toJSONString());
                 writer.flush();
             }).start();
+            Contacts.setDisable(true);
         });
 
         receiving = new Thread(()-> {
@@ -202,7 +204,11 @@ public class SMSViewer {
                             });
                             break;
                         case "showSMSs":
+                            if(!msg.get("Contact").equals(Contacts.getSelectionModel().getSelectedItem())) return;
+                            SendBar.setVisible(true);
+                            Contacts.setDisable(false);
                             values = (JSONArray) msg.get("SMS");
+                            if(values.isEmpty()) newContact = Contacts.getSelectionModel().getSelectedIndex();
                             Platform.runLater(() -> {
                                 Messages.getChildren().clear();
                                 for (int i = 0; i < values.size(); i++) {
@@ -216,18 +222,22 @@ public class SMSViewer {
                                 String name = (String) msg.get("Contact");
                                 if(!Contacts.getItems().contains(name)) {
                                     Contacts.getItems().add(name);
-                                    newContact = true;
                                 }
                                 Contacts.getSelectionModel().select(Contacts.getItems().indexOf(name));
                                 Contacts.getOnMouseClicked().handle(null);
+                                newContact = Contacts.getItems().indexOf(name);
                             });
                             break;
                         case "newSMSs":
                             values = (JSONArray) msg.get("SMS");
                             Platform.runLater(() -> {
                                 for (int i = 0; i < values.size(); i++) {
-                                    JSONObject message = (JSONObject)values.get(i);
-                                    DrawText((String)message.get("text"), ((Long)message.get("date")).longValue(), true, ((Long)message.get("type")).intValue(), ((Long)message.get("sim")).intValue() == 1 ? Sim1.get() : Sim2.get());
+                                    JSONObject message = (JSONObject) values.get(i);
+                                    String number = (String) message.get("contact");
+                                    if(number.equals(Contacts.getSelectionModel().getSelectedItem()))
+                                        DrawText((String)message.get("text"), (Long) message.get("date"), true, ((Long)message.get("type")).intValue(), ((Long)message.get("sim")).intValue() == 1 ? Sim1.get() : Sim2.get());
+                                    else if(!Contacts.getItems().contains(number))
+                                        Contacts.getItems().add(number);
                                 }
                             });
                             break;

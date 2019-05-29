@@ -101,7 +101,7 @@ public class SessionClient extends Session{
                     }else
                         ips.get(p.getAddress().getHostAddress()).value=5;
                 }
-            } catch (SocketTimeoutException ignored){
+            } catch (SocketException ignored){
             } catch (IOException e) {
                 e.printStackTrace();
             }
