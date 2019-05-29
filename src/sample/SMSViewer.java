@@ -205,11 +205,11 @@ public class SMSViewer {
                             break;
                         case "showSMSs":
                             if(!msg.get("Contact").equals(Contacts.getSelectionModel().getSelectedItem())) return;
-                            SendBar.setVisible(true);
-                            Contacts.setDisable(false);
                             values = (JSONArray) msg.get("SMS");
                             if(values.isEmpty()) newContact = Contacts.getSelectionModel().getSelectedIndex();
                             Platform.runLater(() -> {
+                                SendBar.setVisible(true);
+                                Contacts.setDisable(false);
                                 Messages.getChildren().clear();
                                 for (int i = 0; i < values.size(); i++) {
                                     JSONObject message = (JSONObject)values.get(i);
