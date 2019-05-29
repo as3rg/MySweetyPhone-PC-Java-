@@ -34,13 +34,14 @@ public class SessionClient extends Session{
     static private class Server{
         public int value;
         public Button b;
-        Server(Button b){
+        SessionClient sc;
+        Server(Button b, SessionClient sc){
             this.b = b;
+            this.sc = sc;
             value = 5;
         }
     }
 
-    static ArrayList<SessionClient> servers;
     static Map<String, Server> ips;
     static boolean isSearching;
     static Thread searching;
@@ -55,7 +56,6 @@ public class SessionClient extends Session{
         if(isSearching) {
             StopSearching();
         }
-        servers = new ArrayList<>();
         ips = new TreeMap<>();
         isSearching = true;
         s = new DatagramSocket(BroadCastingPort);
@@ -83,16 +83,16 @@ public class SessionClient extends Session{
                 while (System.currentTimeMillis() - time <= 60000) {
                     s.receive(p);
                     JSONObject ans = (JSONObject) JSONValue.parse(new String(p.getData()));
-                    if (!ips.containsKey(p.getAddress().getHostAddress())) {
-                        servers.add(new SessionClient(p.getAddress(),((Long)ans.get("port")).intValue(), ((Long)ans.get("type")).intValue()));
-                        Server s = new Server(null);
-                        ips.put(p.getAddress().getHostAddress(),s);
+                    String name = ans.get("name") + "(" + p.getAddress().getHostAddress() + "): " + decodeType(((Long)ans.get("type")).intValue());
+                    if (!ips.containsKey(name)) {
+                        Server s = new Server(null, new SessionClient(p.getAddress(),((Long)ans.get("port")).intValue(), ((Long)ans.get("type")).intValue()));
+                        ips.put(name,s);
                         Platform.runLater(() -> {
-                            Button ip = new Button(p.getAddress().getHostAddress());
+                            Button ip = new Button(name);
                             s.b = ip;
                             ip.setTextFill(Paint.valueOf("#F0F0F0"));
                             ip.setOnMouseClicked(event->{
-                                servers.get(v.getChildren().indexOf(ip)).Start();
+                                s.sc.Start();
                                 v.getChildren().remove(ip);
                             });
                             v.setDisable(false);

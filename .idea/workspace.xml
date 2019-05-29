@@ -7,7 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="151c7cb7-fc2c-468e-833c-aebeb0419258" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/sample/SMSViewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/SMSViewer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Utils/Session.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/Session.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Utils/SessionClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/SessionClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Utils/SessionServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/SessionServer.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,24 +24,6 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/SServer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1189">
-              <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Utils/Message.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1818">
-              <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Utils/MessageParser.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-101">
@@ -48,11 +32,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sample/SMSViewer.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="423">
               <caret line="211" column="59" selection-start-line="211" selection-start-column="59" selection-end-line="211" selection-end-column="59" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/sample/SClient.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-690">
+              <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -78,11 +71,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Utils/SessionClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="140" column="37" selection-start-line="140" selection-start-column="37" selection-end-line="140" selection-end-column="37" />
+            <state relative-caret-position="986">
+              <caret line="94" column="36" selection-start-line="94" selection-start-column="36" selection-end-line="94" selection-end-column="36" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/sample/Login.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="93" column="23" lean-forward="true" selection-start-line="93" selection-start-column="23" selection-end-line="94" selection-end-column="54" />
             </state>
           </provider>
         </entry>
@@ -90,8 +92,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Utils/SessionServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-665">
-              <caret line="203" column="51" selection-start-line="203" selection-start-column="51" selection-end-line="203" selection-end-column="51" />
+            <state relative-caret-position="119">
+              <caret line="34" selection-start-line="34" selection-end-line="34" />
             </state>
           </provider>
         </entry>
@@ -108,8 +110,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Utils/Session.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-373">
-              <caret line="10" column="22" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
+            <state relative-caret-position="279">
+              <caret line="75" column="8" selection-start-line="75" selection-start-column="8" selection-end-line="75" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -134,16 +136,17 @@
         <option value="$PROJECT_DIR$/src/sample/MainActivity.java" />
         <option value="$PROJECT_DIR$/src/Utils/MouseTracker.java" />
         <option value="$PROJECT_DIR$/src/sample/Saved.java" />
-        <option value="$PROJECT_DIR$/src/Utils/SessionServer.java" />
         <option value="$PROJECT_DIR$/src/sample/FileViewer.java" />
         <option value="$PROJECT_DIR$/src/sample/SClient.java" />
         <option value="$PROJECT_DIR$/src/sample/DevicesList.java" />
-        <option value="$PROJECT_DIR$/src/Utils/SessionClient.java" />
         <option value="$PROJECT_DIR$/src/sample/SMSViewer.java" />
+        <option value="$PROJECT_DIR$/src/Utils/SessionServer.java" />
+        <option value="$PROJECT_DIR$/src/Utils/Session.java" />
+        <option value="$PROJECT_DIR$/src/Utils/SessionClient.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="953" />
     <option name="width" value="974" />
     <option name="height" value="1087" />
@@ -265,13 +268,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="33193000" />
+    <option name="totallyTimeSpent" value="34130000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="953" y="0" width="974" height="1087" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.51859957" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24413647" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -280,7 +283,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4989059" visible="true" weight="0.33542976" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4989059" visible="true" weight="0.3322949" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -347,13 +350,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Login.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3144">
-          <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="86">
@@ -398,13 +394,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/SClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-713">
-          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/SServer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1189">
@@ -443,13 +432,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Utils/Session.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-373">
-          <caret line="10" column="22" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Utils/Windows.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -457,24 +439,45 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/SMSViewer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="423">
+          <caret line="211" column="59" selection-start-line="211" selection-start-column="59" selection-end-line="211" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/SClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-690">
+          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/Login.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="93" column="23" lean-forward="true" selection-start-line="93" selection-start-column="23" selection-end-line="94" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Utils/SessionServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-665">
-          <caret line="203" column="51" selection-start-line="203" selection-start-column="51" selection-end-line="203" selection-end-column="51" />
+        <state relative-caret-position="119">
+          <caret line="34" selection-start-line="34" selection-end-line="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Utils/Session.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="75" column="8" selection-start-line="75" selection-start-column="8" selection-end-line="75" selection-end-column="8" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Utils/SessionClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="140" column="37" selection-start-line="140" selection-start-column="37" selection-end-line="140" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/SMSViewer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="423">
-          <caret line="211" column="59" selection-start-line="211" selection-start-column="59" selection-end-line="211" selection-end-column="59" />
+        <state relative-caret-position="986">
+          <caret line="94" column="36" selection-start-line="94" selection-start-column="36" selection-end-line="94" selection-end-column="36" />
         </state>
       </provider>
     </entry>

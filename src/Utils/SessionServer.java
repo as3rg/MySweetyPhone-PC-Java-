@@ -16,6 +16,7 @@ import java.awt.event.KeyEvent;
 import java.io.*;
 import java.net.*;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -23,11 +24,15 @@ public class SessionServer extends Session{
     Thread onStop;
     ServerSocket ss;
     MessageParser messageParser;
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    double width = screenSize.getWidth();
-    double height = screenSize.getHeight();
 
     public SessionServer(int type, int Port, Runnable doOnStopSession) throws IOException {
+        FileInputStream propFile = new FileInputStream(new File("properties.properties"));
+        Properties props = new Properties();
+        props.load(propFile);
+        propFile.close();
+
+        String name = (String) props.getOrDefault("name", "");
+
         onStop = new Thread(doOnStopSession);
         messageParser = new MessageParser();
         JSONObject message = new JSONObject();
@@ -43,6 +48,7 @@ public class SessionServer extends Session{
         }
         message.put("port", port);
         message.put("type", type);
+        message.put("name", name);
         message.put("os", System.getProperty("os.name"));
         byte[] buf2 = String.format("%-100s", message.toJSONString()).getBytes();
 
