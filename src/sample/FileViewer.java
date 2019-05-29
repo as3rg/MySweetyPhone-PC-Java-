@@ -312,7 +312,7 @@ public class FileViewer {
                 msg2.put("Type", "deleteFile");
                 msg2.put("Name", name);
                 msg2.put("FileName", fileName);
-                msg2.put("Dir", Path.getText());
+                msg2.put("Dir", dir);
                 writer.println(msg2.toJSONString());
                 writer.flush();
             }).start();
@@ -349,7 +349,7 @@ public class FileViewer {
                         msg2.put("Name", name);
                         msg2.put("FileName", fileName);
                         msg2.put("FileSocketPort", ss.getLocalPort());
-                        msg2.put("Dir", Path.getText());
+                        msg2.put("Dir", dir);
                         writer.println(msg2.toJSONString());
                         writer.flush();
                         Socket socket = ss.accept();
