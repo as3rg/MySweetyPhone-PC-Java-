@@ -110,9 +110,9 @@ public class SessionServer extends Session{
                             String msgString = new String(messageParser.parse(head));
                             JSONObject msg = (JSONObject) JSONValue.parse(msgString);
 
-                            if(gotAccess.get() == 0)
+                            if(gotAccess.get() == 0) {
                                 gotAccess.set(1);
-                                Platform.runLater(()-> {
+                                Platform.runLater(() -> {
                                     try {
                                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                                         alert.setTitle("Выполнить действие?");
@@ -128,6 +128,7 @@ public class SessionServer extends Session{
                                         e.printStackTrace();
                                     }
                                 });
+                            }
 
                             if(gotAccess.get() == 2 && msg!=null)
                                 switch ((String)msg.get("Type")){
@@ -265,16 +266,16 @@ public class SessionServer extends Session{
                         while (true) {
                             String line = reader.readLine();
                             JSONObject msg = (JSONObject) JSONValue.parse(line);
-                            if(gotAccess.get() == 0)
+                            if(gotAccess.get() == 0) {
                                 gotAccess.set(1);
-                                Platform.runLater(()-> {
+                                Platform.runLater(() -> {
                                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                                     alert.setTitle("Выполнить действие?");
                                     alert.setHeaderText("Вы действительно хотите предоставить доступ к файлам \"" + msg.get("Name") + "\"?");
                                     Optional<ButtonType> option = alert.showAndWait();
 
                                     if (option.get() != ButtonType.OK) {
-                                        new Thread(()->{
+                                        new Thread(() -> {
                                             try {
                                                 JSONObject ans = new JSONObject();
                                                 ans.put("Type", "finish");
@@ -290,6 +291,7 @@ public class SessionServer extends Session{
                                     }
 
                                 });
+                            }
 
                             if(gotAccess.get() == 2){
                                 JSONObject ans = new JSONObject();
@@ -328,7 +330,7 @@ public class SessionServer extends Session{
                                         File file = new File((String)msg.get("Dir"), (String)msg.get("FileName"));
                                         boolean result = file.delete();
                                         ans.put("State", result ? 0 : 1);        //0 - без ошибок, 1 - нет доступа
-                                        ans.put("Type", "State");
+                                        ans.put("Type", "deleteFile");
                                         writer.println(ans.toJSONString());
                                         writer.flush();
                                         break;

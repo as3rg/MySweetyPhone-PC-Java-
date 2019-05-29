@@ -22,6 +22,7 @@ import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import org.json.simple.parser.JSONParser;
 
 import java.awt.*;
 import java.io.*;
@@ -122,6 +123,7 @@ public class FileViewer {
                                         e.printStackTrace();
                                     }
                                 });
+                            else reloadFolder(null);
                             break;
                         case "showDir":
                             JSONArray values = (JSONArray) msg.get("Inside");
@@ -147,114 +149,13 @@ public class FileViewer {
                                 Upload.setVisible(!Path.getText().isEmpty());
                                 Reload.setVisible(!Path.getText().isEmpty());
                                 for (int i = 0; i < values.size(); i++) {
-                                    Label folder = new Label((String)((JSONObject)values.get(i)).get("Name"));
-                                    files.add((String)((JSONObject)values.get(i)).get("Name"));
-                                    folder.setPadding(new Insets(20, 20, 20, 20));
-                                    folder.setFont(new Font(14));
-//                                        Drawable d = getDrawable(values.getJSONObject(i).getString("Type").equals("Folder") ? R.drawable.ic_file_viewer_folder : R.drawable.ic_file_viewer_file);
-//                                        d.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
-//                                        folder.setCompoundDrawablesWithIntrinsicBounds(d, null, null, null);
-                                    Folders.getChildren().add(folder);
-                                    final int i2 = i;
-
-                                    final ContextMenu contextMenu = new ContextMenu();
-                                    javafx.scene.control.MenuItem delete = new javafx.scene.control.MenuItem("Удалить");
-                                    contextMenu.getItems().addAll(delete);
-                                    delete.setOnAction(event -> {
-                                        new Thread(()-> {
-                                            JSONObject msg2 = new JSONObject();
-                                            msg2.put("Type", "deleteFile");
-                                            msg2.put("Name", name);
-                                            msg2.put("FileName", ((JSONObject) values.get(i2)).get("Name"));
-                                            msg2.put("Dir", Path.getText());
-                                            writer.println(msg2.toJSONString());
-                                            writer.flush();
-                                        }).start();
-                                    });
-                                    folder.setOnContextMenuRequested((EventHandler<Event>) event -> contextMenu.show(folder, MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y));
-
-                                    if(((JSONObject)values.get(i)).get("Type").equals("Folder")) {
-                                        folder.setText("📁 " + folder.getText());
-                                        folder.setOnMouseClicked(v -> new Thread(() -> {
-                                            JSONObject msg3 = new JSONObject();
-                                            msg3.put("Type", "showDir");
-                                            msg3.put("Name", name);
-                                            msg3.put("Dir", new File((String) msg.get("Dir"), (String) ((JSONObject) values.get(i2)).get("Name")).getPath());
-                                            writer.println(msg3.toJSONString());
-                                            writer.flush();
-                                        }).start());
-                                    }else {
-                                        folder.setText("📄 "+folder.getText());
-                                        javafx.scene.control.MenuItem save = new javafx.scene.control.MenuItem("Сохранить как");
-                                        contextMenu.getItems().addAll(save);
-                                        save.setOnAction(v -> {
-                                            DirectoryChooser fc = new DirectoryChooser();
-                                            fc.setTitle("Выберите папку для сохранения");
-                                            final File out = fc.showDialog(null);
-                                            if (out == null) return;
-                                            new Thread(() -> {
-                                                try {
-                                                    File out3 = new File(out, "MySweetyPhone");
-                                                    out3.mkdirs();
-                                                    File out2 = new File(out3, (String) ((JSONObject) values.get(i2)).get("Name"));
-
-                                                    ServerSocket ss = new ServerSocket(0);
-                                                    JSONObject msg2 = new JSONObject();
-                                                    msg2.put("Type", "downloadFile");
-                                                    msg2.put("Name", name);
-                                                    msg2.put("FileName", ((JSONObject) values.get(i2)).get("Name"));
-                                                    msg2.put("FileSocketPort", ss.getLocalPort());
-                                                    msg2.put("Dir", Path.getText());
-                                                    writer.println(msg2.toJSONString());
-                                                    writer.flush();
-                                                    Socket socket = ss.accept();
-                                                    DataInputStream filein = new DataInputStream(socket.getInputStream());
-                                                    FileOutputStream fileout = new FileOutputStream(out2);
-                                                    IOUtils.copy(filein, fileout);
-                                                    fileout.close();
-                                                    socket.close();
-                                                    Platform.runLater(() -> {
-                                                        try {
-                                                            SystemTray tray = SystemTray.getSystemTray();
-                                                            Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
-                                                            TrayIcon trayIcon = new TrayIcon(image, "");
-                                                            trayIcon.setImageAutoSize(true);
-                                                            tray.add(trayIcon);
-                                                            trayIcon.displayMessage("Загрузка завершена", "Файл \"" + out2.getName() + "\" загружен", TrayIcon.MessageType.INFO);
-                                                        } catch (AWTException e) {
-                                                            e.printStackTrace();
-                                                        }
-                                                    });
-                                                } catch (IOException e) {
-                                                    e.printStackTrace();
-                                                }
-                                            }).start();
-                                        });
-                                    }
+                                    JSONObject folder = (JSONObject)values.get(i);
+                                    Draw((String) folder.get("Name"),folder.get("Type").equals("Folder"), (String) msg.get("Dir"));
                                 }
                             });
                             break;
                         case "newDirAnswer":
-                            Platform.runLater(()-> {
-                                Label folder = new Label((String)msg.get("DirName"));
-                                files.add((String)msg.get("DirName"));
-                                folder.setPadding(new Insets(20, 20, 20, 20));
-                                folder.setFont(new Font(20));
-//                                Drawable d = getDrawable(R.drawable.ic_file_viewer_folder);
-//                                d.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
-//                                folder.setCompoundDrawablesWithIntrinsicBounds(d, null, null, null);
-                                Folders.getChildren().add(folder);
-                                folder.setOnMouseClicked(v -> {
-                                    new Thread(() -> {
-                                        JSONObject msg3 = new JSONObject();
-                                        msg3.put("Type", "showDir");
-                                        msg3.put("Name", name);
-                                        msg3.put("Dir", new File((String)msg.get("Dir"), (String)msg.get("DirName")).toPath());
-                                        writer.println(msg3.toJSONString());
-                                        writer.flush();
-                                    }).start();
-                                });
-                            });
+                            Platform.runLater(()-> Draw((String)msg.get("DirName"), true, (String)msg.get("Dir")));
                             break;
                     }
                 }
@@ -340,7 +241,7 @@ public class FileViewer {
 
     public void uploadFile(MouseEvent mouseEvent){
         FileChooser fc = new FileChooser();
-        fc.setTitle("Выберите папку для сохранения");
+        fc.setTitle("Выберите файл для загрузки");
         final File file = fc.showOpenDialog(null);
         if(file == null) return;
 
@@ -370,6 +271,7 @@ public class FileViewer {
                         trayIcon.setImageAutoSize(true);
                         tray.add(trayIcon);
                         trayIcon.displayMessage("Отправка завершена", "Файл \""+file.getName()+"\" загружен", TrayIcon.MessageType.INFO);
+                        reloadFolder(null);
                     } catch (AWTException e) {
                         e.printStackTrace();
                     }
@@ -389,5 +291,91 @@ public class FileViewer {
             writer.println(msg3.toJSONString());
             writer.flush();
         }).start();
+    }
+
+    public void Draw(String fileName, boolean isFolder, String dir){
+        Label folder = new Label(fileName);
+        files.add(fileName);
+        folder.setPadding(new Insets(20, 20, 20, 20));
+        folder.setFont(new Font(14));
+//                                        Drawable d = getDrawable(values.getJSONObject(i).getString("Type").equals("Folder") ? R.drawable.ic_file_viewer_folder : R.drawable.ic_file_viewer_file);
+//                                        d.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+//                                        folder.setCompoundDrawablesWithIntrinsicBounds(d, null, null, null);
+        Folders.getChildren().add(folder);
+
+        final ContextMenu contextMenu = new ContextMenu();
+        javafx.scene.control.MenuItem delete = new javafx.scene.control.MenuItem("Удалить");
+        contextMenu.getItems().addAll(delete);
+        delete.setOnAction(event -> {
+            new Thread(()-> {
+                JSONObject msg2 = new JSONObject();
+                msg2.put("Type", "deleteFile");
+                msg2.put("Name", name);
+                msg2.put("FileName", fileName);
+                msg2.put("Dir", Path.getText());
+                writer.println(msg2.toJSONString());
+                writer.flush();
+            }).start();
+        });
+
+        if(isFolder) {
+            folder.setText("📁 " + folder.getText());
+            folder.setOnMouseClicked(v -> new Thread(() -> {
+                JSONObject msg3 = new JSONObject();
+                msg3.put("Type", "showDir");
+                msg3.put("Name", name);
+                msg3.put("Dir", new File(dir, fileName).getPath());
+                writer.println(msg3.toJSONString());
+                writer.flush();
+            }).start());
+        }else {
+            folder.setText("📄 "+folder.getText());
+            javafx.scene.control.MenuItem save = new javafx.scene.control.MenuItem("Сохранить как");
+            contextMenu.getItems().addAll(save);
+            save.setOnAction(v -> {
+                DirectoryChooser fc = new DirectoryChooser();
+                fc.setTitle("Выберите папку для сохранения");
+                final File out = fc.showDialog(null);
+                if (out == null) return;
+                new Thread(() -> {
+                    try {
+                        File out3 = new File(out, "MySweetyPhone");
+                        out3.mkdirs();
+                        File out2 = new File(out3, fileName);
+
+                        ServerSocket ss = new ServerSocket(0);
+                        JSONObject msg2 = new JSONObject();
+                        msg2.put("Type", "downloadFile");
+                        msg2.put("Name", name);
+                        msg2.put("FileName", fileName);
+                        msg2.put("FileSocketPort", ss.getLocalPort());
+                        msg2.put("Dir", Path.getText());
+                        writer.println(msg2.toJSONString());
+                        writer.flush();
+                        Socket socket = ss.accept();
+                        DataInputStream filein = new DataInputStream(socket.getInputStream());
+                        FileOutputStream fileout = new FileOutputStream(out2);
+                        IOUtils.copy(filein, fileout);
+                        fileout.close();
+                        socket.close();
+                        Platform.runLater(() -> {
+                            try {
+                                SystemTray tray = SystemTray.getSystemTray();
+                                Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
+                                TrayIcon trayIcon = new TrayIcon(image, "");
+                                trayIcon.setImageAutoSize(true);
+                                tray.add(trayIcon);
+                                trayIcon.displayMessage("Загрузка завершена", "Файл \"" + out2.getName() + "\" загружен", TrayIcon.MessageType.INFO);
+                            } catch (AWTException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
+            });
+        }
+        folder.setOnContextMenuRequested((EventHandler<Event>) event -> contextMenu.show(folder, MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y));
     }
 }
