@@ -173,56 +173,13 @@ public class SessionServer extends Session{
                                             }
                                         }else {
                                             s.paste((String) msg.get("value"));
-//                                        for(char Char : ((String) msg.get("value")).toCharArray()) {
-//                                            r.keyPress(KeyEvent.VK_ALT);
-//                                            String Char2 = Integer.toString(charToAltCode(Char));
-//                                            for (char c : Char2.toCharArray()) {
-//                                                int keyToPress;
-//                                                switch (c) {
-//                                                    case '0':
-//                                                        keyToPress = KeyEvent.VK_NUMPAD0;
-//                                                        break;
-//                                                    case '1':
-//                                                        keyToPress = KeyEvent.VK_NUMPAD1;
-//                                                        break;
-//                                                    case '2':
-//                                                        keyToPress = KeyEvent.VK_NUMPAD2;
-//                                                        break;
-//                                                    case '3':
-//                                                        keyToPress = KeyEvent.VK_NUMPAD3;
-//                                                        break;
-//                                                    case '4':
-//                                                        keyToPress = KeyEvent.VK_NUMPAD4;
-//                                                        break;
-//                                                    case '5':
-//                                                        keyToPress = KeyEvent.VK_NUMPAD5;
-//                                                        break;
-//                                                    case '6':
-//                                                        keyToPress = KeyEvent.VK_NUMPAD6;
-//                                                        break;
-//                                                    case '7':
-//                                                        keyToPress = KeyEvent.VK_NUMPAD7;
-//                                                        break;
-//                                                    case '8':
-//                                                        keyToPress = KeyEvent.VK_NUMPAD8;
-//                                                        break;
-//                                                    case '9':
-//                                                        keyToPress = KeyEvent.VK_NUMPAD9;
-//                                                        break;
-//                                                    default:
-//                                                        throw new RuntimeException();
-//                                                }
-//                                                r.keyPress(keyToPress);
-//                                                Thread.sleep(10);
-//                                                r.keyRelease(keyToPress);
-//                                                Thread.sleep(10);
-//                                            }
-//                                            r.keyRelease(KeyEvent.VK_ALT);
-//                                            Thread.sleep(100);
-//                                        }
                                         }
                                         break;
                                     case "swap":
+                                        r.keyRelease(KeyEvent.VK_ALT);
+                                        r.keyRelease(KeyEvent.VK_WINDOWS);
+                                        r.keyRelease(KeyEvent.VK_CONTROL);
+                                        r.keyRelease(KeyEvent.VK_SHIFT);
                                         SessionClient sc = new SessionClient(p.getAddress(), port, type);
                                         Dsocket.close();
                                         Session.sessions.add(sc);

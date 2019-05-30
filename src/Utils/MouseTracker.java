@@ -44,7 +44,6 @@ public class MouseTracker{
                     p.requestFocus();
                 }
             });
-            s.setAlwaysOnTop(true);
             s.setMaximized(true);
             s.initStyle(StageStyle.UNDECORATED);
             s.setResizable(false);
@@ -134,16 +133,26 @@ public class MouseTracker{
     public void keyPressed(KeyEvent e) {
         try {
             JSONObject msg = new JSONObject();
-            if(e.isControlDown() && e.getCode() == KeyCode.S) {
+            if(e.isAltDown() && e.getCode() == KeyCode.S) {
                 msg.put("Type", "swap");
                 msg.put("Name", name);
                 Send(msg.toJSONString().getBytes());
                 sc.Dsocket.close();
                 Thread.sleep(1000);
-                SessionServer ss = new SessionServer(sc.getType(), sc.getPort(), ()->{});
+                s.close();
+                SessionServer ss = new SessionServer(sc.getType(), sc.getPort(), () -> {
+                });
                 Session.sessions.add(ss);
                 Session.sessions.remove(this);
                 ss.Start();
+
+            }else if(e.isControlDown() && e.getCode() == KeyCode.F4){
+                msg.put("Type", "finish");
+                msg.put("Name", name);
+                Message[] messages = Message.getMessages(msg.toJSONString().getBytes(), MESSAGESIZE);
+                for (Message m : messages) {
+                    sc.getDatagramSocket().send(new DatagramPacket(m.getArr(), m.getArr().length, sc.getAddress(), sc.getPort()));
+                }
                 s.close();
             }else {
                 msg.put("Type", "keyPressed");
