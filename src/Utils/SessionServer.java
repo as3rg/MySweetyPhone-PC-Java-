@@ -8,6 +8,7 @@ import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import org.sikuli.script.Key;
 import org.sikuli.script.Screen;
 
 import java.awt.*;

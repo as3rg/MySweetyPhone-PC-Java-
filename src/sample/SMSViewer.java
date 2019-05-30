@@ -233,6 +233,7 @@ public class SMSViewer {
                             Platform.runLater(() -> {
                                 for (int i = 0; i < values.size(); i++) {
                                     JSONObject message = (JSONObject) values.get(i);
+                                    System.out.println(message);
                                     String number = (String) message.get("contact");
                                     if(number.equals(Contacts.getSelectionModel().getSelectedItem()))
                                         DrawText((String)message.get("text"), (Long) message.get("date"), true, ((Long)message.get("type")).intValue(), ((Long)message.get("sim")).intValue() == 1 ? Sim1.get() : Sim2.get());
