@@ -132,79 +132,79 @@ public class SessionServer extends Session{
                             }
 
                             if(gotAccess.get() == 2 && msg!=null)
-                                switch ((String)msg.get("Type")){
-                                    case "mouseMoved":
-                                        Point point = MouseInfo.getPointerInfo().getLocation();
-                                        r.mouseMove(((Number) msg.get("X")).intValue() + (int)point.getX(), ((Number) msg.get("Y")).intValue() + (int)point.getY());
-                                        break;
-                                    case "mouseReleased":
-                                        r.mouseRelease(InputEvent.getMaskForButton(((Number) msg.get("Key")).intValue()));
-                                        break;
-                                    case "mouseClicked":
-                                        r.mousePress(InputEvent.getMaskForButton(((Number) msg.get("Key")).intValue()));
-                                        r.mouseRelease(InputEvent.getMaskForButton(((Number) msg.get("Key")).intValue()));
-                                        break;
-                                    case "mousePressed":
-                                        r.mousePress(InputEvent.getMaskForButton(((Number) msg.get("Key")).intValue()));
-                                        break;
-                                    case "mouseWheel":
-                                        r.mouseWheel(((Number)msg.get("value")).intValue());
-                                        break;
-                                    case "keyReleased":
-                                        r.keyRelease(((Number)msg.get("value")).intValue());
-                                        break;
-                                    case "keyPressed":
-                                        r.keyPress(((Number)msg.get("value")).intValue());
-                                        break;
-                                    case "keyClicked":
-                                        r.keyPress(((Number)msg.get("value")).intValue());
-                                        r.keyRelease(((Number)msg.get("value")).intValue());
-                                        break;
-                                    case "winApiClicked":
-                                        Windows.keyboard_event(((Number)msg.get("value")).intValue());
-                                        break;
-                                    case "keysTyped":
-                                        if(msg.get("Subtype").equals("hotkey")){
-                                            for(char i : (((String)msg.get("value")).toCharArray())) {
-                                                try {
+                                try {
+                                    switch ((String) msg.get("Type")) {
+                                        case "mouseMoved":
+                                            Point point = MouseInfo.getPointerInfo().getLocation();
+                                            r.mouseMove(((Number) msg.get("X")).intValue() + (int) point.getX(), ((Number) msg.get("Y")).intValue() + (int) point.getY());
+                                            break;
+                                        case "mouseReleased":
+                                            r.mouseRelease(InputEvent.getMaskForButton(((Number) msg.get("Key")).intValue()));
+                                            break;
+                                        case "mouseClicked":
+                                            r.mousePress(InputEvent.getMaskForButton(((Number) msg.get("Key")).intValue()));
+                                            r.mouseRelease(InputEvent.getMaskForButton(((Number) msg.get("Key")).intValue()));
+                                            break;
+                                        case "mousePressed":
+                                            r.mousePress(InputEvent.getMaskForButton(((Number) msg.get("Key")).intValue()));
+                                            break;
+                                        case "mouseWheel":
+                                            r.mouseWheel(((Number) msg.get("value")).intValue());
+                                            break;
+                                        case "keyReleased":
+                                            r.keyRelease(((Number) msg.get("value")).intValue());
+                                            break;
+                                        case "keyPressed":
+                                            r.keyPress(((Number) msg.get("value")).intValue());
+                                            break;
+                                        case "keyClicked":
+                                            r.keyPress(((Number) msg.get("value")).intValue());
+                                            r.keyRelease(((Number) msg.get("value")).intValue());
+                                            break;
+                                        case "winApiClicked":
+                                            Windows.keyboard_event(((Number) msg.get("value")).intValue());
+                                            break;
+                                        case "keysTyped":
+                                            if (msg.get("Subtype").equals("hotkey")) {
+                                                for (char i : (((String) msg.get("value")).toCharArray())) {
                                                     r.keyPress(KeyEvent.getExtendedKeyCodeForChar(i));
                                                     r.keyRelease(KeyEvent.getExtendedKeyCodeForChar(i));
-                                                }catch (IllegalArgumentException ignored){}
+                                                }
+                                            } else {
+                                                s.paste((String) msg.get("value"));
                                             }
-                                        }else {
-                                            s.paste((String) msg.get("value"));
-                                        }
-                                        break;
-                                    case "swap":
-                                        r.keyRelease(KeyEvent.VK_ALT);
-                                        r.keyRelease(KeyEvent.VK_WINDOWS);
-                                        r.keyRelease(KeyEvent.VK_CONTROL);
-                                        r.keyRelease(KeyEvent.VK_SHIFT);
-                                        SessionClient sc = new SessionClient(p.getAddress(), port, type);
-                                        Dsocket.close();
-                                        Session.sessions.add(sc);
-                                        Session.sessions.remove(this);
-                                        sc.Start();
-                                        return;
-                                    case "finish":
-                                        r.keyRelease(KeyEvent.VK_ALT);
-                                        r.keyRelease(KeyEvent.VK_WINDOWS);
-                                        r.keyRelease(KeyEvent.VK_CONTROL);
-                                        r.keyRelease(KeyEvent.VK_SHIFT);
-                                        Stop();
-                                        return;
-                                    case "startDrawing":
-                                        r.mouseMove((int)(((Number) msg.get("X")).doubleValue() * width), (int)(((Number) msg.get("Y")).doubleValue() * height));
-                                        break;
-                                    case "draw":
-                                        r.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-                                        r.mouseMove((int)(((Number) msg.get("X")).doubleValue() * width), (int)(((Number) msg.get("Y")).doubleValue() * height));
-                                        break;
-                                    case "start":
-                                        return;
-                                    default:
-                                        System.err.println(msgString);
-                                }
+                                            break;
+                                        case "swap":
+                                            r.keyRelease(KeyEvent.VK_ALT);
+                                            r.keyRelease(KeyEvent.VK_WINDOWS);
+                                            r.keyRelease(KeyEvent.VK_CONTROL);
+                                            r.keyRelease(KeyEvent.VK_SHIFT);
+                                            SessionClient sc = new SessionClient(p.getAddress(), port, type);
+                                            Dsocket.close();
+                                            Session.sessions.add(sc);
+                                            Session.sessions.remove(this);
+                                            sc.Start();
+                                            return;
+                                        case "finish":
+                                            r.keyRelease(KeyEvent.VK_ALT);
+                                            r.keyRelease(KeyEvent.VK_WINDOWS);
+                                            r.keyRelease(KeyEvent.VK_CONTROL);
+                                            r.keyRelease(KeyEvent.VK_SHIFT);
+                                            Stop();
+                                            return;
+                                        case "startDrawing":
+                                            r.mouseMove((int) (((Number) msg.get("X")).doubleValue() * width), (int) (((Number) msg.get("Y")).doubleValue() * height));
+                                            break;
+                                        case "draw":
+                                            r.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+                                            r.mouseMove((int) (((Number) msg.get("X")).doubleValue() * width), (int) (((Number) msg.get("Y")).doubleValue() * height));
+                                            break;
+                                        case "start":
+                                            return;
+                                        default:
+                                            System.err.println(msgString);
+                                    }
+                                }catch (IllegalArgumentException ignored){}
                         }
                     } catch (AWTException | IOException e) {
                         e.printStackTrace();
@@ -225,7 +225,6 @@ public class SessionServer extends Session{
                         SimpleIntegerProperty gotAccess = new SimpleIntegerProperty(0);
                         while (true) {
                             String line = reader.readLine();
-                            System.out.println(line);
                             if(line == null){
                                 Stop();
                                 break;
