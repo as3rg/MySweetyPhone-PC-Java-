@@ -15,7 +15,7 @@
                   <Insets bottom="5.0" top="5.0" />
                </VBox.margin>
             </Button>
-            <ScrollPane fx:id="ConnectToSessionScrollPane" fitToWidth="true" hbarPolicy="NEVER" prefHeight="592.0" prefWidth="640.0" style="-fx-background-color: #202020;" vbarPolicy="NEVER">
+            <ScrollPane fx:id="ConnectToSessionScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="592.0" prefWidth="640.0" style="-fx-background-color: #202020;" vbarPolicy="NEVER">
                <content>
                   <VBox fx:id="ConnectToSession" disable="true" minHeight="565.0" prefHeight="576.0" prefWidth="638.0" style="-fx-background-color: #202020;" />
                </content>

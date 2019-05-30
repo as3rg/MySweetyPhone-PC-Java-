@@ -2,6 +2,7 @@ package Utils;
 
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -9,9 +10,7 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -91,6 +90,9 @@ public class SessionClient extends Session{
                             Button ip = new Button(name);
                             s.b = ip;
                             ip.setTextFill(Paint.valueOf("#F0F0F0"));
+                            ip.setStyle("-fx-background-color: linear-gradient(from 0% 100% to 100% 0%, #CF8BF3, #FDB99B); -fx-background-radius: 0;");
+                            VBox.setMargin(ip, new Insets(5, 10, 5,0));
+                            ip.prefWidthProperty().bind(v.widthProperty());
                             ip.setOnMouseClicked(event->{
                                 s.sc.Start();
                                 v.getChildren().remove(ip);

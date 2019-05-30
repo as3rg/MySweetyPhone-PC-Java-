@@ -165,8 +165,10 @@ public class SessionServer extends Session{
                                     case "keysTyped":
                                         if(msg.get("Subtype").equals("hotkey")){
                                             for(char i : (((String)msg.get("value")).toCharArray())) {
-                                                r.keyPress(KeyEvent.getExtendedKeyCodeForChar(i));
-                                                r.keyRelease(KeyEvent.getExtendedKeyCodeForChar(i));
+                                                try {
+                                                    r.keyPress(KeyEvent.getExtendedKeyCodeForChar(i));
+                                                    r.keyRelease(KeyEvent.getExtendedKeyCodeForChar(i));
+                                                }catch (IllegalArgumentException ignored){}
                                             }
                                         }else {
                                             s.paste((String) msg.get("value"));
@@ -268,6 +270,7 @@ public class SessionServer extends Session{
                             System.out.println(line);
                             if(line == null){
                                 Stop();
+                                break;
                             }
                             JSONObject msg = (JSONObject) JSONValue.parse(line);
                             if(gotAccess.get() == 0) {
@@ -309,11 +312,15 @@ public class SessionServer extends Session{
                                         if(msg.get("Type").equals("start")) msg.put("Dir", "");
                                     case "showDir":
                                         File[] files;
-                                        if(((String)msg.get("Dir")).isEmpty()){
+                                        if(((String)msg.get("Dir")).isEmpty() && (!msg.containsKey("DirName") || ((String)msg.get("DirName")).isEmpty())){
                                             files = File.listRoots();
                                             ans.put("Dir", "");
                                         }else{
-                                            File dir = new File((String)msg.get("Dir"));
+                                            File dir;
+                                            if(((String)msg.get("Dir")).isEmpty())
+                                                dir = new File((String)msg.get("DirName"));
+                                            else
+                                                dir = new File((String)msg.get("Dir"), msg.containsKey("DirName") ? (String)msg.get("DirName") : "");
                                             files = dir.listFiles();
                                             ans.put("Dir", dir.getPath());
                                         }
