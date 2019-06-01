@@ -183,6 +183,11 @@ public class Login {
     }
 
     private void RegOrLogin(String url, boolean IsLogin){
+        if(!Nick.getText().matches("\\w+")) {
+            Error.setVisible(true);
+            Error.setText("Имя содержит недопустимые символы!");
+            return;
+        }
         Runnable r = () -> {
             Request request = new Request() {
                 @Override
