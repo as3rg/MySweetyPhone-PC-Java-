@@ -15,6 +15,7 @@ import javafx.scene.layout.FlowPane;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import sample.Anims.Shake;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -82,8 +83,6 @@ public class RegDevice {
             Error.setText("Имя содержит недопустимые символы!");
             return;
         }
-        Next.setDisable(true);
-        DeviceName.setDisable(true);
         FileInputStream propFile = new FileInputStream("properties.properties");
         Properties props = new Properties();
         props.load(propFile);
@@ -95,11 +94,11 @@ public class RegDevice {
                 protected void On0() {
                     Platform.runLater(()-> {
                         try {
-                                props.setProperty("name", DeviceName.getText());
-                                props.setProperty("regdate", ((Long) result.get("regdate")).toString());
-                                props.store(new FileOutputStream("properties.properties"), "");
-                                AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
-                                MainPane.getChildren().setAll(pane);
+                            props.setProperty("name", DeviceName.getText());
+                            props.setProperty("regdate", ((Long) result.get("regdate")).toString());
+                            props.store(new FileOutputStream("properties.properties"), "");
+                            AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
+                            MainPane.getChildren().setAll(pane);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -109,25 +108,30 @@ public class RegDevice {
                 @Override
                 protected void On1() {
                     Platform.runLater(()-> {
+                        Shake onErrorShake = new Shake(Next);
                         Error.setVisible(true);
                         Error.setText("Вы уже используете это имя!");
+                        onErrorShake.play();
                     });
                 }
 
                 @Override
                 protected void On2() {
                     Platform.runLater(()-> {
+                        Shake onErrorShake = new Shake(Next);
                         Error.setVisible(true);
                         Error.setText("Ошибка приложения!");
+                        onErrorShake.play();
                     });
                 }
 
                 @Override
                 protected void On3() {
                     Platform.runLater(()-> {
+                        Shake onErrorShake = new Shake(Next);
                         Error.setVisible(true);
                         Error.setText("Вы должны указать имя!!");
-
+                        onErrorShake.play();
                     });
                 }
 

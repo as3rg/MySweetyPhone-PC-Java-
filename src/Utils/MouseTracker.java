@@ -13,6 +13,7 @@ import org.json.simple.JSONObject;
 import java.awt.*;
 import java.io.IOException;
 import java.net.DatagramPacket;
+import java.security.Key;
 
 public class MouseTracker{
 
@@ -40,8 +41,22 @@ public class MouseTracker{
             p.addEventFilter(KeyEvent.KEY_PRESSED, this::keyPressed);
             p.addEventFilter(KeyEvent.KEY_RELEASED, this::keyReleased);
             p.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
-                if (!isNowFocused) {
-                    p.requestFocus();
+                try{
+                    if (!isNowFocused) {
+                        JSONObject msg = new JSONObject();
+                        msg.put("Type", "keyReleased");
+                        msg.put("Name", name);
+                        msg.put("value", KeyCode.ALT);
+                        Send(msg.toJSONString().getBytes());
+                        msg.put("value", KeyCode.SHIFT);
+                        Send(msg.toJSONString().getBytes());
+                        msg.put("value", KeyCode.CONTROL);
+                        Send(msg.toJSONString().getBytes());
+                        msg.put("value", KeyCode.WINDOWS);
+                        Send(msg.toJSONString().getBytes());
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             });
             s.setMaximized(true);
