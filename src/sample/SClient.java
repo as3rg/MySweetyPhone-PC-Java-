@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 import java.net.SocketException;
@@ -35,7 +36,7 @@ public class SClient {
     private Button SearchSessions;
 
     @FXML
-    private VBox ConnectToSessionMainPane;
+    private BorderPane ConnectToSessionMainPane;
 
     private ArrayList<Session> sessions;
 
@@ -46,9 +47,9 @@ public class SClient {
                 while (MainPane.getScene() == null) Thread.sleep(100);
                 MainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
                 MainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
-                ConnectToSessionMainPane.prefHeightProperty().bind(MainPane.heightProperty());
-                ConnectToSessionMainPane.prefWidthProperty().bind(MainPane.widthProperty());
-                ConnectToSessionScrollPane.prefHeightProperty().bind(MainPane.prefHeightProperty().subtract(SearchSessions.heightProperty().subtract(10)));
+                ConnectToSessionMainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
+                ConnectToSessionMainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
+                ConnectToSessionScrollPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty().subtract(SearchSessions.heightProperty().subtract(10)));
                 ConnectToSession.minHeightProperty().bind(ConnectToSessionScrollPane.heightProperty());
                 MainPane.prefWidthProperty().bind(MainPane.getScene().widthProperty());
                 MainPane.prefHeightProperty().bind(MainPane.getScene().heightProperty());
