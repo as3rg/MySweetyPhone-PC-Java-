@@ -47,10 +47,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -310,10 +307,8 @@ public class Saved {
         vBox.getChildren().add(textLabel);
         vBox.getChildren().add(DateLabel);
 
-        File file = new File("src/sample/Images/Download.png");
-        javafx.scene.image.Image image = new Image(file.toURI().toString());
         BorderPane IconPane = new BorderPane();
-        ImageView Icon = new ImageView(image);
+        ImageView Icon = new ImageView(new Image(getClass().getResourceAsStream("Images/Download.png")));
         Icon.setFitWidth(150);
         Icon.setFitHeight(150);
         IconPane.setCenter(Icon);

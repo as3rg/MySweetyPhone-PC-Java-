@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class Main extends Application {
 
-    static ArrayList<File> tempfiles;
+    public static ArrayList<File> tempfiles;
     @Override
     public void start(Stage primaryStage) throws Exception{
         tempfiles = new ArrayList<>();

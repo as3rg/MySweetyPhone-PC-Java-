@@ -1,6 +1,11 @@
 package Utils;
 
-import java.io.File;
+import org.apache.pdfbox.io.IOUtils;
+import sample.Main;
+import sample.MainActivity;
+
+import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class Windows {
@@ -168,7 +173,23 @@ public class Windows {
     public static final int VK_OEM_CLEAR = 0xFE;
 
     static  {
-        System.load(new File(new File("src","Utils"),"Utils_Windows.so").getAbsolutePath());
+        try {
+            System.load(new File(new File("src","sample"),"Utils_Windows.so").getAbsolutePath());
+        }catch (UnsatisfiedLinkError e){
+            try {
+                File tmp = File.createTempFile("Utils_Windows", ".so");
+                Main.tempfiles.add(tmp);
+                System.out.println(tmp.getAbsolutePath());
+                try (InputStream in = MainActivity.class.getResourceAsStream("Utils_Windows.so"); FileOutputStream out = new FileOutputStream(tmp)) {
+                    IOUtils.copy(in, out);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                System.load(tmp.getAbsolutePath());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     static public native void keyboard_event(int key);
