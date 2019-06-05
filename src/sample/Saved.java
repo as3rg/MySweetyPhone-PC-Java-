@@ -169,7 +169,7 @@ public class Saved {
                         });
                     }
                 };
-                request.Start("http://mysweetyphone.herokuapp.com/?Type=GetMessages&RegDate="+regdate+"&MyName="+URLEncoder.encode(name, StandardCharsets.UTF_8)+"&Login="+URLEncoder.encode(login, StandardCharsets.UTF_8)+"&Id="+id+"&Count="+(Messages.getChildren().size()+Count), new MultipartEntity());
+                request.Start("http://mysweetyphone.herokuapp.com/?Type=GetMessages&RegDate="+regdate+"&MyName="+URLEncoder.encode(name, "UTF-8")+"&Login="+URLEncoder.encode(login, "UTF-8")+"&Id="+id+"&Count="+(Messages.getChildren().size()+Count), new MultipartEntity());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -251,7 +251,11 @@ public class Saved {
                         });
                     }
                 };
-                request.Start("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+URLEncoder.encode(name, StandardCharsets.UTF_8)+"&Login="+URLEncoder.encode(login, StandardCharsets.UTF_8)+"&Id="+id+"&Date="+date+"&Msg="+URLEncoder.encode(text, StandardCharsets.UTF_8), entity);
+                try {
+                    request.Start("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+URLEncoder.encode(name, "UTF-8")+"&Login="+URLEncoder.encode(login, "UTF-8")+"&Id="+id+"&Date="+date+"&Msg="+URLEncoder.encode(text, "UTF-8"), entity);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             };
             Destroy anim = new Destroy(vBox);
             anim.play(r);
@@ -307,15 +311,19 @@ public class Saved {
         vBox.getChildren().add(textLabel);
         vBox.getChildren().add(DateLabel);
 
-        BorderPane IconPane = new BorderPane();
-        ImageView Icon = new ImageView(new Image(getClass().getResourceAsStream("Images/Download.png")));
-        Icon.setFitWidth(150);
-        Icon.setFitHeight(150);
-        IconPane.setCenter(Icon);
-        IconPane.prefWidthProperty().bind(vBox.widthProperty().subtract(40));
+        try {
+            BorderPane IconPane = new BorderPane();
+            ImageView Icon = new ImageView(SwingFXUtils.toFXImage(ImageIO.read(getClass().getResourceAsStream("Images/Download.png")),null));
+            Icon.setFitWidth(150);
+            Icon.setFitHeight(150);
+            IconPane.setCenter(Icon);
+            IconPane.prefWidthProperty().bind(vBox.widthProperty().subtract(40));
 
-        vBox.getChildren().add(0,IconPane);
-        VBox.setMargin(vBox, new Insets(5, 0, 0, 0));
+            vBox.getChildren().add(0, IconPane);
+            VBox.setMargin(vBox, new Insets(5, 0, 0, 0));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         final ContextMenu contextMenu = new ContextMenu();
         MenuItem delete = new MenuItem("Удалить");
@@ -360,7 +368,11 @@ public class Saved {
                         });
                     }
                 };
-                request.Start("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+URLEncoder.encode(name, StandardCharsets.UTF_8)+"&Login="+URLEncoder.encode(login, StandardCharsets.UTF_8)+"&Id="+id+"&Date="+date+"&Msg="+URLEncoder.encode(text, StandardCharsets.UTF_8), entity);
+                try {
+                    request.Start("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+URLEncoder.encode(name, "UTF-8")+"&Login="+URLEncoder.encode(login, "UTF-8")+"&Id="+id+"&Date="+date+"&Msg="+URLEncoder.encode(text, "UTF-8"), entity);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             };
             Destroy anim = new Destroy(vBox);
             anim.play(r);
@@ -373,7 +385,7 @@ public class Saved {
             if (out == null) return;
             Runnable r = () -> {
                 try {
-                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + URLEncoder.encode(name, StandardCharsets.UTF_8) + "&Login=" + URLEncoder.encode(login, StandardCharsets.UTF_8) + "&Id=" + id + "&FileName=" + URLEncoder.encode(text, StandardCharsets.UTF_8) + "&Date=" + date);
+                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + URLEncoder.encode(name, "UTF-8") + "&Login=" + URLEncoder.encode(login, "UTF-8") + "&Id=" + id + "&FileName=" + URLEncoder.encode(text, "UTF-8") + "&Date=" + date);
 
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
@@ -440,7 +452,7 @@ public class Saved {
         (new Thread(() -> {
             while (true)
                 try {
-                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + URLEncoder.encode(name, StandardCharsets.UTF_8) + "&Login=" + URLEncoder.encode(login, StandardCharsets.UTF_8) + "&Id=" + id + "&FileName=" + URLEncoder.encode(text, StandardCharsets.UTF_8) + "&Date=" + date);
+                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" + URLEncoder.encode(name, "UTF-8") + "&Login=" + URLEncoder.encode(login, "UTF-8") + "&Id=" + id + "&FileName=" + URLEncoder.encode(text, "UTF-8") + "&Date=" + date);
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
 
@@ -513,7 +525,11 @@ public class Saved {
                         });
                     }
                 };
-                request.Start("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+URLEncoder.encode(name, StandardCharsets.UTF_8)+"&Login="+URLEncoder.encode(login, StandardCharsets.UTF_8)+"&Id="+id+"&Date="+date+"&Msg="+URLEncoder.encode(text, StandardCharsets.UTF_8), new MultipartEntity());
+                try {
+                    request.Start("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+URLEncoder.encode(name, "UTF-8")+"&Login="+URLEncoder.encode(login, "UTF-8")+"&Id="+id+"&Date="+date+"&Msg="+URLEncoder.encode(text, "UTF-8"), new MultipartEntity());
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             };
             Destroy anim = new Destroy(vBox);
             anim.play(r);
@@ -525,7 +541,7 @@ public class Saved {
             if(out == null) return;
             Runnable r = () -> {
                 try {
-                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" +URLEncoder.encode(name, StandardCharsets.UTF_8)+ "&Login=" +URLEncoder.encode(login, StandardCharsets.UTF_8)+ "&Id=" + id + "&FileName=" + URLEncoder.encode(text, StandardCharsets.UTF_8) + "&Date=" + date);
+                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" +URLEncoder.encode(name, "UTF-8")+ "&Login=" +URLEncoder.encode(login, "UTF-8")+ "&Id=" + id + "&FileName=" + URLEncoder.encode(text, "UTF-8") + "&Date=" + date);
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
 
@@ -597,7 +613,7 @@ public class Saved {
         new Thread(() -> {
             while (true)
                 try {
-                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" +URLEncoder.encode(name, StandardCharsets.UTF_8)+ "&Login=" +URLEncoder.encode(login, StandardCharsets.UTF_8)+ "&Id=" + id + "&FileName=" + URLEncoder.encode(text, StandardCharsets.UTF_8) + "&Date=" + date);
+                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" +URLEncoder.encode(name, "UTF-8")+ "&Login=" +URLEncoder.encode(login, "UTF-8")+ "&Id=" + id + "&FileName=" + URLEncoder.encode(text, "UTF-8") + "&Date=" + date);
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
 
@@ -693,7 +709,11 @@ public class Saved {
                         });
                     }
                 };
-                request.Start("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+URLEncoder.encode(name, StandardCharsets.UTF_8)+"&Login="+URLEncoder.encode(login, StandardCharsets.UTF_8)+"&Id="+id+"&Date="+date+"&Msg="+URLEncoder.encode(text, StandardCharsets.UTF_8), entity);
+                try {
+                    request.Start("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+URLEncoder.encode(name, "UTF-8")+"&Login="+URLEncoder.encode(login, "UTF-8")+"&Id="+id+"&Date="+date+"&Msg="+URLEncoder.encode(text, "UTF-8"), entity);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             };
             Destroy anim = new Destroy(vBox);
             anim.play(r);
@@ -705,7 +725,7 @@ public class Saved {
             if(out == null) return;
             Runnable r = () -> {
                 try {
-                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" +URLEncoder.encode(name, StandardCharsets.UTF_8)+ "&Login=" +URLEncoder.encode(login, StandardCharsets.UTF_8)+ "&Id=" + id + "&FileName=" + URLEncoder.encode(text, StandardCharsets.UTF_8) + "&Date=" + date);
+                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" +URLEncoder.encode(name, "UTF-8")+ "&Login=" +URLEncoder.encode(login, "UTF-8")+ "&Id=" + id + "&FileName=" + URLEncoder.encode(text, "UTF-8") + "&Date=" + date);
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
 
@@ -795,7 +815,7 @@ public class Saved {
 
             while (true) {
                 try {
-                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate=" + regdate + "&MyName=" +URLEncoder.encode(name, StandardCharsets.UTF_8)+ "&Login=" +URLEncoder.encode(login, StandardCharsets.UTF_8)+ "&Id=" + id + "&FileName=" + URLEncoder.encode(text, StandardCharsets.UTF_8) + "&Date=" + date);
+                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate=" + regdate + "&MyName=" +URLEncoder.encode(name, "UTF-8")+ "&Login=" +URLEncoder.encode(login, "UTF-8")+ "&Id=" + id + "&FileName=" + URLEncoder.encode(text, "UTF-8") + "&Date=" + date);
 
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
@@ -890,7 +910,11 @@ public class Saved {
                         });
                     }
                 };
-                request.Start("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+URLEncoder.encode(name, StandardCharsets.UTF_8)+"&Login="+URLEncoder.encode(login, StandardCharsets.UTF_8)+"&Id="+id+"&Date="+date+"&Msg="+URLEncoder.encode(text, StandardCharsets.UTF_8), entity);
+                try {
+                    request.Start("http://mysweetyphone.herokuapp.com/?Type=DelMessage&RegDate="+regdate+"&MyName="+URLEncoder.encode(name, "UTF-8")+"&Login="+URLEncoder.encode(login, "UTF-8")+"&Id="+id+"&Date="+date+"&Msg="+URLEncoder.encode(text, "UTF-8"), entity);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             };
             Destroy anim = new Destroy(vBox);
             anim.play(r);
@@ -902,7 +926,7 @@ public class Saved {
             if(out == null) return;
             Runnable r = () -> {
                 try {
-                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" +URLEncoder.encode(name, StandardCharsets.UTF_8)+ "&Login=" +URLEncoder.encode(login, StandardCharsets.UTF_8)+ "&Id=" + id + "&FileName=" + URLEncoder.encode(text, StandardCharsets.UTF_8) + "&Date=" + date);
+                    URL obj = new URL("http://mysweetyphone.herokuapp.com/?Type=DownloadFile&RegDate="+regdate+"&MyName=" +URLEncoder.encode(name, "UTF-8")+ "&Login=" +URLEncoder.encode(login, "UTF-8")+ "&Id=" + id + "&FileName=" + URLEncoder.encode(text, "UTF-8") + "&Date=" + date);
                     HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
                     connection.setRequestMethod("GET");
 
@@ -980,7 +1004,11 @@ public class Saved {
                     });
                 }
             };
-            request.Start("http://mysweetyphone.herokuapp.com/?Type=SendMessage&RegDate="+regdate+"&MyName="+URLEncoder.encode(name, StandardCharsets.UTF_8)+"&Login="+URLEncoder.encode(login, StandardCharsets.UTF_8)+"&Id="+id+"&Msg="+URLEncoder.encode(MessageText.getText(), StandardCharsets.UTF_8), entity);
+            try {
+                request.Start("http://mysweetyphone.herokuapp.com/?Type=SendMessage&RegDate="+regdate+"&MyName="+URLEncoder.encode(name, "UTF-8")+"&Login="+URLEncoder.encode(login, "UTF-8")+"&Id="+id+"&Msg="+URLEncoder.encode(MessageText.getText(), "UTF-8"), entity);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         };
         Thread t = new Thread(r);
         t.start();
@@ -1043,7 +1071,7 @@ public class Saved {
                                 });
                             }
                         };
-                        request.Start("http://mysweetyphone.herokuapp.com/?Type=UploadFile&RegDate=" + regdate + "&MyName=" +URLEncoder.encode(name, StandardCharsets.UTF_8)+ "&Login=" +URLEncoder.encode(login, StandardCharsets.UTF_8)+ "&Id=" + id, entity);
+                        request.Start("http://mysweetyphone.herokuapp.com/?Type=UploadFile&RegDate=" + regdate + "&MyName=" +URLEncoder.encode(name, "UTF-8")+ "&Login=" +URLEncoder.encode(login, "UTF-8")+ "&Id=" + id, entity);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

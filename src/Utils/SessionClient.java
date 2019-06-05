@@ -155,9 +155,7 @@ public class SessionClient extends Session{
                             try {
                                 Stage stage = new Stage();
                                 FileViewer.sessionClients.push(new Pair<>(this, stage));
-                                FXMLLoader loader = new FXMLLoader();
-                                loader.setLocation(new File(new File("src", "sample"), "FileViewer.fxml").toURL());
-                                BorderPane pane = loader.load();
+                                BorderPane pane = FXMLLoader.load(Main.class.getResource("FileViewer.fxml"));
                                 stage.setMinHeight(760);
                                 stage.setMinWidth(500);
                                 Scene scene = new Scene(pane, 1270, 720);
@@ -190,9 +188,7 @@ public class SessionClient extends Session{
                             try {
                                 Stage stage = new Stage();
                                 SMSViewer.sessionClients.push(new Pair<>(this, stage));
-                                FXMLLoader loader = new FXMLLoader();
-                                loader.setLocation(new File(new File("src", "sample"), "SMSViewer.fxml").toURL());
-                                AnchorPane pane = loader.load();
+                                AnchorPane pane = FXMLLoader.load(Main.class.getResource("SMSViewer.fxml"));
                                 stage.setMinHeight(760);
                                 stage.setMinWidth(500);
                                 Scene scene = new Scene(pane, 1270, 720);

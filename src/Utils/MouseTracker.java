@@ -171,7 +171,7 @@ public class MouseTracker{
                 s.close();
             }else {
                 msg.put("Type", "keyPressed");
-                msg.put("value", e.getCode().getCode());
+                msg.put("value", e.getCode().ordinal());
                 msg.put("Name", name);
                 Send(msg.toJSONString().getBytes());
             }
@@ -184,7 +184,7 @@ public class MouseTracker{
         try {
             JSONObject msg = new JSONObject();
             msg.put("Type", "keyReleased");
-            msg.put("value", e.getCode().getCode());
+            msg.put("value", e.getCode().ordinal());
             msg.put("Name", name);
             Send(msg.toJSONString().getBytes());
         } catch (IOException ex) {

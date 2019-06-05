@@ -140,7 +140,11 @@ public class RegDevice {
 
                 }
             };
-            request.Start("http://mysweetyphone.herokuapp.com/?Type=AddDevice&DeviceType=PC&Id="+id+"&Login="+ URLEncoder.encode(login, StandardCharsets.UTF_8)+"&Name="+URLEncoder.encode(DeviceName.getText(), StandardCharsets.UTF_8), new MultipartEntity());
+            try {
+                request.Start("http://mysweetyphone.herokuapp.com/?Type=AddDevice&DeviceType=PC&Id="+id+"&Login="+ URLEncoder.encode(login, "UTF-8")+"&Name="+URLEncoder.encode(DeviceName.getText(), "UTF-8"), new MultipartEntity());
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         };
         Thread t = new Thread(r);
         t.start();

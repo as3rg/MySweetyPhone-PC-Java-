@@ -15,6 +15,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -161,7 +162,11 @@ public class MainActivity {
 
                 }
             };
-            request.Start("http://mysweetyphone.herokuapp.com/?Type=RemoveDevice&Login=" + URLEncoder.encode(login, StandardCharsets.UTF_8) + "&Id=" + id + "&Name=" + URLEncoder.encode(name, StandardCharsets.UTF_8), new MultipartEntity());
+            try {
+                request.Start("http://mysweetyphone.herokuapp.com/?Type=RemoveDevice&Login=" + URLEncoder.encode(login, "UTF-8") + "&Id=" + id + "&Name=" + URLEncoder.encode(name, "UTF-8"), new MultipartEntity());
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }).start();
         File file = new File("properties.properties");
         file.delete();
