@@ -200,7 +200,7 @@ public class SessionServer extends Session{
                                             r.mouseMove((int) (((Number) msg.get("X")).doubleValue() * width), (int) (((Number) msg.get("Y")).doubleValue() * height));
                                             break;
                                         case "start":
-                                            return;
+                                            break;
                                         default:
                                             System.err.println(msgString);
                                     }
