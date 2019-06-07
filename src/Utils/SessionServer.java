@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.KeyCode;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -50,6 +51,7 @@ public class SessionServer extends Session{
         message.put("port", port);
         message.put("type", type);
         message.put("name", name);
+        message.put("subtype", "PC");
         byte[] buf2 = String.format("%-100s", message.toJSONString()).getBytes();
 
         broadcastingSocket = new DatagramSocket();
@@ -170,17 +172,6 @@ public class SessionServer extends Session{
                                                 s.paste((String) msg.get("value"));
                                             }
                                             break;
-                                        case "swap":
-                                            r.keyRelease(KeyEvent.VK_ALT);
-                                            r.keyRelease(KeyEvent.VK_WINDOWS);
-                                            r.keyRelease(KeyEvent.VK_CONTROL);
-                                            r.keyRelease(KeyEvent.VK_SHIFT);
-                                            SessionClient sc = new SessionClient(p.getAddress(), port, type);
-                                            Dsocket.close();
-                                            Session.sessions.add(sc);
-                                            Session.sessions.remove(this);
-                                            sc.Start();
-                                            return;
                                         case "finish":
                                             r.keyRelease(KeyEvent.VK_ALT);
                                             r.keyRelease(KeyEvent.VK_WINDOWS);

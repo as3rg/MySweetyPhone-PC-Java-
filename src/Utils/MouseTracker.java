@@ -1,11 +1,15 @@
 package Utils;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
+import javafx.scene.control.TextArea;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.json.simple.JSONObject;
@@ -13,7 +17,6 @@ import org.json.simple.JSONObject;
 import java.awt.*;
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.security.Key;
 
 public class MouseTracker{
 
@@ -31,34 +34,72 @@ public class MouseTracker{
             width = screenSize.getWidth();
             height = screenSize.getHeight();
             s = new Stage();
-            BorderPane p = new BorderPane();
-            p.addEventFilter(MouseEvent.MOUSE_MOVED, this::mouseMoved);
-            p.addEventFilter(MouseEvent.MOUSE_DRAGGED, this::mouseMoved);
-            p.addEventFilter(MouseEvent.MOUSE_PRESSED, this::mousePressed);
-            p.addEventFilter(MouseEvent.MOUSE_RELEASED, this::mouseReleased);
-            p.addEventFilter(ScrollEvent.SCROLL, this::mouseWheelMoved);
-            p.addEventFilter(DragEvent.DRAG_DROPPED,this::dragDropped);
-            p.addEventFilter(KeyEvent.KEY_PRESSED, this::keyPressed);
-            p.addEventFilter(KeyEvent.KEY_RELEASED, this::keyReleased);
-            p.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
-                try{
+
+            if(sc.isPhone){
+                StackPane p = new StackPane();
+                TextArea textArea = new TextArea();
+                textArea.textProperty().addListener((observable, oldValue, newValue) -> {
+                    new Thread(()->{
+                        try {
+                            JSONObject msg = new JSONObject();
+                            msg.put("Type", "keysTyped");
+                            msg.put("value", newValue);
+                            msg.put("Name", name);
+                            Send(msg.toJSONString().getBytes());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }).start();
+                    textArea.setText("");
+                });
+                textArea.addEventFilter(KeyEvent.KEY_PRESSED, this::keyPressed);
+                textArea.addEventFilter(KeyEvent.KEY_RELEASED, this::keyReleased);
+                textArea.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
                     if (!isNowFocused) {
-                        JSONObject msg = new JSONObject();
-                        msg.put("Type", "keyReleased");
-                        msg.put("Name", name);
-                        msg.put("value", KeyCode.ALT);
-                        Send(msg.toJSONString().getBytes());
-                        msg.put("value", KeyCode.SHIFT);
-                        Send(msg.toJSONString().getBytes());
-                        msg.put("value", KeyCode.CONTROL);
-                        Send(msg.toJSONString().getBytes());
-                        msg.put("value", KeyCode.WINDOWS);
-                        Send(msg.toJSONString().getBytes());
+                        textArea.requestFocus();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
+                });
+                textArea.setBackground(new Background(new BackgroundFill(Paint.valueOf("#202020"), CornerRadii.EMPTY, Insets.EMPTY)));
+                textArea.setStyle("-fx-background-color: #202020;");
+                p.setBackground(new Background(new BackgroundFill(Paint.valueOf("#202020"), CornerRadii.EMPTY, Insets.EMPTY)));
+                p.setStyle("-fx-background-color: #202020;");
+                p.getChildren().add(textArea);
+                s.setScene(new Scene(p, 600, 600));
+            }else {
+                BorderPane p = new BorderPane();
+                p.addEventFilter(MouseEvent.MOUSE_MOVED, this::mouseMoved);
+                p.addEventFilter(MouseEvent.MOUSE_DRAGGED, this::mouseMoved);
+                p.addEventFilter(MouseEvent.MOUSE_PRESSED, this::mousePressed);
+                p.addEventFilter(MouseEvent.MOUSE_RELEASED, this::mouseReleased);
+                p.addEventFilter(ScrollEvent.SCROLL, this::mouseWheelMoved);
+                p.addEventFilter(DragEvent.DRAG_DROPPED, this::dragDropped);
+                p.addEventFilter(KeyEvent.KEY_PRESSED, this::keyPressed);
+                p.addEventFilter(KeyEvent.KEY_RELEASED, this::keyReleased);
+                p.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+                    try {
+                        if (!isNowFocused) {
+                            JSONObject msg = new JSONObject();
+                            msg.put("Type", "keyReleased");
+                            msg.put("Name", name);
+                            msg.put("value", KeyCode.ALT.getCode());
+                            Send(msg.toJSONString().getBytes());
+                            msg.put("value", KeyCode.SHIFT.getCode());
+                            Send(msg.toJSONString().getBytes());
+                            msg.put("value", KeyCode.CONTROL.getCode());
+                            Send(msg.toJSONString().getBytes());
+                            msg.put("value", KeyCode.WINDOWS.getCode());
+                            Send(msg.toJSONString().getBytes());
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                p.requestFocus();
+                p.setStyle("-fx-background-color: #202020;");
+                Label label = new Label("Для выхода нажмите Ctrl+F4");
+                p.setCenter(label);
+                s.setScene(new Scene(p, 600, 600));
+            }
             s.setMaximized(true);
             s.initStyle(StageStyle.UNDECORATED);
             s.setResizable(false);
@@ -76,12 +117,7 @@ public class MouseTracker{
                     ex.printStackTrace();
                 }
             });
-            s.setScene(new Scene(p, 600, 600));
             s.show();
-            p.requestFocus();
-            p.setStyle("-fx-background-color: #202020;");
-            Label label = new Label("Для выхода нажмите Ctrl+F4\nДля смены ролей нажмите Alt+S");
-            p.setCenter(label);
         });
         JSONObject msg = new JSONObject();
         msg.put("Type", "start");
@@ -148,34 +184,20 @@ public class MouseTracker{
     public void keyPressed(KeyEvent e) {
         try {
             JSONObject msg = new JSONObject();
-            if(e.isAltDown() && e.getCode() == KeyCode.S) {
-                msg.put("Type", "swap");
-                msg.put("Name", name);
-                Send(msg.toJSONString().getBytes());
-                sc.Dsocket.close();
-                Thread.sleep(1000);
-                s.close();
-                SessionServer ss = new SessionServer(sc.getType(), sc.getPort(), () -> {
-                });
-                Session.sessions.add(ss);
-                Session.sessions.remove(this);
-                ss.Start();
-
-            }else if(e.isControlDown() && e.getCode() == KeyCode.F4){
+            if(e.isControlDown() && e.getCode() == KeyCode.F4){
                 msg.put("Type", "finish");
                 msg.put("Name", name);
-                Message[] messages = Message.getMessages(msg.toJSONString().getBytes(), MESSAGESIZE);
-                for (Message m : messages) {
-                    sc.getDatagramSocket().send(new DatagramPacket(m.getArr(), m.getArr().length, sc.getAddress(), sc.getPort()));
-                }
+                Send(msg.toJSONString().getBytes());
                 s.close();
             }else {
-                msg.put("Type", "keyPressed");
-                msg.put("value", e.getCode().ordinal());
-                msg.put("Name", name);
-                Send(msg.toJSONString().getBytes());
+                if(!sc.isPhone || e.getText().isEmpty()) {
+                    msg.put("Type", "keyPressed");
+                    msg.put("value", e.getCode().getCode());
+                    msg.put("Name", name);
+                    Send(msg.toJSONString().getBytes());
+                }
             }
-        } catch (IOException | InterruptedException e1) {
+        } catch (IOException e1) {
             e1.printStackTrace();
         }
     }
@@ -184,7 +206,7 @@ public class MouseTracker{
         try {
             JSONObject msg = new JSONObject();
             msg.put("Type", "keyReleased");
-            msg.put("value", e.getCode().ordinal());
+            msg.put("value", e.getCode().getCode());
             msg.put("Name", name);
             Send(msg.toJSONString().getBytes());
         } catch (IOException ex) {
