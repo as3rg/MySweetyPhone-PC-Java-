@@ -138,7 +138,7 @@ public class Message {
             }
             result.add(new Message(j, b, bodySize));
         }
-        Message[] out = result.toArray(Message[]::new);
+        Message[] out = result.toArray(new Message[result.size()]);
         out[0].setHead(true);
         for(int i = 0; i < out.length - 1; i++)
             out[i].setNext(out[i+1].id);

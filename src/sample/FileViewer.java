@@ -210,7 +210,7 @@ public class FileViewer {
             dialog.setTitle("Имя папки");
             dialog.setHeaderText("Введите имя папки");
             Optional<String> s = dialog.showAndWait();
-            if (!s.isEmpty()) {
+            if (!s.isPresent()) {
                 if (
                         s.get().contains("\\")
                                 || s.get().contains("/")

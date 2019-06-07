@@ -129,7 +129,7 @@ public class DevicesList {
 
             }
         };
-        request.Start("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate="+regdate+"&Login=" + URLEncoder.encode(login, StandardCharsets.UTF_8) + "&Id=" + id + "&Name=" + URLEncoder.encode(name, StandardCharsets.UTF_8), new MultipartEntity());
+        request.Start("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate="+regdate+"&Login=" + URLEncoder.encode(login, "UTF-8") + "&Id=" + id + "&Name=" + URLEncoder.encode(name, "UTF-8"), new MultipartEntity());
 
         Runnable r = () -> {
             Request request2 = new Request() {
@@ -163,7 +163,11 @@ public class DevicesList {
                     throw new RuntimeException("Ваше устройство не зарегистрировано!");
                 }
             };
-            request2.Start("http://mysweetyphone.herokuapp.com/?Type=ShowDevices&RegDate=" + regdate + "&Login=" + URLEncoder.encode(login, StandardCharsets.UTF_8) + "&Id=" + id + "&MyName=" + URLEncoder.encode(name, StandardCharsets.UTF_8), new MultipartEntity());
+            try {
+                request2.Start("http://mysweetyphone.herokuapp.com/?Type=ShowDevices&RegDate=" + regdate + "&Login=" + URLEncoder.encode(login, "UTF-8") + "&Id=" + id + "&MyName=" + URLEncoder.encode(name, "UTF-8"), new MultipartEntity());
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         };
         Thread t = new Thread(r);
         t.start();
@@ -219,7 +223,11 @@ public class DevicesList {
 
                                     }
                                 };
-                                request.Start("http://mysweetyphone.herokuapp.com/?Type=RemoveDevice&RegDate=" + regdate + "&Login=" + URLEncoder.encode(login, StandardCharsets.UTF_8) + "&MyName=" + URLEncoder.encode(name, StandardCharsets.UTF_8) + "&Id=" + id + "&Name=" + URLEncoder.encode(devices.get(getIndex()).getName(), StandardCharsets.UTF_8), new MultipartEntity());
+                                try {
+                                    request.Start("http://mysweetyphone.herokuapp.com/?Type=RemoveDevice&RegDate=" + regdate + "&Login=" + URLEncoder.encode(login, "UTF-8") + "&MyName=" + URLEncoder.encode(name, "UTF-8") + "&Id=" + id + "&Name=" + URLEncoder.encode(devices.get(getIndex()).getName(), "UTF-8"), new MultipartEntity());
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                }
                                 if (name.equals(devices.get(getIndex()).getName())) {
                                     devices.remove(getIndex());
                                     throw new RuntimeException("Ваше устройство не зарегистрировано!");

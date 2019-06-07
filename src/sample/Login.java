@@ -155,7 +155,11 @@ public class Login {
 
                         }
                     };
-                    request.Start("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate=" + regdate + "&Login=" +URLEncoder.encode(login, StandardCharsets.UTF_8)+ "&Id=" + id + "&Name=" + URLEncoder.encode(name, StandardCharsets.UTF_8), new MultipartEntity());
+                    try {
+                        request.Start("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate=" + regdate + "&Login=" +URLEncoder.encode(login, "UTF-8")+ "&Id=" + id + "&Name=" + URLEncoder.encode(name, "UTF-8"), new MultipartEntity());
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                     LoginButton.setDisable(false);
                     Nick.setDisable(false);
                     Pass.setDisable(false);
@@ -167,19 +171,37 @@ public class Login {
         }
 
         LoginButton.setOnMouseClicked(event ->
-                RegOrLogin("http://mysweetyphone.herokuapp.com/?Type=Login&Login="+URLEncoder.encode(Nick.getText(), StandardCharsets.UTF_8)+"&Pass="+URLEncoder.encode(Pass.getText(), StandardCharsets.UTF_8),true));
+        {
+            try {
+                RegOrLogin("http://mysweetyphone.herokuapp.com/?Type=Login&Login="+URLEncoder.encode(Nick.getText(), "UTF-8")+"&Pass="+URLEncoder.encode(Pass.getText(), "UTF-8"),true);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @FXML
     void ChangeToReg(){
         LoginButton.setText("Зарегистрироваться");
-        LoginButton.setOnMouseClicked(event -> RegOrLogin("http://mysweetyphone.herokuapp.com/?Type=Reg&Login="+URLEncoder.encode(Nick.getText(), StandardCharsets.UTF_8)+"&Pass="+URLEncoder.encode(Pass.getText(), StandardCharsets.UTF_8), false));
+        LoginButton.setOnMouseClicked(event -> {
+            try {
+                RegOrLogin("http://mysweetyphone.herokuapp.com/?Type=Reg&Login="+URLEncoder.encode(Nick.getText(), "UTF-8")+"&Pass="+URLEncoder.encode(Pass.getText(), "UTF-8"), false);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @FXML
     void ChangeToLogin(){
         LoginButton.setText("Войти");
-        LoginButton.setOnMouseClicked(event -> RegOrLogin("http://mysweetyphone.herokuapp.com/?Type=Login&Login="+URLEncoder.encode(Nick.getText(), StandardCharsets.UTF_8)+"&Pass="+URLEncoder.encode(Pass.getText(), StandardCharsets.UTF_8),true));
+        LoginButton.setOnMouseClicked(event -> {
+            try {
+                RegOrLogin("http://mysweetyphone.herokuapp.com/?Type=Login&Login="+URLEncoder.encode(Nick.getText(), "UTF-8")+"&Pass="+URLEncoder.encode(Pass.getText(), "UTF-8"),true);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void RegOrLogin(String url, boolean IsLogin){

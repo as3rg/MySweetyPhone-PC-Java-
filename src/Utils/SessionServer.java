@@ -50,7 +50,6 @@ public class SessionServer extends Session{
         message.put("port", port);
         message.put("type", type);
         message.put("name", name);
-        message.put("os", System.getProperty("os.name"));
         byte[] buf2 = String.format("%-100s", message.toJSONString()).getBytes();
 
         broadcastingSocket = new DatagramSocket();
@@ -160,9 +159,6 @@ public class SessionServer extends Session{
                                         case "keyClicked":
                                             r.keyPress(((Number) msg.get("value")).intValue());
                                             r.keyRelease(((Number) msg.get("value")).intValue());
-                                            break;
-                                        case "winApiClicked":
-                                            Windows.keyboard_event(((Number) msg.get("value")).intValue());
                                             break;
                                         case "keysTyped":
                                             if (msg.get("Subtype").equals("hotkey")) {
