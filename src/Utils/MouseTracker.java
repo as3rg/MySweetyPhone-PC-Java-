@@ -26,6 +26,7 @@ public class MouseTracker{
     Stage s;
     String name;
     static final int MESSAGESIZE = 100;
+    TextArea textArea;
     public MouseTracker(SessionClient sc, String name) throws IOException {
         this.sc = sc;
         this.name = name;
@@ -34,11 +35,18 @@ public class MouseTracker{
             width = screenSize.getWidth();
             height = screenSize.getHeight();
             s = new Stage();
-
+            StackPane p = new StackPane();
+            textArea = new TextArea();
+            textArea.addEventFilter(KeyEvent.KEY_PRESSED, this::keyPressed);
+            textArea.addEventFilter(KeyEvent.KEY_RELEASED, this::keyReleased);
+            p.getChildren().add(textArea);
+            textArea.setBackground(new Background(new BackgroundFill(Paint.valueOf("#202020"), CornerRadii.EMPTY, Insets.EMPTY)));
+            textArea.setStyle("-fx-background-color: #202020;");
+            p.setBackground(new Background(new BackgroundFill(Paint.valueOf("#202020"), CornerRadii.EMPTY, Insets.EMPTY)));
+            p.setStyle("-fx-background-color: #202020;");
             if(sc.isPhone){
-                StackPane p = new StackPane();
-                TextArea textArea = new TextArea();
                 textArea.textProperty().addListener((observable, oldValue, newValue) -> {
+                    if(newValue.isEmpty()) return;
                     new Thread(()->{
                         try {
                             JSONObject msg = new JSONObject();
@@ -52,30 +60,20 @@ public class MouseTracker{
                     }).start();
                     textArea.setText("");
                 });
-                textArea.addEventFilter(KeyEvent.KEY_PRESSED, this::keyPressed);
-                textArea.addEventFilter(KeyEvent.KEY_RELEASED, this::keyReleased);
                 textArea.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
                     if (!isNowFocused) {
                         textArea.requestFocus();
                     }
                 });
-                textArea.setBackground(new Background(new BackgroundFill(Paint.valueOf("#202020"), CornerRadii.EMPTY, Insets.EMPTY)));
-                textArea.setStyle("-fx-background-color: #202020;");
-                p.setBackground(new Background(new BackgroundFill(Paint.valueOf("#202020"), CornerRadii.EMPTY, Insets.EMPTY)));
-                p.setStyle("-fx-background-color: #202020;");
-                p.getChildren().add(textArea);
-                s.setScene(new Scene(p, 600, 600));
+
             }else {
-                BorderPane p = new BorderPane();
-                p.addEventFilter(MouseEvent.MOUSE_MOVED, this::mouseMoved);
-                p.addEventFilter(MouseEvent.MOUSE_DRAGGED, this::mouseMoved);
-                p.addEventFilter(MouseEvent.MOUSE_PRESSED, this::mousePressed);
-                p.addEventFilter(MouseEvent.MOUSE_RELEASED, this::mouseReleased);
-                p.addEventFilter(ScrollEvent.SCROLL, this::mouseWheelMoved);
-                p.addEventFilter(DragEvent.DRAG_DROPPED, this::dragDropped);
-                p.addEventFilter(KeyEvent.KEY_PRESSED, this::keyPressed);
-                p.addEventFilter(KeyEvent.KEY_RELEASED, this::keyReleased);
-                p.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+                textArea.addEventFilter(MouseEvent.MOUSE_MOVED, this::mouseMoved);
+                textArea.addEventFilter(MouseEvent.MOUSE_DRAGGED, this::mouseMoved);
+                textArea.addEventFilter(MouseEvent.MOUSE_PRESSED, this::mousePressed);
+                textArea.addEventFilter(MouseEvent.MOUSE_RELEASED, this::mouseReleased);
+                textArea.addEventFilter(ScrollEvent.SCROLL, this::mouseWheelMoved);
+                textArea.addEventFilter(DragEvent.DRAG_DROPPED, this::dragDropped);
+                textArea.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
                     try {
                         if (!isNowFocused) {
                             JSONObject msg = new JSONObject();
@@ -94,12 +92,12 @@ public class MouseTracker{
                         e.printStackTrace();
                     }
                 });
-                p.requestFocus();
-                p.setStyle("-fx-background-color: #202020;");
-                Label label = new Label("Для выхода нажмите Ctrl+F4");
-                p.setCenter(label);
-                s.setScene(new Scene(p, 600, 600));
             }
+            textArea.requestFocus();
+            p.getChildren().add(new Label("Для выхода нажмите Ctrl+F4"));
+            Scene scene = new Scene(p, 600, 600);
+            scene.getStylesheets().add("/sample/style.css");
+            s.setScene(scene);
             s.setMaximized(true);
             s.initStyle(StageStyle.UNDECORATED);
             s.setResizable(false);
@@ -189,14 +187,18 @@ public class MouseTracker{
                 msg.put("Name", name);
                 Send(msg.toJSONString().getBytes());
                 s.close();
-            }else {
-                if(!sc.isPhone || e.getText().isEmpty()) {
-                    msg.put("Type", "keyPressed");
-                    msg.put("value", e.getCode().getCode());
-                    msg.put("Name", name);
-                    Send(msg.toJSONString().getBytes());
-                }
+            }else if(e.getText().isEmpty()) {
+                msg.put("Type", "keyPressed");
+                msg.put("value", e.getCode().getCode());
+                msg.put("Name", name);
+                Send(msg.toJSONString().getBytes());
+            }else if(!sc.isPhone){
+                msg.put("Type", "keyPressed");
+                msg.put("value", e.getCode().ordinal());
+                msg.put("Name", name);
+                Send(msg.toJSONString().getBytes());
             }
+            textArea.setText("");
         } catch (IOException e1) {
             e1.printStackTrace();
         }
@@ -212,6 +214,7 @@ public class MouseTracker{
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        textArea.setText("");
     }
 
     public void Send(byte[] b) throws IOException {

@@ -37,8 +37,12 @@
     -fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, #d53369, #cbad6d);
 }
 
-.text-area{
+.text-area {
+    text-area-background: #202020 ;
+}
 
+.text-area .content {
+    -fx-background-color: #202020 ;
 }
 
 .check-box{
