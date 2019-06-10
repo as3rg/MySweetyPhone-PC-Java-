@@ -187,14 +187,9 @@ public class MouseTracker{
                 msg.put("Name", name);
                 Send(msg.toJSONString().getBytes());
                 s.close();
-            }else if(e.getText().isEmpty()) {
+            }else if(!sc.isPhone || e.getText().isEmpty()){
                 msg.put("Type", "keyPressed");
                 msg.put("value", e.getCode().getCode());
-                msg.put("Name", name);
-                Send(msg.toJSONString().getBytes());
-            }else if(!sc.isPhone){
-                msg.put("Type", "keyPressed");
-                msg.put("value", e.getCode().ordinal());
                 msg.put("Name", name);
                 Send(msg.toJSONString().getBytes());
             }
