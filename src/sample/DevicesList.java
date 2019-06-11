@@ -11,6 +11,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import javafx.util.Callback;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.json.simple.JSONObject;
@@ -186,6 +187,7 @@ public class DevicesList {
                     public void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
                         button.setTextFill(Paint.valueOf("#FFFFFF"));
+                        button.setFont(new Font( 15));
 
                         if (devices.size() > getIndex() && getIndex() != -1)
                             if (name.equals(devices.get(getIndex()).getName())){
