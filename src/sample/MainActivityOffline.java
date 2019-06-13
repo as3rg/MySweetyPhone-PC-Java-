@@ -19,9 +19,9 @@ import java.net.URLEncoder;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-public class MainActivity {
+public class MainActivityOffline {
 
-    public static MainActivity controller;
+    public static MainActivityOffline controller;
 
     @FXML
     public ResourceBundle resources;
@@ -60,7 +60,7 @@ public class MainActivity {
     @FXML
     void initialize() throws IOException {
         controller = this;
-        DevicesList();
+        SServer();
         Thread Resize = new Thread(()->{
             try {
                 while (MainPane.getScene() == null) Thread.sleep(100);
@@ -92,22 +92,6 @@ public class MainActivity {
     }
 
     @FXML
-    void DevicesList() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DevicesList.fxml"));
-        Pane pane = fxmlLoader.load();
-        Replace.getChildren().setAll(pane);
-        mtc = this::DevicesList;
-    }
-
-    @FXML
-    void Saved() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Saved.fxml"));
-        Pane pane = fxmlLoader.load();
-        Replace.getChildren().setAll(pane);
-        mtc = this::Saved;
-    }
-
-    @FXML
     void SClient() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("SClient.fxml"));
         Pane pane = fxmlLoader.load();
@@ -124,47 +108,7 @@ public class MainActivity {
     }
 
     @FXML
-    void Exit() throws IOException {
-        FileInputStream propFile = new FileInputStream("properties.properties");
-        Properties props = new Properties();
-        props.load(propFile);
-        propFile.close();
-        int id = Integer.parseInt((String)props.getOrDefault("id","-1"));
-        String name = (String)props.getOrDefault("name","");
-        String login = (String)props.getOrDefault("login","");
-        new Thread(()-> {
-            Request request = new Request() {
-                @Override
-                protected void On0() {
-
-                }
-
-                @Override
-                protected void On1() {
-
-                }
-
-                @Override
-                protected void On2() {
-
-                }
-
-                @Override
-                protected void On3() {
-
-                }
-
-                @Override
-                protected void On4() {
-
-                }
-            };
-            try {
-                request.Start("http://mysweetyphone.herokuapp.com/?Type=RemoveDevice&Login=" + URLEncoder.encode(login, "UTF-8") + "&Id=" + id + "&Name=" + URLEncoder.encode(name, "UTF-8"), new MultipartEntity());
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        }).start();
+    void Exit() {
         File file = new File("properties.properties");
         file.delete();
         Platform.exit();

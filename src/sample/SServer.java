@@ -9,9 +9,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 
@@ -43,29 +45,60 @@ public class SServer {
 
     @FXML
     public void initialize(){
-        Thread Resize = new Thread(()->{
-            try {
-                while (NewSession.getScene() == null) Thread.sleep(100);
-                MainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
-                MainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
-                NewSessionMainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
-                NewSessionMainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
-                MainPane.prefWidthProperty().bind(NewSession.getScene().widthProperty());
-                MainPane.prefHeightProperty().bind(NewSession.getScene().heightProperty());
+        try{
+            FileInputStream propFile = new FileInputStream("properties.properties");
+            Properties props = new Properties();
+            props.load(propFile);
+            propFile.close();
+            String login = (String) props.getOrDefault("login", "");
 
-                NewSession.setDisable(false);
-                SessionType.setDisable(false);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if(login.isEmpty()){
+                Thread Resize = new Thread(()->{
+                    try {
+                        while (NewSession.getScene() == null) Thread.sleep(100);
+                        MainPane.prefWidthProperty().bind(MainActivityOffline.controller.Replace.widthProperty());
+                        MainPane.prefHeightProperty().bind(MainActivityOffline.controller.Replace.heightProperty());
+                        NewSessionMainPane.prefHeightProperty().bind(MainActivityOffline.controller.Replace.heightProperty());
+                        NewSessionMainPane.prefWidthProperty().bind(MainActivityOffline.controller.Replace.widthProperty());
+                        MainPane.prefWidthProperty().bind(NewSession.getScene().widthProperty());
+                        MainPane.prefHeightProperty().bind(NewSession.getScene().heightProperty());
+
+                        NewSession.setDisable(false);
+                        SessionType.setDisable(false);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                });
+                Resize.start();
             }
-        });
-        Resize.start();
-        SessionType.getItems().add(MOUSE);
-        SessionType.getItems().add(FILEVIEW);
-        NewSession.setOnMouseClicked(this::OpenSession);
+            else{
+                Thread Resize = new Thread(()->{
+                    try {
+                        while (NewSession.getScene() == null) Thread.sleep(100);
+                        MainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
+                        MainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
+                        NewSessionMainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
+                        NewSessionMainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
+                        MainPane.prefWidthProperty().bind(NewSession.getScene().widthProperty());
+                        MainPane.prefHeightProperty().bind(NewSession.getScene().heightProperty());
+
+                        NewSession.setDisable(false);
+                        SessionType.setDisable(false);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                });
+                Resize.start();
+            }
+            SessionType.getItems().add(MOUSE);
+            SessionType.getItems().add(FILEVIEW);
+            NewSession.setOnMouseClicked(this::OpenSession);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
-    public void OpenSession(MouseEvent e){
+    private void OpenSession(MouseEvent e){
         try{
             if (SessionType.getValue() == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -89,7 +122,7 @@ public class SServer {
         }
     }
 
-    public int GetType(String s){
+    private int GetType(String s){
         switch (s){
             case MOUSE:
                 return Session.MOUSE;
@@ -100,7 +133,7 @@ public class SServer {
         }
     }
 
-    public void CloseSession(MouseEvent e) {
+    private void CloseSession(MouseEvent e) {
         try {
             NewSession.setOnMouseClicked(this::OpenSession);
             NewSession.setText("Открыть сессию");

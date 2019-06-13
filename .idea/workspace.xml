@@ -7,7 +7,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="151c7cb7-fc2c-468e-833c-aebeb0419258" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/sample/MainActivityOffline.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/sample/MainActivityOffline.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Login$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Login$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Login$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Login$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Login.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Login.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/Login.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/RegDevice$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/RegDevice$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/RegDevice.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/RegDevice.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/properties.properties" beforeDir="false" afterPath="$PROJECT_DIR$/properties.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Utils/MouseTracker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/MouseTracker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/Login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Login.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Login.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/RegDevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/RegDevice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/SClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/SClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/SServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/SServer.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,74 +38,17 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/sample/Login.fxml">
+          <provider editor-type-id="text-editor" />
+          <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/Utils/MouseTracker.java">
+        <entry file="file://$PROJECT_DIR$/src/sample/Login.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="313">
-              <caret line="194" column="13" selection-start-line="194" selection-start-column="13" selection-end-line="194" selection-end-column="13" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/Style.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="680">
-              <caret line="40" column="33" selection-start-line="40" selection-start-column="33" selection-end-line="40" selection-end-column="33" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Utils/Request.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="20" column="58" selection-start-line="20" selection-start-column="58" selection-end-line="20" selection-end-column="58" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/SServer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-323">
-              <caret line="38" column="8" selection-start-line="38" selection-start-column="8" selection-end-line="38" selection-end-column="8" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Utils/SessionServer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="840">
-              <caret line="345" column="16" selection-start-line="345" selection-start-column="16" selection-end-line="345" selection-end-column="69" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Utils/SessionClient.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1037">
-              <caret line="87" column="223" selection-start-line="87" selection-start-column="223" selection-end-line="87" selection-end-column="223" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/DevicesList.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1003">
-              <caret line="86" column="46" selection-start-line="86" selection-start-column="46" selection-end-line="86" selection-end-column="93" />
+            <state relative-caret-position="204">
+              <caret line="112" column="86" lean-forward="true" selection-start-line="112" selection-start-column="86" selection-end-line="112" selection-end-column="86" />
             </state>
           </provider>
         </entry>
@@ -96,31 +56,65 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sample/RegDevice.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1938">
-              <caret line="137" column="25" selection-start-line="137" selection-start-column="25" selection-end-line="137" selection-end-column="25" />
+            <state relative-caret-position="244">
+              <caret line="98" column="33" lean-forward="true" selection-start-line="98" selection-start-column="33" selection-end-line="98" selection-end-column="33" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/Login.java">
+        <entry file="file://$PROJECT_DIR$/src/sample/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3638">
-              <caret line="242" column="23" selection-start-line="242" selection-start-column="23" selection-end-line="243" selection-end-column="17" />
+            <state relative-caret-position="68">
+              <caret line="31" column="9" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="9" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/Saved.java">
+        <entry file="file://$PROJECT_DIR$/src/sample/MainActivity.fxml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="8755">
-              <caret line="593" column="30" selection-start-line="593" selection-start-column="30" selection-end-line="593" selection-end-column="30" />
+            <state relative-caret-position="488">
+              <caret line="113" column="13" lean-forward="true" selection-end-line="113" selection-end-column="13" />
             </state>
           </provider>
+          <provider editor-type-id="JavaFX-Scene-Builder" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/sample/MainActivityOffline.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="104">
+              <caret line="66" selection-start-line="66" selection-end-line="66" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/sample/MainActivityOffline.fxml">
+          <provider editor-type-id="text-editor">
+            <state relative-caret-position="219">
+              <caret line="80" column="18" lean-forward="true" selection-start-line="80" selection-start-column="18" selection-end-line="80" selection-end-column="18" />
+            </state>
+          </provider>
+          <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="FxmlFile" />
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -160,21 +154,26 @@
         <option value="$PROJECT_DIR$/src/sample/Receiving.java" />
         <option value="$PROJECT_DIR$/src/sample/MainActivity.fxml" />
         <option value="$PROJECT_DIR$/src/sample/SMSViewer.java" />
-        <option value="$PROJECT_DIR$/src/sample/SClient.java" />
-        <option value="$PROJECT_DIR$/src/sample/SServer.java" />
         <option value="$PROJECT_DIR$/src/Utils/Windows.java" />
-        <option value="$PROJECT_DIR$/src/sample/MainActivity.java" />
         <option value="$PROJECT_DIR$/src/Utils/Message.java" />
         <option value="$PROJECT_DIR$/src/sample/FileViewer.java" />
         <option value="$PROJECT_DIR$/src/sample/Main.java" />
-        <option value="$PROJECT_DIR$/src/sample/DevicesList.java" />
-        <option value="$PROJECT_DIR$/src/sample/RegDevice.java" />
-        <option value="$PROJECT_DIR$/src/sample/Login.java" />
         <option value="$PROJECT_DIR$/src/sample/Saved.java" />
         <option value="$PROJECT_DIR$/src/Utils/SessionServer.java" />
         <option value="$PROJECT_DIR$/src/Utils/SessionClient.java" />
         <option value="$PROJECT_DIR$/src/sample/Style.css" />
         <option value="$PROJECT_DIR$/src/Utils/MouseTracker.java" />
+        <option value="$PROJECT_DIR$/src/sample/DevicesList.java" />
+        <option value="$PROJECT_DIR$/src/sample/SClient.fxml" />
+        <option value="$PROJECT_DIR$/src/sample/SServer.fxml" />
+        <option value="$PROJECT_DIR$/src/sample/Login.fxml" />
+        <option value="$PROJECT_DIR$/src/sample/MainActivity.java" />
+        <option value="$PROJECT_DIR$/src/sample/MainActivityOffline.fxml" />
+        <option value="$PROJECT_DIR$/src/sample/Login.java" />
+        <option value="$PROJECT_DIR$/src/sample/RegDevice.java" />
+        <option value="$PROJECT_DIR$/src/sample/MainActivityOffline.java" />
+        <option value="$PROJECT_DIR$/src/sample/SServer.java" />
+        <option value="$PROJECT_DIR$/src/sample/SClient.java" />
       </list>
     </option>
   </component>
@@ -194,56 +193,13 @@
         <subPane>
           <expand>
             <path>
-              <item name="MySweetyPhone-PC" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MySweetyPhone-PC" type="462c0819:PsiDirectoryNode" />
+              <item name="mysweetyphone-pc" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mysweetyphone-pc" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="MySweetyPhone-PC" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MySweetyPhone-PC" type="462c0819:PsiDirectoryNode" />
-              <item name=".idea" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MySweetyPhone-PC" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MySweetyPhone-PC" type="462c0819:PsiDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MySweetyPhone-PC" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MySweetyPhone-PC" type="462c0819:PsiDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-              <item name="production" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MySweetyPhone-PC" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MySweetyPhone-PC" type="462c0819:PsiDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-              <item name="production" type="462c0819:PsiDirectoryNode" />
-              <item name="MySweetyPhone(PC)" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MySweetyPhone-PC" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MySweetyPhone-PC" type="462c0819:PsiDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-              <item name="production" type="462c0819:PsiDirectoryNode" />
-              <item name="MySweetyPhone(PC)" type="462c0819:PsiDirectoryNode" />
-              <item name="Utils" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MySweetyPhone-PC" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MySweetyPhone-PC" type="462c0819:PsiDirectoryNode" />
+              <item name="mysweetyphone-pc" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mysweetyphone-pc" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MySweetyPhone-PC" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MySweetyPhone-PC" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="sample" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MySweetyPhone-PC" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MySweetyPhone-PC" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Utils" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -257,7 +213,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.20803782" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
@@ -325,11 +281,20 @@
   <component name="TimeTrackingManager">
     <option name="totallyTimeSpent" value="73961000" />
   </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15191898" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19288956" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -338,17 +303,17 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4989059" visible="true" weight="0.36033228" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4989059" weight="0.35947713" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3997923" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" />
+      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49924356" weight="0.32843137" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32843137" />
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5010941" side_tool="true" weight="0.33542976" />
-      <window_info anchor="bottom" id="Messages" order="10" weight="0.32606438" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50075644" side_tool="true" weight="0.33496732" />
+      <window_info anchor="bottom" id="Messages" order="10" weight="0.3251634" />
       <window_info anchor="bottom" id="Database Changes" order="11" />
-      <window_info anchor="bottom" id="Version Control" order="12" />
+      <window_info anchor="bottom" id="Version Control" order="12" weight="0.32843137" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info active="true" anchor="right" content_ui="combo" id="Hierarchy" order="2" visible="true" weight="0.25" />
@@ -398,12 +363,12 @@
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/sample/FileViewer.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="629">
           <caret line="37" column="22" selection-start-line="37" selection-start-column="22" selection-end-line="37" selection-end-column="22" />
         </state>
       </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="jrt://C:/Users/spyte/AppData/Local/JetBrains/Toolbox/apps/IDEA-JDK11/ch-0/191.7141.44/jre64!/java.desktop/java/awt/event/InputEvent.class" />
     <entry file="file://$PROJECT_DIR$/src/sample/Anims/Create.java">
@@ -434,30 +399,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Receiving.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-469">
-          <caret line="41" column="20" selection-start-line="41" selection-start-column="20" selection-end-line="41" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/MainActivity.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="536">
-          <caret line="114" selection-start-line="114" selection-end-line="114" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/SMSViewer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4539">
           <caret line="310" column="16" selection-start-line="310" selection-start-column="16" selection-end-line="310" selection-end-column="28" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mysweetyphone-pc.properties">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Utils/Session.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -466,24 +413,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/SClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="53" column="56" selection-start-line="53" selection-start-column="56" selection-end-line="53" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Utils/Windows.java" />
     <entry file="file://$PROJECT_DIR$/src/sample/DevicesList.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="700">
-          <caret line="167" column="16" selection-start-line="167" selection-start-column="16" selection-end-line="167" selection-end-column="36" />
-        </state>
-      </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="file://$PROJECT_DIR$/module_mysweetyphone(pc).xml">
       <provider selected="true" editor-type-id="text-editor" />
@@ -505,28 +438,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
+    <entry file="jrt://C:/Users/Xiaomi/AppData/Local/JetBrains/Toolbox/apps/IDEA-JDK11/ch-0/191.6707.61/jre64!/javafx.graphics/javafx/scene/input/KeyCode.class" />
+    <entry file="file://$PROJECT_DIR$/src/Utils/MouseTracker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
+        <state relative-caret-position="1530">
+          <caret line="90" column="45" selection-start-line="90" selection-start-column="45" selection-end-line="90" selection-end-column="45" />
           <folding>
-            <element signature="e#2420#2421#0" expanded="true" />
-            <element signature="e#2448#2449#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jrt://C:/Users/Xiaomi/AppData/Local/JetBrains/Toolbox/apps/IDEA-JDK11/ch-0/191.6707.61/jre64!/javafx.graphics/javafx/scene/input/KeyCode.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="282" column="20" selection-start-line="282" selection-start-column="20" selection-end-line="282" selection-end-column="20" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/Style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="40" column="33" selection-start-line="40" selection-start-column="33" selection-end-line="40" selection-end-column="33" />
+        <state relative-caret-position="628">
+          <caret line="44" column="35" selection-start-line="44" selection-start-column="35" selection-end-line="44" selection-end-column="35" />
         </state>
       </provider>
     </entry>
@@ -537,68 +463,172 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Utils/SessionClient.java">
+    <entry file="file://$PROJECT_DIR$/src/Utils/SessionServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1037">
-          <caret line="87" column="223" selection-start-line="87" selection-start-column="223" selection-end-line="87" selection-end-column="223" />
+        <state relative-caret-position="3179">
+          <caret line="337" column="29" selection-start-line="337" selection-start-column="29" selection-end-line="337" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/DevicesList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1003">
-          <caret line="86" column="46" selection-start-line="86" selection-start-column="46" selection-end-line="86" selection-end-column="93" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/RegDevice.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1938">
-          <caret line="137" column="25" selection-start-line="137" selection-start-column="25" selection-end-line="137" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Login.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3638">
-          <caret line="242" column="23" selection-start-line="242" selection-start-column="23" selection-end-line="243" selection-end-column="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/Saved.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8755">
+        <state relative-caret-position="310">
           <caret line="593" column="30" selection-start-line="593" selection-start-column="30" selection-end-line="593" selection-end-column="30" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Utils/SessionServer.java">
+    <entry file="file://$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/DevicesList.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="840">
-          <caret line="345" column="16" selection-start-line="345" selection-start-column="16" selection-end-line="345" selection-end-column="69" />
+        <state relative-caret-position="710">
+          <caret line="224" column="39" lean-forward="true" selection-start-line="224" selection-start-column="39" selection-end-line="224" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#9665#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/META-INF/MANIFEST.MF">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/Receiving.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="41" column="20" selection-start-line="41" selection-start-column="20" selection-end-line="41" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/SClient.fxml">
+      <provider editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/SMSViewer.fxml">
+      <provider editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Utils/SessionClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1003">
+          <caret line="88" column="40" selection-start-line="88" selection-start-column="40" selection-end-line="88" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/out/production/MySweetyPhone(PC)/sample/DevicesList.fxml">
+      <provider editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/SServer.fxml">
+      <provider editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/RegDevice.fxml">
+      <provider editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mysweetyphone-pc.properties">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/Login.fxml">
+      <provider editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/out/artifacts/MySweetyPhone_PC__jar/properties.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1040">
+          <caret line="72" column="17" selection-start-line="72" selection-start-column="17" selection-end-line="72" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/MainActivityOffline.fxml">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="219">
+          <caret line="80" column="18" lean-forward="true" selection-start-line="80" selection-start-column="18" selection-end-line="80" selection-end-column="18" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/RegDevice.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="244">
+          <caret line="98" column="33" lean-forward="true" selection-start-line="98" selection-start-column="33" selection-end-line="98" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/DevicesList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="87" selection-start-line="87" selection-end-line="87" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/MainActivity.fxml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="488">
+          <caret line="113" column="13" lean-forward="true" selection-end-line="113" selection-end-column="13" />
+        </state>
+      </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="31" column="9" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/SClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="63" column="95" lean-forward="true" selection-start-line="63" selection-start-column="95" selection-end-line="63" selection-end-column="95" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/SServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-323">
-          <caret line="38" column="8" selection-start-line="38" selection-start-column="8" selection-end-line="38" selection-end-column="8" />
+        <state relative-caret-position="244">
+          <caret line="54" column="32" lean-forward="true" selection-start-line="47" selection-start-column="8" selection-end-line="54" selection-end-column="32" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Utils/MouseTracker.java">
+    <entry file="file://$PROJECT_DIR$/src/sample/MainActivityOffline.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="313">
-          <caret line="194" column="13" selection-start-line="194" selection-start-column="13" selection-end-line="194" selection-end-column="13" />
+        <state relative-caret-position="104">
+          <caret line="66" selection-start-line="66" selection-end-line="66" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/properties.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="12" lean-forward="true" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/Login.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="112" column="86" lean-forward="true" selection-start-line="112" selection-start-column="86" selection-end-line="112" selection-end-column="86" />
         </state>
       </provider>
     </entry>
@@ -613,7 +643,6 @@
             <option name="proportions">
               <list>
                 <option value="0.20803782" />
-                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>

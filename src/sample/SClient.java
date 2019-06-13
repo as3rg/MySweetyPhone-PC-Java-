@@ -9,9 +9,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
+import java.io.FileInputStream;
 import java.net.SocketException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 
@@ -42,29 +44,61 @@ public class SClient {
 
     @FXML
     public void initialize(){
-        Thread Resize = new Thread(()->{
-            try {
-                while (MainPane.getScene() == null) Thread.sleep(100);
-                MainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
-                MainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
-                ConnectToSessionMainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
-                ConnectToSessionMainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
-                ConnectToSessionScrollPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty().subtract(SearchSessions.heightProperty().subtract(10)));
-                ConnectToSession.minHeightProperty().bind(ConnectToSessionScrollPane.heightProperty());
-                MainPane.prefWidthProperty().bind(MainPane.getScene().widthProperty());
-                MainPane.prefHeightProperty().bind(MainPane.getScene().heightProperty());
-                SearchSessions.setDisable(false);
-                ConnectToSession.setDisable(false);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        try {
+            FileInputStream propFile = new FileInputStream("properties.properties");
+            Properties props = new Properties();
+            props.load(propFile);
+            propFile.close();
+            String login = (String) props.getOrDefault("login", "");
+
+            if (login.isEmpty()) {
+                Thread Resize = new Thread(()->{
+                    try {
+                        while (MainPane.getScene() == null) Thread.sleep(100);
+                        MainPane.prefWidthProperty().bind(MainActivityOffline.controller.Replace.widthProperty());
+                        MainPane.prefHeightProperty().bind(MainActivityOffline.controller.Replace.heightProperty());
+                        ConnectToSessionMainPane.prefHeightProperty().bind(MainActivityOffline.controller.Replace.heightProperty());
+                        ConnectToSessionMainPane.prefWidthProperty().bind(MainActivityOffline.controller.Replace.widthProperty());
+                        ConnectToSessionScrollPane.prefHeightProperty().bind(MainActivityOffline.controller.Replace.heightProperty().subtract(SearchSessions.heightProperty().subtract(10)));
+                        ConnectToSession.minHeightProperty().bind(ConnectToSessionScrollPane.heightProperty());
+                        MainPane.prefWidthProperty().bind(MainPane.getScene().widthProperty());
+                        MainPane.prefHeightProperty().bind(MainPane.getScene().heightProperty());
+                        SearchSessions.setDisable(false);
+                        ConnectToSession.setDisable(false);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                });
+                Resize.start();
             }
-        });
-        Resize.start();
-        SearchSessions.setOnMouseClicked(this::Search);
+            else {
+                Thread Resize = new Thread(()->{
+                    try {
+                        while (MainPane.getScene() == null) Thread.sleep(100);
+                        MainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
+                        MainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
+                        ConnectToSessionMainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
+                        ConnectToSessionMainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
+                        ConnectToSessionScrollPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty().subtract(SearchSessions.heightProperty().subtract(10)));
+                        ConnectToSession.minHeightProperty().bind(ConnectToSessionScrollPane.heightProperty());
+                        MainPane.prefWidthProperty().bind(MainPane.getScene().widthProperty());
+                        MainPane.prefHeightProperty().bind(MainPane.getScene().heightProperty());
+                        SearchSessions.setDisable(false);
+                        ConnectToSession.setDisable(false);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                });
+                Resize.start();
+            }
+            SearchSessions.setOnMouseClicked(this::Search);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @FXML
-    public void Search(MouseEvent mouseEvent) {
+    private void Search(MouseEvent mouseEvent) {
         try {
             SearchSessions.setOnMouseClicked(this::StopSearching);
             SearchSessions.setText("Остановить поиск");
@@ -77,7 +111,7 @@ public class SClient {
         }
     }
 
-    public void StopSearching(MouseEvent mouseEvent) {
+    private void StopSearching(MouseEvent mouseEvent) {
         SearchSessions.setText("Поиск...");
         SearchSessions.setOnMouseClicked(this::Search);
         Utils.SessionClient.StopSearching();
