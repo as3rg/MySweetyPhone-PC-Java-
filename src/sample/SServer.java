@@ -56,10 +56,10 @@ public class SServer {
                 Thread Resize = new Thread(()->{
                     try {
                         while (NewSession.getScene() == null) Thread.sleep(100);
-                        MainPane.prefWidthProperty().bind(MainActivityOffline.controller.Replace.widthProperty());
-                        MainPane.prefHeightProperty().bind(MainActivityOffline.controller.Replace.heightProperty());
-                        NewSessionMainPane.prefHeightProperty().bind(MainActivityOffline.controller.Replace.heightProperty());
-                        NewSessionMainPane.prefWidthProperty().bind(MainActivityOffline.controller.Replace.widthProperty());
+                        MainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
+                        MainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
+                        NewSessionMainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
+                        NewSessionMainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
                         MainPane.prefWidthProperty().bind(NewSession.getScene().widthProperty());
                         MainPane.prefHeightProperty().bind(NewSession.getScene().heightProperty());
 

@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainActivityOffline">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainActivity">
     <BorderPane fx:id="MainPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
                 style="-fx-background-color: #202020;">
         <top>

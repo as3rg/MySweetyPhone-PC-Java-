@@ -4,28 +4,23 @@ import Utils.Request;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import org.apache.http.entity.mime.MultipartEntity;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 import sample.Anims.Shake;
-import sun.rmi.runtime.Log;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
 import java.io.*;
-import java.net.*;
-import java.nio.charset.StandardCharsets;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Login {
 
@@ -57,9 +52,6 @@ public class Login {
     private BorderPane BodyPane;
 
     @FXML
-    private VBox Container;
-
-    @FXML
     private HBox Type;
 
     @FXML
@@ -77,7 +69,7 @@ public class Login {
     }
 
     @FXML
-    void initialize() throws IOException, URISyntaxException {
+    void initialize() throws IOException {
         Thread Resize = new Thread(()->{
             try {
                 while (MainPane.getScene() == null) Thread.sleep(100);
@@ -217,15 +209,13 @@ public class Login {
 
     @FXML
     void ChangeToOffline(){
-        LoginButton.setText("Offline режим");
+        LoginButton.setText("Включить Offline режим");
         Nick.setDisable(true);
         Pass.setDisable(true);
-        LoginButton.setOnMouseClicked(event -> {
-            Offline();
-        });
+        LoginButton.setOnMouseClicked(this::Offline);
     }
 
-    private void Offline(){
+    private void Offline(MouseEvent m){
         try {
             File file = new File("properties.properties");
             if (file.exists()){

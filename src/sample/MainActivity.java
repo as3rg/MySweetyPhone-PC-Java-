@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.http.entity.mime.MultipartEntity;
 
 import java.io.File;
@@ -60,7 +61,12 @@ public class MainActivity {
     @FXML
     void initialize() throws IOException {
         controller = this;
-        DevicesList();
+        if(FilenameUtils.getName(location.toString()).equals("MainActivity.fxml"))
+            DevicesList();
+        else
+            SClient();
+        Receiving receiving = new Receiving();
+        receiving.Start();
         Thread Resize = new Thread(()->{
             try {
                 while (MainPane.getScene() == null) Thread.sleep(100);
@@ -82,8 +88,6 @@ public class MainActivity {
             }
         });
         Resize.start();
-        Receiving receiving = new Receiving();
-        receiving.Start();
     }
 
     @FXML

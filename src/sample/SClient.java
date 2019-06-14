@@ -55,11 +55,11 @@ public class SClient {
                 Thread Resize = new Thread(()->{
                     try {
                         while (MainPane.getScene() == null) Thread.sleep(100);
-                        MainPane.prefWidthProperty().bind(MainActivityOffline.controller.Replace.widthProperty());
-                        MainPane.prefHeightProperty().bind(MainActivityOffline.controller.Replace.heightProperty());
-                        ConnectToSessionMainPane.prefHeightProperty().bind(MainActivityOffline.controller.Replace.heightProperty());
-                        ConnectToSessionMainPane.prefWidthProperty().bind(MainActivityOffline.controller.Replace.widthProperty());
-                        ConnectToSessionScrollPane.prefHeightProperty().bind(MainActivityOffline.controller.Replace.heightProperty().subtract(SearchSessions.heightProperty().subtract(10)));
+                        MainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
+                        MainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
+                        ConnectToSessionMainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
+                        ConnectToSessionMainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
+                        ConnectToSessionScrollPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty().subtract(SearchSessions.heightProperty().subtract(10)));
                         ConnectToSession.minHeightProperty().bind(ConnectToSessionScrollPane.heightProperty());
                         MainPane.prefWidthProperty().bind(MainPane.getScene().widthProperty());
                         MainPane.prefHeightProperty().bind(MainPane.getScene().heightProperty());
