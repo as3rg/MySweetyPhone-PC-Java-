@@ -85,8 +85,8 @@ public class DevicesList {
         Thread Resize = new Thread(()->{
             try {
                 while (MainPane.getScene() == null || MainPane.getScene().getWindow() == null) Thread.sleep(100);
-                Type.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty().divide(5));
-                Remove.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty().divide(5));
+                Type.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty().divide(7));
+                Remove.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty().divide(4));
                 Name.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty().divide(5).multiply(3));
                 Table.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
             } catch (InterruptedException e) {

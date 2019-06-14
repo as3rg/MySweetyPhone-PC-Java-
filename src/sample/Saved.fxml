@@ -12,73 +12,76 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="RootPane" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Saved">
-   <children>
-      <BorderPane fx:id="MainPane" minHeight="0.0" minWidth="0.0" style="-fx-background-color: #202020;">
-         <top>
-            <Button fx:id="LoadButton" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#LoadMore" prefHeight="25.0" style="-fx-background-color: #ffffff;" text="Загрузить еще..." BorderPane.alignment="CENTER">
-               <textFill>
-                  <LinearGradient endX="1.0" endY="1.0">
-                     <stops>
-                        <Stop color="#FC354C" />
-                        <Stop color="#0ABFBC" offset="1.0" />
-                     </stops>
-                  </LinearGradient>
-               </textFill>
-               <opaqueInsets>
-                  <Insets bottom="15.0" />
-               </opaqueInsets>
-               <BorderPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </BorderPane.margin>
+<AnchorPane fx:id="RootPane" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="sample.Saved">
+   <BorderPane fx:id="MainPane" minHeight="0.0" minWidth="0.0" style="-fx-background-color: #202020;">
+      <top>
+         <Button fx:id="LoadButton" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#LoadMore"
+                 prefHeight="25.0" style="-fx-background-color: #ffffff; -fx-font: 15 arial;" text="Загрузить еще..."
+                 BorderPane.alignment="CENTER">
+            <textFill>
+               <LinearGradient>
+                  <stops>
+                     <Stop color="#FC354C"/>
+                     <Stop color="#0ABFBC" offset="1.0"/>
+                  </stops>
+               </LinearGradient>
+            </textFill>
+            <opaqueInsets>
+               <Insets bottom="15.0"/>
+            </opaqueInsets>
+            <BorderPane.margin>
+               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </BorderPane.margin>
+         </Button>
+      </top>
+      <bottom>
+         <FlowPane fx:id="SendBar" alignment="BOTTOM_CENTER" prefHeight="64.0" prefWidth="1280.0" rowValignment="BOTTOM"
+                   BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+               <Insets/>
+            </BorderPane.margin>
+            <padding>
+               <Insets left="-25.0"/>
+            </padding>
+            <TextArea fx:id="MessageText" onKeyPressed="#onKeyPressed" prefHeight="56.0" prefWidth="1047.0"
+                      promptText="Сообщение">
+               <FlowPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+               </FlowPane.margin>
+            </TextArea>
+            <Button fx:id="SendButton" mnemonicParsing="false" onAction="#onSendClick" prefHeight="56.0"
+                    prefWidth="90.0" text="Отправить" textFill="#202020">
+               <font>
+                  <Font name="System Bold" size="13.0"/>
+               </font>
+               <FlowPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+               </FlowPane.margin>
             </Button>
-         </top>
-         <bottom>
-            <FlowPane fx:id="SendBar" alignment="BOTTOM_CENTER" prefHeight="64.0" prefWidth="1280.0" rowValignment="BOTTOM" BorderPane.alignment="CENTER">
-               <children>
-                  <TextArea fx:id="MessageText" onKeyPressed="#onKeyPressed" prefHeight="56.0" prefWidth="1047.0" promptText="Сообщение">
-                     <FlowPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </FlowPane.margin>
-                  </TextArea>
-                  <Button fx:id="SendButton" mnemonicParsing="false" onAction="#onSendClick" prefHeight="56.0" prefWidth="90.0" text="Отправить" textFill="#202020">
-                     <font>
-                        <Font name="System Bold" size="13.0" />
-                     </font>
-                     <FlowPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </FlowPane.margin>
-                  </Button>
-                  <Button fx:id="FileButton" mnemonicParsing="false" onAction="#onFileClicked" prefHeight="56.0" prefWidth="90.0" text="Файл" textFill="#202020">
-                      <font>
-                          <Font name="System Bold" size="13.0" />
-                      </font>
-                     <FlowPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </FlowPane.margin>
-                  </Button>
-               </children>
-               <BorderPane.margin>
-                  <Insets />
-               </BorderPane.margin>
+            <Button fx:id="FileButton" mnemonicParsing="false" onAction="#onFileClicked" prefHeight="56.0"
+                    prefWidth="90.0" text="Файл" textFill="#202020">
+               <font>
+                  <Font name="System Bold" size="13.0"/>
+               </font>
+               <FlowPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+               </FlowPane.margin>
+            </Button>
+         </FlowPane>
+      </bottom>
+      <left>
+      </left>
+      <center>
+         <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER"
+                     BorderPane.alignment="CENTER">
+            <VBox fx:id="Messages" alignment="BOTTOM_LEFT" prefHeight="486.0" prefWidth="1280.0"
+                  style="-fx-background-color: #202020;">
                <padding>
-                  <Insets left="-25.0" />
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                </padding>
-            </FlowPane>
-         </bottom>
-         <left>
-   </left>
-         <center>
-            <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" BorderPane.alignment="CENTER">
-               <content>
-                  <VBox fx:id="Messages" alignment="BOTTOM_LEFT" prefHeight="486.0" prefWidth="1280.0" style="-fx-background-color: #202020;">
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </VBox>
-               </content>
-            </ScrollPane>
-         </center>
-      </BorderPane>
-   </children>
+            </VBox>
+         </ScrollPane>
+      </center>
+   </BorderPane>
 </AnchorPane>
