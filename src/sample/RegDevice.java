@@ -55,7 +55,7 @@ public class RegDevice {
     void initialize() {
         Thread Resize = new Thread(()->{
             try {
-                while (MainPane.getScene() == null) Thread.sleep(100);
+                while (MainPane.getScene() == null || MainPane.getScene().getWindow() == null) Thread.sleep(100);
                 MainPane.prefWidthProperty().bind(MainPane.getScene().widthProperty());
                 Header.prefWidthProperty().bind(MainPane.getScene().widthProperty());
                 BodyPane.prefHeightProperty().bind(MainPane.getScene().heightProperty().subtract(Header.heightProperty()));
@@ -84,29 +84,18 @@ public class RegDevice {
             return;
         }
         File file = new File("properties.properties");
-        if(file.createNewFile()){
-            FileInputStream propFile = new FileInputStream(file);
-            Properties props = new Properties();
-            props.load(propFile);
+        if(!file.exists()) file.createNewFile();
+        FileInputStream propFile = new FileInputStream(file);
+        Properties props = new Properties();
+        props.load(propFile);
+        if(!props.containsKey("login")){
             props.setProperty("name", DeviceName.getText());
-            props.setProperty("regdate", Integer.toString( (int )System.currentTimeMillis()/1000));
             props.store(new FileOutputStream("properties.properties"), "");
-            AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivityOffline.fxml"));
+            AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
             MainPane.getChildren().setAll(pane);
         } else{
-            FileInputStream propFile = new FileInputStream(file);
-            Properties props = new Properties();
-            props.load(propFile);
             int id = Integer.parseInt((String)props.getOrDefault("id","-1"));
             String login = (String)props.getOrDefault("login","");
-
-            if(login.isEmpty()){
-                props.setProperty("name", DeviceName.getText());
-                props.setProperty("regdate", Integer.toString( (int )System.currentTimeMillis()/1000));
-                props.store(new FileOutputStream("properties.properties"), "");
-                AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivityOffline.fxml"));
-                MainPane.getChildren().setAll(pane);
-            }
 
             Runnable r = () -> {
                 Request request = new Request() {

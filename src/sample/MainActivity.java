@@ -51,6 +51,8 @@ public class MainActivity {
     @FXML
     private VBox MenuPane;
 
+    @FXML
+    private Button SavedButton, DevicesListButton;
 
     interface MethodToCall{
         void f() throws IOException;
@@ -61,15 +63,23 @@ public class MainActivity {
     @FXML
     void initialize() throws IOException {
         controller = this;
-        if(FilenameUtils.getName(location.toString()).equals("MainActivity.fxml"))
+
+        File file = new File("properties.properties");
+        FileInputStream propFile = new FileInputStream(file);
+        Properties props = new Properties();
+        props.load(propFile);
+        propFile.close();
+        if(props.containsKey("login")){
             DevicesList();
-        else
+        }else {
             SClient();
+            MenuPane.getChildren().removeAll(SavedButton,DevicesListButton);
+        }
         Receiving receiving = new Receiving();
         receiving.Start();
         Thread Resize = new Thread(()->{
             try {
-                while (MainPane.getScene() == null) Thread.sleep(100);
+                while (MainPane.getScene() == null || MainPane.getScene().getWindow() == null) Thread.sleep(100);
                 Replace.prefHeightProperty().bind(MainPane.getScene().getWindow().heightProperty().subtract(Header.heightProperty()));
                 Replace.prefWidthProperty().bind(MainPane.getScene().getWindow().widthProperty().subtract(MenuPane.widthProperty()));
                 Header.prefWidthProperty().bind(MainPane.getScene().getWindow().widthProperty());

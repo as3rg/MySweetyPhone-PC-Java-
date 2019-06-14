@@ -72,7 +72,7 @@ public class Login {
     void initialize() throws IOException {
         Thread Resize = new Thread(()->{
             try {
-                while (MainPane.getScene() == null) Thread.sleep(100);
+                while (MainPane.getScene() == null || MainPane.getScene().getWindow() == null) Thread.sleep(100);
                 MainPane.prefWidthProperty().bind(MainPane.getScene().widthProperty());
                 Header.prefWidthProperty().bind(MainPane.getScene().widthProperty());
                 BodyPane.prefHeightProperty().bind(MainPane.getScene().heightProperty().subtract(Header.heightProperty()));
@@ -102,7 +102,7 @@ public class Login {
             String login = (String) props.getOrDefault("login", "");
             String name = (String) props.getOrDefault("name", "");
             if(login.isEmpty()&& !name.isEmpty()){
-                AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivityOffline.fxml"));
+                AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
                 MainPane.getChildren().setAll(pane);
             } else {
                 if (Long.parseLong((String) props.getOrDefault("id", "-1")) != -1L) {

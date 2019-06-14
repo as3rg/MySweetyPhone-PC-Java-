@@ -93,7 +93,7 @@ public class Saved {
     void initialize() {
         Thread Resize = new Thread(()->{
             try {
-                while (Messages.getScene() == null) Thread.sleep(100);
+                while (MainPane.getScene() == null || MainPane.getScene().getWindow() == null) Thread.sleep(100);
                 scrollPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
                 MessageText.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty().divide(10).multiply(8).subtract(50));
                 SendButton.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty().divide(10));

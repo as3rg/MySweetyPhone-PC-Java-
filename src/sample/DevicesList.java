@@ -84,7 +84,7 @@ public class DevicesList {
     public void initialize() throws IOException {
         Thread Resize = new Thread(()->{
             try {
-                while (MainPane.getScene() == null) Thread.sleep(100);
+                while (MainPane.getScene() == null || MainPane.getScene().getWindow() == null) Thread.sleep(100);
                 Type.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty().divide(5));
                 Remove.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty().divide(5));
                 Name.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty().divide(5).multiply(3));

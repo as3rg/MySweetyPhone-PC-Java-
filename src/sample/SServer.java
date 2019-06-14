@@ -41,8 +41,6 @@ public class SServer {
     @FXML
     private BorderPane NewSessionMainPane;
 
-    private ArrayList<Session> sessions;
-
     @FXML
     public void initialize(){
         try{
@@ -50,46 +48,23 @@ public class SServer {
             Properties props = new Properties();
             props.load(propFile);
             propFile.close();
-            String login = (String) props.getOrDefault("login", "");
+            Thread Resize = new Thread(()->{
+                try {
+                    while (MainPane.getScene() == null || MainPane.getScene().getWindow() == null) Thread.sleep(100);
+                    MainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
+                    MainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
+                    NewSessionMainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
+                    NewSessionMainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
+                    MainPane.prefWidthProperty().bind(NewSession.getScene().widthProperty());
+                    MainPane.prefHeightProperty().bind(NewSession.getScene().heightProperty());
 
-            if(login.isEmpty()){
-                Thread Resize = new Thread(()->{
-                    try {
-                        while (NewSession.getScene() == null) Thread.sleep(100);
-                        MainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
-                        MainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
-                        NewSessionMainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
-                        NewSessionMainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
-                        MainPane.prefWidthProperty().bind(NewSession.getScene().widthProperty());
-                        MainPane.prefHeightProperty().bind(NewSession.getScene().heightProperty());
-
-                        NewSession.setDisable(false);
-                        SessionType.setDisable(false);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                });
-                Resize.start();
-            }
-            else{
-                Thread Resize = new Thread(()->{
-                    try {
-                        while (NewSession.getScene() == null) Thread.sleep(100);
-                        MainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
-                        MainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
-                        NewSessionMainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
-                        NewSessionMainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
-                        MainPane.prefWidthProperty().bind(NewSession.getScene().widthProperty());
-                        MainPane.prefHeightProperty().bind(NewSession.getScene().heightProperty());
-
-                        NewSession.setDisable(false);
-                        SessionType.setDisable(false);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                });
-                Resize.start();
-            }
+                    NewSession.setDisable(false);
+                    SessionType.setDisable(false);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+            Resize.start();
             SessionType.getItems().add(MOUSE);
             SessionType.getItems().add(FILEVIEW);
             NewSession.setOnMouseClicked(this::OpenSession);
