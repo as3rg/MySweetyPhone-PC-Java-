@@ -55,6 +55,9 @@ public class Login {
     private HBox Type;
 
     @FXML
+    private Button OfflineButton;
+
+    @FXML
     private void onKeyPressedOnPass(KeyEvent value) throws IOException {
         if(value.getCode() == KeyCode.ENTER){
             LoginButton.getOnMouseClicked().handle(null);
@@ -80,6 +83,7 @@ public class Login {
                 Nick.prefHeightProperty().bind(MainPane.getScene().heightProperty().divide(10));
                 Pass.prefHeightProperty().bind(MainPane.getScene().heightProperty().divide(10));
                 LoginButton.prefHeightProperty().bind(MainPane.getScene().heightProperty().divide(10));
+                OfflineButton.prefHeightProperty().bind(MainPane.getScene().heightProperty().divide(10));
                 Nick.maxWidthProperty().bind(MainPane.getScene().widthProperty().subtract(10));
                 Pass.maxWidthProperty().bind(MainPane.getScene().widthProperty().subtract(10));
             } catch (InterruptedException e) {
@@ -208,32 +212,14 @@ public class Login {
     }
 
     @FXML
-    void ChangeToOffline(){
-        LoginButton.setText("Включить Offline режим");
-        Nick.setDisable(true);
-        Pass.setDisable(true);
-        LoginButton.setOnMouseClicked(this::Offline);
-    }
-
-    private void Offline(MouseEvent m){
+    void Offline(){
         try {
             File file = new File("properties.properties");
-            if (file.exists()){
-                FileInputStream propFile = new FileInputStream(file);
-                Properties props = new Properties();
-                props.load(propFile);
-                props.remove("id");
-                props.remove("name");
-                props.remove("login");
-                propFile.close();
-                AnchorPane pane = FXMLLoader.load(getClass().getResource("RegDevice.fxml"));
-                MainPane.getChildren().setAll(pane);
+            if (file.exists()) {
+                file.delete();
             }
-            else {
-                AnchorPane pane = FXMLLoader.load(getClass().getResource("RegDevice.fxml"));
-                MainPane.getChildren().setAll(pane);
-            }
-
+            AnchorPane pane = FXMLLoader.load(getClass().getResource("RegDevice.fxml"));
+            MainPane.getChildren().setAll(pane);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -245,6 +231,10 @@ public class Login {
             Error.setText("Имя содержит недопустимые символы!");
             return;
         }
+        LoginButton.setDisable(true);
+        Nick.setDisable(true);
+        Pass.setDisable(true);
+        Type.setDisable(true);
         Runnable r = () -> {
             Request request = new Request() {
                 @Override
