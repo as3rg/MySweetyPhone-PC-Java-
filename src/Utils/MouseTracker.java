@@ -3,6 +3,7 @@ package Utils;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -108,20 +109,7 @@ public class MouseTracker{
             s.setMaximized(true);
             s.initStyle(StageStyle.UNDECORATED);
             s.setResizable(false);
-            s.setOnCloseRequest((e) -> {
-                try {
-                    JSONObject msg = new JSONObject();
-                    msg.put("Type", "finish");
-                    msg.put("Name", name);
-                    Message[] messages = Message.getMessages(msg.toJSONString().getBytes(), MESSAGESIZE);
-                    for (Message m : messages) {
-                        sc.getDatagramSocket().send(new DatagramPacket(m.getArr(), m.getArr().length, sc.getAddress(), sc.getPort()));
-                    }
-                    s.close();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            });
+            s.setOnCloseRequest(Event::consume);
             s.show();
         });
         JSONObject msg = new JSONObject();

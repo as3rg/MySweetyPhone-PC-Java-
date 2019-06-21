@@ -91,7 +91,7 @@ public class SessionClient extends Session{
                             Button ip = new Button(name);
                             s.b = ip;
                             ip.setTextFill(Paint.valueOf("#F0F0F0"));
-                            ip.setStyle("-fx-background-color: linear-gradient(from 0% 100% to 100% 0%, #CF8BF3, #FDB99B); -fx-background-radius: 0;");
+                            ip.setStyle("-fx-background-color: linear-gradient(from 0% 100% to 100% 0%, #CF8BF3, #FDB99B); -fx-background-radius: 0; -fx-font-size: 20");
                             VBox.setMargin(ip, new Insets(5, 10, 5,0));
                             ip.prefWidthProperty().bind(v.widthProperty());
                             ip.setOnMouseClicked(event->{
