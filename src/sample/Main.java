@@ -1,19 +1,34 @@
 package sample;
 
+import Utils.AreaChooser;
+import Utils.Message;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.input.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import org.json.simple.JSONObject;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
+import java.net.DatagramPacket;
 import java.util.ArrayList;
 
 public class Main extends Application {
+
+    public static TrayIcon trayIcon;
 
     public static ArrayList<File> tempfiles;
     @Override
@@ -32,32 +47,35 @@ public class Main extends Application {
         Platform.setImplicitExit(false);
         primaryStage.show();
 
-        TrayIcon icon = new TrayIcon(ImageIO.read(getClass().getResourceAsStream("Images/TrayIcon.png")));
+        trayIcon = new TrayIcon(ImageIO.read(getClass().getResourceAsStream("Images/TrayIcon.png")), "MySweetyPhone");
         SystemTray systemTray = SystemTray.getSystemTray();
         PopupMenu menu = new PopupMenu();
 
         primaryStage.setOnCloseRequest(windowEvent -> {
             primaryStage.hide();
         });
-        icon.addActionListener(event-> Platform.runLater(()-> {
+        trayIcon.addActionListener(event-> Platform.runLater(()-> {
             if(primaryStage.isShowing())
                 primaryStage.hide();
             else
                 primaryStage.show();
         }));
         MenuItem Show = new MenuItem("Свернуть/Развернуть");
-        Show.addActionListener(icon.getActionListeners()[0]);
+        Show.addActionListener(trayIcon.getActionListeners()[0]);
         MenuItem Close = new MenuItem("Закрыть");
         Close.addActionListener(actionEvent -> {
             Platform.exit();
             System.exit(0);
         });
-        menu.add(Close);
+        MenuItem DrawingZone = new MenuItem("Выбрать Область для Граф.Планшета");
+        DrawingZone.addActionListener(actionEvent -> Platform.runLater(new AreaChooser()::start));
+        menu.add(DrawingZone);
         menu.add(Show);
+        menu.add(Close);
 
-        icon.setPopupMenu(menu);
+        trayIcon.setPopupMenu(menu);
 
-        systemTray.add(icon);
+        systemTray.add(trayIcon);
     }
 
     @Override

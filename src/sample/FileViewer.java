@@ -111,18 +111,7 @@ public class FileViewer {
                             break;
                         case "deleteFile":
                             if (((Long)msg.get("State")).intValue() == 1)
-                                Platform.runLater(() -> {
-                                    try {
-                                        SystemTray tray = SystemTray.getSystemTray();
-                                        Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
-                                        TrayIcon trayIcon = new TrayIcon(image, "");
-                                        trayIcon.setImageAutoSize(true);
-                                        tray.add(trayIcon);
-                                        trayIcon.displayMessage("Ошибка", "Нет доступа", TrayIcon.MessageType.INFO);
-                                    } catch (AWTException e) {
-                                        e.printStackTrace();
-                                    }
-                                });
+                                Platform.runLater(() -> Main.trayIcon.displayMessage("Ошибка", "Нет доступа", TrayIcon.MessageType.INFO));
                             else reloadFolder(null);
                             break;
                         case "showDir":
@@ -130,16 +119,7 @@ public class FileViewer {
                             files.clear();
                             Platform.runLater(() -> {
                                 if (((Long)msg.get("State")).intValue() == 1) {
-                                    try {
-                                        SystemTray tray = SystemTray.getSystemTray();
-                                        Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
-                                        TrayIcon trayIcon = new TrayIcon(image, "");
-                                        trayIcon.setImageAutoSize(true);
-                                        tray.add(trayIcon);
-                                        trayIcon.displayMessage("Ошибка", "Нет доступа", TrayIcon.MessageType.INFO);
-                                    } catch (AWTException e) {
-                                        e.printStackTrace();
-                                    }
+                                    Main.trayIcon.displayMessage("Ошибка", "Нет доступа", TrayIcon.MessageType.INFO);
                                     return;
                                 }
                                 Folders.getChildren().clear();
@@ -268,17 +248,8 @@ public class FileViewer {
                 filein.close();
                 socket.close();
                 Platform.runLater(()->{
-                    try {
-                        SystemTray tray = SystemTray.getSystemTray();
-                        Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
-                        TrayIcon trayIcon = new TrayIcon(image, "");
-                        trayIcon.setImageAutoSize(true);
-                        tray.add(trayIcon);
-                        trayIcon.displayMessage("Отправка завершена", "Файл \""+file.getName()+"\" загружен", TrayIcon.MessageType.INFO);
-                        reloadFolder(null);
-                    } catch (AWTException e) {
-                        e.printStackTrace();
-                    }
+                    Main.trayIcon.displayMessage("Отправка завершена", "Файл \""+file.getName()+"\" загружен", TrayIcon.MessageType.INFO);
+                    reloadFolder(null);
                 });
             } catch (IOException e) {
                 e.printStackTrace();
@@ -363,18 +334,7 @@ public class FileViewer {
                         IOUtils.copy(filein, fileout);
                         fileout.close();
                         socket.close();
-                        Platform.runLater(() -> {
-                            try {
-                                SystemTray tray = SystemTray.getSystemTray();
-                                Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
-                                TrayIcon trayIcon = new TrayIcon(image, "");
-                                trayIcon.setImageAutoSize(true);
-                                tray.add(trayIcon);
-                                trayIcon.displayMessage("Загрузка завершена", "Файл \"" + out2.getName() + "\" загружен", TrayIcon.MessageType.INFO);
-                            } catch (AWTException e) {
-                                e.printStackTrace();
-                            }
-                        });
+                        Platform.runLater(() -> Main.trayIcon.displayMessage("Загрузка завершена", "Файл \"" + out2.getName() + "\" загружен", TrayIcon.MessageType.INFO));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

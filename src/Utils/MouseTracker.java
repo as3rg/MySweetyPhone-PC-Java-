@@ -20,6 +20,13 @@ import java.net.DatagramPacket;
 
 public class MouseTracker{
 
+    static Point start;
+    static Dimension size;
+    static{
+        start = new Point(0,0);
+        size = Toolkit.getDefaultToolkit().getScreenSize();
+    }
+
     SessionClient sc;
     double width;
     double height;
@@ -155,7 +162,7 @@ public class MouseTracker{
     private void mouseMoved(MouseEvent t) {
         try {
             JSONObject msg = new JSONObject();
-            msg.put("Type", "startDrawing");
+            msg.put("Type", "PCMouseMoved");
             msg.put("Name", name);
             msg.put("X", t.getX()/width);
             msg.put("Y", t.getY()/height);

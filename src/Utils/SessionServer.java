@@ -179,12 +179,19 @@ public class SessionServer extends Session{
                                             r.keyRelease(KeyEvent.VK_SHIFT);
                                             Stop();
                                             return;
-                                        case "startDrawing":
+                                        case "PCMouseMoved":
                                             r.mouseMove((int) (((Number) msg.get("X")).doubleValue() * width), (int) (((Number) msg.get("Y")).doubleValue() * height));
                                             break;
                                         case "draw":
                                             r.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-                                            r.mouseMove((int) (((Number) msg.get("X")).doubleValue() * width), (int) (((Number) msg.get("Y")).doubleValue() * height));
+                                        case "startDrawing":
+                                            double x = ((Number) msg.get("X")).doubleValue(), y = ((Number) msg.get("Y")).doubleValue();
+                                            x = Math.min(1,Math.max(0, x));
+                                            y = Math.min(1,Math.max(0, y));
+                                            r.mouseMove(
+                                                (int)(MouseTracker.start.getX() + x * MouseTracker.size.getWidth()),
+                                                (int)(MouseTracker.start.getY() + y * MouseTracker.size.getHeight())
+                                            );
                                             break;
                                         case "start":
                                             break;
