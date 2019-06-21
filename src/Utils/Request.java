@@ -9,6 +9,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.Map;
 
 public abstract class Request {

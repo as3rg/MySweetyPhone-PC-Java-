@@ -4,19 +4,16 @@ import Utils.Request;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import org.apache.http.entity.mime.MultipartEntity;
 import sample.Anims.Shake;
 
 import java.io.*;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Properties;
@@ -49,30 +46,14 @@ public class Login {
     private FlowPane Header;
 
     @FXML
+    private RadioButton LoggingInWay, ReggingWay, OfflineWay;
+
+    @FXML
     private BorderPane BodyPane;
 
     @FXML
-    private HBox Type;
-
-    @FXML
-    private Button OfflineButton;
-
-    @FXML
-    private void onKeyPressedOnPass(KeyEvent value) throws IOException {
-        if(value.getCode() == KeyCode.ENTER){
-            LoginButton.getOnMouseClicked().handle(null);
-        }
-    }
-
-    @FXML
-    private void onKeyPressedOnLogin(KeyEvent value) throws IOException {
-        if(value.getCode() == KeyCode.ENTER){
-            Pass.requestFocus();
-        }
-    }
-
-    @FXML
     void initialize() throws IOException {
+        OfflineWay.getToggleGroup().selectToggle(OfflineWay);
         Thread Resize = new Thread(()->{
             try {
                 while (MainPane.getScene() == null || MainPane.getScene().getWindow() == null) Thread.sleep(100);
@@ -83,7 +64,6 @@ public class Login {
                 Nick.prefHeightProperty().bind(MainPane.getScene().heightProperty().divide(10));
                 Pass.prefHeightProperty().bind(MainPane.getScene().heightProperty().divide(10));
                 LoginButton.prefHeightProperty().bind(MainPane.getScene().heightProperty().divide(10));
-                OfflineButton.prefHeightProperty().bind(MainPane.getScene().heightProperty().divide(10));
                 Nick.maxWidthProperty().bind(MainPane.getScene().widthProperty().subtract(10));
                 Pass.maxWidthProperty().bind(MainPane.getScene().widthProperty().subtract(10));
             } catch (InterruptedException e) {
@@ -93,10 +73,10 @@ public class Login {
         Resize.start();
         File file = new File("properties.properties");
         if (file.exists()) {
-            LoginButton.setDisable(true);
             Nick.setDisable(true);
             Pass.setDisable(true);
-            Type.setDisable(true);
+            LoggingInWay.setDisable(true);
+            ReggingWay.setDisable(true);
             FileInputStream propFile = new FileInputStream(file);
             Properties props = new Properties();
             props.load(propFile);
@@ -159,13 +139,14 @@ public class Login {
                         };
                         try {
                             request.Start("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate=" + regdate + "&Login=" + URLEncoder.encode(login, "UTF-8") + "&Id=" + id + "&Name=" + URLEncoder.encode(name, "UTF-8"), new MultipartEntity());
-                        } catch (UnsupportedEncodingException e) {
+                        } catch (UnsupportedEncodingException | RuntimeException e) {
                             e.printStackTrace();
                         }
-                        LoginButton.setDisable(false);
                         Nick.setDisable(false);
                         Pass.setDisable(false);
-                        Type.setDisable(false);
+                        LoggingInWay.setDisable(false);
+                        ReggingWay.setDisable(false);
+                        LoggingInWay.getToggleGroup().selectToggle(LoggingInWay);
                     };
                     Thread t = new Thread(r);
                     t.start();
@@ -212,12 +193,18 @@ public class Login {
     }
 
     @FXML
-    void Offline(){
+    void ChangeToOffline(){
+        LoginButton.setText("Включить Offline Режим");
+        Nick.setDisable(true);
+        Pass.setDisable(true);
+        LoginButton.setOnMouseClicked(this::Offline);
+    }
+
+    @FXML
+    void Offline(MouseEvent event){
         try {
             File file = new File("properties.properties");
-            if (file.exists()) {
-                file.delete();
-            }
+            file.delete();
             AnchorPane pane = FXMLLoader.load(getClass().getResource("RegDevice.fxml"));
             MainPane.getChildren().setAll(pane);
         }catch (Exception e){
@@ -234,7 +221,9 @@ public class Login {
         LoginButton.setDisable(true);
         Nick.setDisable(true);
         Pass.setDisable(true);
-        Type.setDisable(true);
+        ReggingWay.setDisable(true);
+        LoggingInWay.setDisable(true);
+        OfflineWay.setDisable(true);
         Runnable r = () -> {
             Request request = new Request() {
                 @Override

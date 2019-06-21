@@ -55,7 +55,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </Label>
-            <TextField fx:id="Nick" onKeyPressed="#onKeyPressedOnLogin" prefHeight="80.0" prefWidth="600.0" promptText="Логин">
+            <TextField fx:id="Nick" prefHeight="80.0" prefWidth="600.0" promptText="Логин">
                <font>
                   <Font size="22.0" />
                </font>
@@ -63,7 +63,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </TextField>
-            <PasswordField fx:id="Pass" onKeyPressed="#onKeyPressedOnPass" prefHeight="80.0" prefWidth="600.0" promptText="Пароль">
+            <PasswordField fx:id="Pass" prefHeight="80.0" prefWidth="600.0" promptText="Пароль">
                <font>
                   <Font size="22.0" />
                </font>
@@ -71,14 +71,14 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </PasswordField>
-            <HBox fx:id="Type" prefHeight="44.0" prefWidth="436.0">
+            <HBox prefHeight="44.0" prefWidth="436.0">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
-               <RadioButton mnemonicParsing="false" onAction="#ChangeToLogin" selected="true" text="Войти">
-                  <toggleGroup>
-                     <ToggleGroup fx:id="ButtonType" />
-                  </toggleGroup>
+               <RadioButton mnemonicParsing="false" onAction="#ChangeToLogin" text="Войти" fx:id="LoggingInWay" toggleGroup="$ButtonType">
+                   <toggleGroup>
+                       <ToggleGroup fx:id="ButtonType" />
+                   </toggleGroup>
                   <font>
                      <Font size="23.0" />
                   </font>
@@ -89,17 +89,28 @@
                      <Insets bottom="10.0" />
                   </padding>
                </RadioButton>
-               <RadioButton mnemonicParsing="false" onAction="#ChangeToReg" prefHeight="34.0" prefWidth="258.0" text="Зарегистрироваться" toggleGroup="$ButtonType">
-                  <font>
-                     <Font size="23.0" />
-                  </font>
-                  <HBox.margin>
-                     <Insets left="30.0" />
-                  </HBox.margin>
-                  <opaqueInsets>
-                     <Insets />
-                  </opaqueInsets>
-               </RadioButton>
+                <RadioButton mnemonicParsing="false" onAction="#ChangeToReg" prefHeight="34.0" prefWidth="258.0" text="Зарегистрироваться" fx:id="ReggingWay" toggleGroup="$ButtonType">
+                    <font>
+                        <Font size="23.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets left="30.0" />
+                    </HBox.margin>
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                </RadioButton>
+                <RadioButton mnemonicParsing="false" onAction="#ChangeToOffline" prefHeight="34.0" prefWidth="258.0" text="Offline Режим" fx:id="OfflineWay" toggleGroup="$ButtonType">
+                    <font>
+                        <Font size="23.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets left="30.0" />
+                    </HBox.margin>
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                </RadioButton>
             </HBox>
             <Button fx:id="LoginButton" mnemonicParsing="false" prefHeight="80.0" prefWidth="359.0" text="Войти">
                <font>
@@ -108,14 +119,6 @@
                <VBox.margin>
                   <Insets />
                </VBox.margin>
-            </Button>
-            <Button fx:id="OfflineButton" mnemonicParsing="false" onAction="#Offline" opacity="0.78" prefHeight="31.0" style="-fx-background-color: #000000; -fx-font: 18 arial;" text="Offline режим" textFill="WHITE">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="20.0" />
-               </VBox.margin>
-               <font>
-                  <Font name="System Italic" size="15.0" />
-               </font>
             </Button>
          </VBox>
       </center>
