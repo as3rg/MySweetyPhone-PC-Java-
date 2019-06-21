@@ -8,17 +8,15 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.http.entity.mime.MultipartEntity;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -53,6 +51,8 @@ public class MainActivity {
     @FXML
     private VBox MenuPane;
 
+    @FXML
+    private Button SavedButton, DevicesListButton;
 
     interface MethodToCall{
         void f() throws IOException;
@@ -63,10 +63,23 @@ public class MainActivity {
     @FXML
     void initialize() throws IOException {
         controller = this;
-        DevicesList();
+
+        File file = new File("properties.properties");
+        FileInputStream propFile = new FileInputStream(file);
+        Properties props = new Properties();
+        props.load(propFile);
+        propFile.close();
+        if(props.containsKey("login")){
+            DevicesList();
+        }else {
+            SClient();
+            MenuPane.getChildren().removeAll(SavedButton,DevicesListButton);
+        }
+        Receiving receiving = new Receiving();
+        receiving.Start();
         Thread Resize = new Thread(()->{
             try {
-                while (MainPane.getScene() == null) Thread.sleep(100);
+                while (MainPane.getScene() == null || MainPane.getScene().getWindow() == null) Thread.sleep(100);
                 Replace.prefHeightProperty().bind(MainPane.getScene().getWindow().heightProperty().subtract(Header.heightProperty()));
                 Replace.prefWidthProperty().bind(MainPane.getScene().getWindow().widthProperty().subtract(MenuPane.widthProperty()));
                 Header.prefWidthProperty().bind(MainPane.getScene().getWindow().widthProperty());
@@ -85,8 +98,6 @@ public class MainActivity {
             }
         });
         Resize.start();
-        Receiving receiving = new Receiving();
-        receiving.Start();
     }
 
     @FXML

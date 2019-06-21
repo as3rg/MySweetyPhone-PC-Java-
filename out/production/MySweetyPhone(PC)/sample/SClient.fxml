@@ -5,12 +5,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="MainPane" prefHeight="610.0" prefWidth="1280.0" style="-fx-background-color: #202020;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SClient">
+<AnchorPane fx:id="MainPane" prefHeight="610.0" prefWidth="1280.0" style="-fx-background-color: #202020;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SClient">
    <children>
       <BorderPane fx:id="ConnectToSessionMainPane" prefHeight="610.0" prefWidth="1280.0">
          <top>
-            <Button fx:id="SearchSessions" mnemonicParsing="false" text="Поиск...." BorderPane.alignment="CENTER" />
+            <Button fx:id="SearchSessions" mnemonicParsing="false" text="Поиск...." BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font></Button>
          </top>
          <center>
             <ScrollPane fx:id="ConnectToSessionScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="592.0" prefWidth="640.0" style="-fx-background-color: #202020;" vbarPolicy="NEVER" BorderPane.alignment="CENTER">

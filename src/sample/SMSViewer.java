@@ -107,7 +107,7 @@ public class SMSViewer {
     void initialize() throws IOException {
         Thread Resize = new Thread(() -> {
             try {
-                while (Messages.getScene() == null) Thread.sleep(100);
+                while (MainPane.getScene() == null || MainPane.getScene().getWindow() == null) Thread.sleep(100);
                 scrollPane.prefWidthProperty().bind(stage.widthProperty());
                 Contacts.prefHeightProperty().bind(stage.heightProperty());
                 Contacts.prefWidthProperty().bind(stage.widthProperty().divide(5));

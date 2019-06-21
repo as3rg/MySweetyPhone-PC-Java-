@@ -11,6 +11,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import javafx.util.Callback;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.json.simple.JSONObject;
@@ -83,9 +84,9 @@ public class DevicesList {
     public void initialize() throws IOException {
         Thread Resize = new Thread(()->{
             try {
-                while (MainPane.getScene() == null) Thread.sleep(100);
-                Type.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty().divide(5));
-                Remove.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty().divide(5));
+                while (MainPane.getScene() == null || MainPane.getScene().getWindow() == null) Thread.sleep(100);
+                Type.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty().divide(7));
+                Remove.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty().divide(4));
                 Name.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty().divide(5).multiply(3));
                 Table.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
             } catch (InterruptedException e) {
@@ -186,6 +187,7 @@ public class DevicesList {
                     public void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
                         button.setTextFill(Paint.valueOf("#FFFFFF"));
+                        button.setFont(new Font( 15));
 
                         if (devices.size() > getIndex() && getIndex() != -1)
                             if (name.equals(devices.get(getIndex()).getName())){

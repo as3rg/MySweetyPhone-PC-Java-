@@ -55,7 +55,7 @@ public class RegDevice {
     void initialize() {
         Thread Resize = new Thread(()->{
             try {
-                while (MainPane.getScene() == null) Thread.sleep(100);
+                while (MainPane.getScene() == null || MainPane.getScene().getWindow() == null) Thread.sleep(100);
                 MainPane.prefWidthProperty().bind(MainPane.getScene().widthProperty());
                 Header.prefWidthProperty().bind(MainPane.getScene().widthProperty());
                 BodyPane.prefHeightProperty().bind(MainPane.getScene().heightProperty().subtract(Header.heightProperty()));
@@ -83,71 +83,81 @@ public class RegDevice {
             Error.setText("Имя содержит недопустимые символы!");
             return;
         }
-        FileInputStream propFile = new FileInputStream("properties.properties");
+        File file = new File("properties.properties");
+        if(!file.exists()) file.createNewFile();
+        FileInputStream propFile = new FileInputStream(file);
         Properties props = new Properties();
         props.load(propFile);
-        int id = Integer.parseInt((String)props.getOrDefault("id","-1"));
-        String login = (String)props.getOrDefault("login","");
-        Runnable r = () -> {
-            Request request = new Request() {
-                @Override
-                protected void On0() {
-                    Platform.runLater(()-> {
-                        try {
-                            props.setProperty("name", DeviceName.getText());
-                            props.setProperty("regdate", ((Long) result.get("regdate")).toString());
-                            props.store(new FileOutputStream("properties.properties"), "");
-                            AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
-                            MainPane.getChildren().setAll(pane);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    });
-                }
+        if(!props.containsKey("login")){
+            props.setProperty("name", DeviceName.getText());
+            props.store(new FileOutputStream("properties.properties"), "");
+            AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
+            MainPane.getChildren().setAll(pane);
+        } else{
+            int id = Integer.parseInt((String)props.getOrDefault("id","-1"));
+            String login = (String)props.getOrDefault("login","");
 
-                @Override
-                protected void On1() {
-                    Platform.runLater(()-> {
-                        Shake onErrorShake = new Shake(Next);
-                        Error.setVisible(true);
-                        Error.setText("Вы уже используете это имя!");
-                        onErrorShake.play();
-                    });
-                }
+            Runnable r = () -> {
+                Request request = new Request() {
+                    @Override
+                    protected void On0() {
+                        Platform.runLater(()-> {
+                            try {
+                                props.setProperty("name", DeviceName.getText());
+                                props.setProperty("regdate", ((Long) result.get("regdate")).toString());
+                                props.store(new FileOutputStream("properties.properties"), "");
+                                AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
+                                MainPane.getChildren().setAll(pane);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    }
 
-                @Override
-                protected void On2() {
-                    Platform.runLater(()-> {
-                        Shake onErrorShake = new Shake(Next);
-                        Error.setVisible(true);
-                        Error.setText("Ошибка приложения!");
-                        onErrorShake.play();
-                    });
-                }
+                    @Override
+                    protected void On1() {
+                        Platform.runLater(()-> {
+                            Shake onErrorShake = new Shake(Next);
+                            Error.setVisible(true);
+                            Error.setText("Вы уже используете это имя!");
+                            onErrorShake.play();
+                        });
+                    }
 
-                @Override
-                protected void On3() {
-                    Platform.runLater(()-> {
-                        Shake onErrorShake = new Shake(Next);
-                        Error.setVisible(true);
-                        Error.setText("Вы должны указать имя!!");
-                        onErrorShake.play();
-                    });
-                }
+                    @Override
+                    protected void On2() {
+                        Platform.runLater(()-> {
+                            Shake onErrorShake = new Shake(Next);
+                            Error.setVisible(true);
+                            Error.setText("Ошибка приложения!");
+                            onErrorShake.play();
+                        });
+                    }
 
-                @Override
-                protected void On4() {
+                    @Override
+                    protected void On3() {
+                        Platform.runLater(()-> {
+                            Shake onErrorShake = new Shake(Next);
+                            Error.setVisible(true);
+                            Error.setText("Вы должны указать имя!");
+                            onErrorShake.play();
+                        });
+                    }
 
+                    @Override
+                    protected void On4() {
+
+                    }
+                };
+                try {
+                    request.Start("http://mysweetyphone.herokuapp.com/?Type=AddDevice&DeviceType=PC&Id="+id+"&Login="+ URLEncoder.encode(login, "UTF-8")+"&Name="+URLEncoder.encode(DeviceName.getText(), "UTF-8"), new MultipartEntity());
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
                 }
             };
-            try {
-                request.Start("http://mysweetyphone.herokuapp.com/?Type=AddDevice&DeviceType=PC&Id="+id+"&Login="+ URLEncoder.encode(login, "UTF-8")+"&Name="+URLEncoder.encode(DeviceName.getText(), "UTF-8"), new MultipartEntity());
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        };
-        Thread t = new Thread(r);
-        t.start();
-        propFile.close();
+            Thread t = new Thread(r);
+            t.start();
+            propFile.close();
+        }
     }
 }

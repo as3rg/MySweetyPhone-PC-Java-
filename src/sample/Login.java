@@ -4,23 +4,21 @@ import Utils.Request;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import org.apache.http.entity.mime.MultipartEntity;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 import sample.Anims.Shake;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
 import java.io.*;
-import java.net.*;
-import java.nio.charset.StandardCharsets;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -54,10 +52,10 @@ public class Login {
     private BorderPane BodyPane;
 
     @FXML
-    private VBox Container;
+    private HBox Type;
 
     @FXML
-    private HBox Type;
+    private Button OfflineButton;
 
     @FXML
     private void onKeyPressedOnPass(KeyEvent value) throws IOException {
@@ -74,10 +72,10 @@ public class Login {
     }
 
     @FXML
-    void initialize() throws IOException, URISyntaxException {
+    void initialize() throws IOException {
         Thread Resize = new Thread(()->{
             try {
-                while (MainPane.getScene() == null) Thread.sleep(100);
+                while (MainPane.getScene() == null || MainPane.getScene().getWindow() == null) Thread.sleep(100);
                 MainPane.prefWidthProperty().bind(MainPane.getScene().widthProperty());
                 Header.prefWidthProperty().bind(MainPane.getScene().widthProperty());
                 BodyPane.prefHeightProperty().bind(MainPane.getScene().heightProperty().subtract(Header.heightProperty()));
@@ -85,6 +83,7 @@ public class Login {
                 Nick.prefHeightProperty().bind(MainPane.getScene().heightProperty().divide(10));
                 Pass.prefHeightProperty().bind(MainPane.getScene().heightProperty().divide(10));
                 LoginButton.prefHeightProperty().bind(MainPane.getScene().heightProperty().divide(10));
+                OfflineButton.prefHeightProperty().bind(MainPane.getScene().heightProperty().divide(10));
                 Nick.maxWidthProperty().bind(MainPane.getScene().widthProperty().subtract(10));
                 Pass.maxWidthProperty().bind(MainPane.getScene().widthProperty().subtract(10));
             } catch (InterruptedException e) {
@@ -106,67 +105,71 @@ public class Login {
             int regdate = Integer.parseInt((String) props.getOrDefault("regdate", "-1"));
             String login = (String) props.getOrDefault("login", "");
             String name = (String) props.getOrDefault("name", "");
-            if (Long.parseLong((String) props.getOrDefault("id", "-1")) != -1L) {
+            if(login.isEmpty()&& !name.isEmpty()){
+                AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
+                MainPane.getChildren().setAll(pane);
+            } else {
+                if (Long.parseLong((String) props.getOrDefault("id", "-1")) != -1L) {
+                    Runnable r = () -> {
+                        Request request = new Request() {
+                            @Override
+                            protected void On0() {
+                                int i = ((Long) result.getOrDefault("result", 0)).intValue();
+                                if (i == 2) {
+                                    Platform.runLater(() -> {
+                                        try {
+                                            AnchorPane pane = FXMLLoader.load(getClass().getResource("RegDevice.fxml"));
+                                            MainPane.getChildren().setAll(pane);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    });
+                                } else if (i == 1) {
+                                    Platform.runLater(() -> {
+                                        try {
+                                            AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
+                                            MainPane.getChildren().setAll(pane);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    });
 
-                Runnable r = () -> {
-                    Request request = new Request(){
-                        @Override
-                        protected void On0() {
-                            int i = ((Long) result.getOrDefault("result", 0)).intValue();
-                            if (i == 2) {
-                                Platform.runLater(() -> {
-                                    try {
-                                        AnchorPane pane = FXMLLoader.load(getClass().getResource("RegDevice.fxml"));
-                                        MainPane.getChildren().setAll(pane);
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                });
-                            } else if (i == 1) {
-                                Platform.runLater(() -> {
-                                    try {
-                                        AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
-                                        MainPane.getChildren().setAll(pane);
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                });
+                                }
+                            }
+
+                            @Override
+                            protected void On1() {
+                                throw new RuntimeException("Неверные данные");
+                            }
+
+                            @Override
+                            protected void On2() {
+                                throw new RuntimeException("Ошибка приложения!");
+                            }
+
+                            @Override
+                            protected void On3() {
+                                throw new RuntimeException("Файл не отправлен!");
+                            }
+
+                            @Override
+                            protected void On4() {
 
                             }
+                        };
+                        try {
+                            request.Start("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate=" + regdate + "&Login=" + URLEncoder.encode(login, "UTF-8") + "&Id=" + id + "&Name=" + URLEncoder.encode(name, "UTF-8"), new MultipartEntity());
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
                         }
-
-                        @Override
-                        protected void On1() {
-                            throw new RuntimeException("Неверные данные");
-                        }
-
-                        @Override
-                        protected void On2() {
-                            throw new RuntimeException("Ошибка приложения!");
-                        }
-
-                        @Override
-                        protected void On3() {
-                            throw new RuntimeException("Файл не отправлен!");
-                        }
-
-                        @Override
-                        protected void On4() {
-
-                        }
+                        LoginButton.setDisable(false);
+                        Nick.setDisable(false);
+                        Pass.setDisable(false);
+                        Type.setDisable(false);
                     };
-                    try {
-                        request.Start("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate=" + regdate + "&Login=" +URLEncoder.encode(login, "UTF-8")+ "&Id=" + id + "&Name=" + URLEncoder.encode(name, "UTF-8"), new MultipartEntity());
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                    LoginButton.setDisable(false);
-                    Nick.setDisable(false);
-                    Pass.setDisable(false);
-                    Type.setDisable(false);
-                };
-                Thread t = new Thread(r);
-                t.start();
+                    Thread t = new Thread(r);
+                    t.start();
+                }
             }
         }
 
@@ -183,6 +186,8 @@ public class Login {
     @FXML
     void ChangeToReg(){
         LoginButton.setText("Зарегистрироваться");
+        Nick.setDisable(false);
+        Pass.setDisable(false);
         LoginButton.setOnMouseClicked(event -> {
             try {
                 RegOrLogin("http://mysweetyphone.herokuapp.com/?Type=Reg&Login="+URLEncoder.encode(Nick.getText(), "UTF-8")+"&Pass="+URLEncoder.encode(Pass.getText(), "UTF-8"), false);
@@ -195,6 +200,8 @@ public class Login {
     @FXML
     void ChangeToLogin(){
         LoginButton.setText("Войти");
+        Nick.setDisable(false);
+        Pass.setDisable(false);
         LoginButton.setOnMouseClicked(event -> {
             try {
                 RegOrLogin("http://mysweetyphone.herokuapp.com/?Type=Login&Login="+URLEncoder.encode(Nick.getText(), "UTF-8")+"&Pass="+URLEncoder.encode(Pass.getText(), "UTF-8"),true);
@@ -204,12 +211,30 @@ public class Login {
         });
     }
 
+    @FXML
+    void Offline(){
+        try {
+            File file = new File("properties.properties");
+            if (file.exists()) {
+                file.delete();
+            }
+            AnchorPane pane = FXMLLoader.load(getClass().getResource("RegDevice.fxml"));
+            MainPane.getChildren().setAll(pane);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     private void RegOrLogin(String url, boolean IsLogin){
         if(!Nick.getText().matches("\\w+")) {
             Error.setVisible(true);
             Error.setText("Имя содержит недопустимые символы!");
             return;
         }
+        LoginButton.setDisable(true);
+        Nick.setDisable(true);
+        Pass.setDisable(true);
+        Type.setDisable(true);
         Runnable r = () -> {
             Request request = new Request() {
                 @Override
