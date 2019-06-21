@@ -46,14 +46,13 @@ public class Login {
     private FlowPane Header;
 
     @FXML
-    private RadioButton LoggingInWay, ReggingWay, OfflineWay;
+    private HBox Type;
 
     @FXML
     private BorderPane BodyPane;
 
     @FXML
     void initialize() throws IOException {
-        OfflineWay.getToggleGroup().selectToggle(OfflineWay);
         Thread Resize = new Thread(()->{
             try {
                 while (MainPane.getScene() == null || MainPane.getScene().getWindow() == null) Thread.sleep(100);
@@ -75,8 +74,8 @@ public class Login {
         if (file.exists()) {
             Nick.setDisable(true);
             Pass.setDisable(true);
-            LoggingInWay.setDisable(true);
-            ReggingWay.setDisable(true);
+            Type.setDisable(true);
+            LoginButton.setDisable(true);
             FileInputStream propFile = new FileInputStream(file);
             Properties props = new Properties();
             props.load(propFile);
@@ -139,14 +138,14 @@ public class Login {
                         };
                         try {
                             request.Start("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate=" + regdate + "&Login=" + URLEncoder.encode(login, "UTF-8") + "&Id=" + id + "&Name=" + URLEncoder.encode(name, "UTF-8"), new MultipartEntity());
+                            Nick.setDisable(false);
+                            Pass.setDisable(false);
+                            Type.setDisable(false);
+                            LoginButton.setDisable(false);
+                            ChangeToLogin();
                         } catch (UnsupportedEncodingException | RuntimeException e) {
                             e.printStackTrace();
                         }
-                        Nick.setDisable(false);
-                        Pass.setDisable(false);
-                        LoggingInWay.setDisable(false);
-                        ReggingWay.setDisable(false);
-                        LoggingInWay.getToggleGroup().selectToggle(LoggingInWay);
                     };
                     Thread t = new Thread(r);
                     t.start();
@@ -221,9 +220,7 @@ public class Login {
         LoginButton.setDisable(true);
         Nick.setDisable(true);
         Pass.setDisable(true);
-        ReggingWay.setDisable(true);
-        LoggingInWay.setDisable(true);
-        OfflineWay.setDisable(true);
+        Type.setDisable(true);
         Runnable r = () -> {
             Request request = new Request() {
                 @Override
