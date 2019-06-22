@@ -13,15 +13,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import org.apache.http.entity.mime.MultipartEntity;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 import sample.Anims.Shake;
 
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import java.util.ResourceBundle;
 

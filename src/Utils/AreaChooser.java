@@ -2,14 +2,19 @@ package Utils;
 
 import javafx.animation.AnimationTimer;
 import javafx.event.Event;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -26,10 +31,14 @@ public class AreaChooser{
     public void start() {
         primaryStage = new Stage();
         root = new Group();
-        Label label = new Label("Для сохранения настроек нажмите Enter\nДля отмены нажмите Escape");
-        label.setTextFill(Color.WHITE);
-        root.getChildren().add(label);
-        Scene scene = new Scene(root, 1920,1080, Color.valueOf("#00000088"));
+        Label label = new Label("Для сохранения настроек нажмите E̲n̲t̲e̲r̲\nДля сброса выбранной области нажмите E̲s̲c̲a̲pe̲\nДля выхода нажмите E̲s̲c̲a̲pe̲ еще раз");
+        label.setTextFill(Color.BLACK);
+        label.setPadding(new Insets(5,5,5,5));
+        label.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth();
+        double height = screenSize.getHeight();
+        Scene scene = new Scene(root, width,height, Color.valueOf("#00000088"));
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -42,6 +51,16 @@ public class AreaChooser{
         r = new Rectangle(0, 0);
         root.getChildren().add(r);
         r.setFill(Color.valueOf("#42aaff88"));
+
+        root.getChildren().add(label);
+        new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                Point p = MouseInfo.getPointerInfo().getLocation();
+                label.setLayoutX(25 + p.getX());
+                label.setLayoutY(p.getY() - 50);
+            }
+        }.start();
     }
 
     public void mousePressed(MouseEvent e) {
@@ -52,8 +71,7 @@ public class AreaChooser{
             loop = new AnimationTimer() {
                 @Override
                 public void handle(long l) {
-                    PointerInfo info = MouseInfo.getPointerInfo();
-                    Point p = info.getLocation();
+                    Point p = MouseInfo.getPointerInfo().getLocation();
                     r.setX(Math.min(first.getX(), p.getX()));
                     r.setY(Math.min(first.getY(), p.getY()));
                     r.setHeight(Math.abs(p.getY() - first.getY()));
@@ -74,6 +92,11 @@ public class AreaChooser{
             primaryStage.close();
             MouseTracker.start = new Point((int)Math.min(first.getX(), second.getX()), (int)Math.min(first.getY(), second.getY()));
             MouseTracker.size = new Dimension((int)Math.abs(second.getX() - first.getX()),(int)Math.abs(second.getY() - first.getY()));
+        }else if(e.getCode() == KeyCode.ESCAPE && first != null){
+            first = second = null;
+            loop.stop();
+            r.setHeight(0);
+            r.setWidth(0);
         }else if(e.getCode() == KeyCode.ESCAPE){
             primaryStage.close();
         }
