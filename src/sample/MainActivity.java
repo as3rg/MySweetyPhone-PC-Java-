@@ -130,6 +130,11 @@ public class MainActivity {
     }
 
     @FXML
+    void Autoconnect(){
+        
+    }
+
+    @FXML
     void SServer() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("SServer.fxml"));
         Pane pane = fxmlLoader.load();

@@ -1,6 +1,7 @@
 package sample;
 
 import Utils.AreaChooser;
+import Utils.SessionServer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -8,11 +9,19 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONValue;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Properties;
 
 public class Main extends Application {
 
@@ -68,10 +77,23 @@ public class Main extends Application {
 
     @Override
     public void stop() {
-        if(tempfiles != null)
-            for(File f : tempfiles) {
-                f.deleteOnExit();
+        try {
+            if (tempfiles != null)
+                for (File f : tempfiles) {
+                    f.deleteOnExit();
+                }
+
+            if(SessionServer.autoconnect != null) {
+                File file = new File("properties.properties");
+                FileInputStream propFile = new FileInputStream(file);
+                Properties props = new Properties();
+                props.load(propFile);
+                props.setProperty("autoconnect", JSONArray.toJSONString(new ArrayList<>(SessionServer.autoconnect)));
+                propFile.close();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

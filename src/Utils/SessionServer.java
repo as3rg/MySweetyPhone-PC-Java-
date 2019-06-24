@@ -4,12 +4,10 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.input.KeyCode;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
-import org.sikuli.script.Key;
 import org.sikuli.script.Screen;
 
 import java.awt.*;
@@ -17,15 +15,29 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.*;
 import java.net.*;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class SessionServer extends Session{
     Thread onStop;
     ServerSocket ss;
     MessageParser messageParser;
+    public static Set<String> autoconnect;
+    static {
+        try {
+            File file = new File("properties.properties");
+            FileInputStream propFile = new FileInputStream(file);
+            Properties props = new Properties();
+            props.load(propFile);
+            String str = (String) props.getOrDefault("autoconnect", "");
+            if(!str.isEmpty()){
+                autoconnect = new HashSet<>();
+                autoconnect.addAll((JSONArray) JSONValue.parse(str));
+            }
+            propFile.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public SessionServer(int type, int Port, Runnable doOnStopSession) throws IOException {
         FileInputStream propFile = new FileInputStream(new File("properties.properties"));
@@ -112,6 +124,8 @@ public class SessionServer extends Session{
                             String msgString = new String(messageParser.parse(head));
                             JSONObject msg = (JSONObject) JSONValue.parse(msgString);
 
+                            if(msg.containsKey("Login") && autoconnect.contains(msg.get("Login")))
+                                gotAccess.set(2);
                             if(gotAccess.get() == 0) {
                                 gotAccess.set(1);
                                 Platform.runLater(() -> {
@@ -132,7 +146,7 @@ public class SessionServer extends Session{
                                 });
                             }
 
-                            if(gotAccess.get() == 2 && msg!=null)
+                            if(gotAccess.get() == 2)
                                 try {
                                     switch ((String) msg.get("Type")) {
                                         case "mouseMoved":
@@ -224,6 +238,9 @@ public class SessionServer extends Session{
                                 break;
                             }
                             JSONObject msg = (JSONObject) JSONValue.parse(line);
+
+                            if(msg.containsKey("Login") && autoconnect.contains(msg.get("Login")))
+                                gotAccess.set(2);
                             if(gotAccess.get() == 0) {
                                 gotAccess.set(1);
                                 Platform.runLater(() -> {

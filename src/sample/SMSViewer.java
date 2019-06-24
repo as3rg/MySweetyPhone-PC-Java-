@@ -84,7 +84,7 @@ public class SMSViewer {
     @FXML
     private AnchorPane RootPane;
 
-    private String name;
+    private String name, login;
     Thread receiving;
     PrintWriter writer;
     BufferedReader reader;
@@ -131,6 +131,7 @@ public class SMSViewer {
         props.load(propFile);
         propFile.close();
         name = (String) props.getOrDefault("name", "");
+        login = (String) props.getOrDefault("login", "");
 
         Contacts.setOnMouseClicked(event -> {
             if (Contacts.getItems().isEmpty()) return;
@@ -142,6 +143,7 @@ public class SMSViewer {
                 JSONObject msg = new JSONObject();
                 msg.put("Type", "showSMSs");
                 msg.put("Name", name);
+                if(!login.isEmpty()) msg.put("Login", login);
                 msg.put("Contact", Contacts.getSelectionModel().getSelectedItem());
                 msg.put("Number", getNumber(Contacts.getSelectionModel().getSelectedItem()));
                 writer.println(msg.toJSONString());
@@ -157,6 +159,7 @@ public class SMSViewer {
                 JSONObject msg2 = new JSONObject();
                 msg2.put("Type", "start");
                 msg2.put("Name", name);
+                if(!login.isEmpty()) msg2.put("Login", login);
                 writer.println(msg2.toJSONString());
                 writer.flush();
                 SimpleStringProperty Sim1 = new SimpleStringProperty(""), Sim2 = new SimpleStringProperty("");
@@ -260,6 +263,7 @@ public class SMSViewer {
                     JSONObject msg2 = new JSONObject();
                     msg2.put("Type", "finish");
                     msg2.put("Name", name);
+                    if(!login.isEmpty()) msg2.put("Login", login);
                     writer.println(msg2.toJSONString());
                     writer.flush();
                 }catch (NullPointerException e2){
@@ -343,6 +347,7 @@ public class SMSViewer {
             msg2.put("Number", Contacts.getSelectionModel().getSelectedItem());
             msg2.put("Text",MessageText.getText());
             msg2.put("Name", name);
+            if(!login.isEmpty()) msg2.put("Login", login);
             msg2.put("Sim", i);
             writer.println(msg2.toJSONString());
             writer.flush();

@@ -37,7 +37,7 @@ public class FileViewer {
     Thread receiving;
     PrintWriter writer;
     BufferedReader reader;
-    String name;
+    String name, login;
     Set<String> files;
     Stage stage;
 
@@ -78,6 +78,7 @@ public class FileViewer {
         props.load(propFile);
         propFile.close();
         name = (String) props.getOrDefault("name", "");
+        login = (String) props.getOrDefault("login", "");
         files = new HashSet<>();
 
         receiving = new Thread(()-> {
@@ -91,6 +92,7 @@ public class FileViewer {
                         JSONObject msg2 = new JSONObject();
                         msg2.put("Type", "start");
                         msg2.put("Name", name);
+                        if(!login.isEmpty()) msg2.put("Login", login);
                         writer.println(msg2.toJSONString());
                         writer.flush();
                     }
@@ -152,6 +154,7 @@ public class FileViewer {
                     JSONObject msg2 = new JSONObject();
                     msg2.put("Type", "finish");
                     msg2.put("Name", name);
+                    if(!login.isEmpty()) msg2.put("Login", login);
                     writer.println(msg2.toJSONString());
                     writer.flush();
                 }catch (NullPointerException e2){
@@ -161,23 +164,12 @@ public class FileViewer {
         });
     }
 
-//    @Override
-//    public void onDestroy() {
-//        new Thread(()-> {
-//            receiving.interrupt();
-//            JSONObject msg = new JSONObject();
-//            msg.put("Type", "finish");
-//            msg.put("Name", name);
-//            writer.println(msg.toJSONString());
-//            writer.flush();
-//        }).start();
-//    }
-
     public void back(MouseEvent mouseEvent){
         new Thread(() -> {
             JSONObject msg2 = new JSONObject();
             msg2.put("Type", "back");
             msg2.put("Name", name);
+            if(!login.isEmpty()) msg2.put("Login", login);
             msg2.put("Dir", Path.getText());
             writer.println(msg2.toJSONString());
             writer.flush();
@@ -213,6 +205,7 @@ public class FileViewer {
                         msg2.put("Type", "newDir");
                         msg2.put("DirName", s.get());
                         msg2.put("Name", name);
+                        if(!login.isEmpty()) msg2.put("Login", login);
                         msg2.put("Dir", Path.getText());
                         writer.println(msg2.toString());
                         writer.flush();
@@ -235,6 +228,7 @@ public class FileViewer {
                 JSONObject msg2 = new JSONObject();
                 msg2.put("Type", "uploadFile");
                 msg2.put("Name", name);
+                if(!login.isEmpty()) msg2.put("Login", login);
                 msg2.put("FileName", file.getName());
                 msg2.put("FileSocketPort", ss.getLocalPort());
                 msg2.put("Dir", Path.getText());
@@ -262,6 +256,7 @@ public class FileViewer {
             JSONObject msg3 = new JSONObject();
             msg3.put("Type", "showDir");
             msg3.put("Name", name);
+            if(!login.isEmpty()) msg3.put("Login", login);
             msg3.put("Dir", Path.getText());
             writer.println(msg3.toJSONString());
             writer.flush();
@@ -286,6 +281,7 @@ public class FileViewer {
                 JSONObject msg2 = new JSONObject();
                 msg2.put("Type", "deleteFile");
                 msg2.put("Name", name);
+                if(!login.isEmpty()) msg2.put("Login", login);
                 msg2.put("FileName", fileName);
                 msg2.put("Dir", dir);
                 writer.println(msg2.toJSONString());
@@ -299,6 +295,7 @@ public class FileViewer {
                 JSONObject msg3 = new JSONObject();
                 msg3.put("Type", "showDir");
                 msg3.put("Name", name);
+                if(!login.isEmpty()) msg3.put("Login", login);
                 msg3.put("Dir", dir);
                 msg3.put("DirName", fileName);
                 writer.println(msg3.toJSONString());
@@ -323,6 +320,7 @@ public class FileViewer {
                         JSONObject msg2 = new JSONObject();
                         msg2.put("Type", "downloadFile");
                         msg2.put("Name", name);
+                        if(!login.isEmpty()) msg2.put("Login", login);
                         msg2.put("FileName", fileName);
                         msg2.put("FileSocketPort", ss.getLocalPort());
                         msg2.put("Dir", dir);

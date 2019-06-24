@@ -130,7 +130,8 @@ public class SessionClient extends Session{
         Properties props = new Properties();
         props.load(propFile);
         propFile.close();
-        String name = (String) props.getOrDefault("name", "");
+        String name = (String) props.getOrDefault("name", ""),
+                login = (String) props.getOrDefault("login", "");
 
         switch (type) {
             case MOUSE:
@@ -139,7 +140,7 @@ public class SessionClient extends Session{
                         Dsocket = new DatagramSocket();
                         Dsocket.setBroadcast(true);
                         if(searching != null) StopSearching();
-                        MouseTracker mt = new MouseTracker(this, name);
+                        MouseTracker mt = new MouseTracker(this, name, login);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

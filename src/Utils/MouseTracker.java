@@ -16,9 +16,10 @@ import javafx.stage.StageStyle;
 import org.json.simple.JSONObject;
 
 import java.awt.*;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
-
 public class MouseTracker{
 
     static Point start;
@@ -32,10 +33,11 @@ public class MouseTracker{
     double width;
     double height;
     Stage s;
-    String name;
+    String name, login;
     static final int MESSAGESIZE = 100;
     TextArea textArea;
-    public MouseTracker(SessionClient sc, String name) throws IOException {
+    public MouseTracker(SessionClient sc, String name, String login) throws IOException {
+        this.login = login;
         this.sc = sc;
         this.name = name;
         Platform.runLater(()-> {
@@ -61,6 +63,7 @@ public class MouseTracker{
                             msg.put("Type", "keysTyped");
                             msg.put("value", newValue);
                             msg.put("Name", name);
+                            if(!login.isEmpty()) msg.put("Login", login);
                             Send(msg.toJSONString().getBytes());
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -87,6 +90,7 @@ public class MouseTracker{
                             JSONObject msg = new JSONObject();
                             msg.put("Type", "keyReleased");
                             msg.put("Name", name);
+                            if(!login.isEmpty()) msg.put("Login", login);
                             msg.put("value", KeyCode.ALT.getCode());
                             Send(msg.toJSONString().getBytes());
                             msg.put("value", KeyCode.SHIFT.getCode());
@@ -115,6 +119,7 @@ public class MouseTracker{
         JSONObject msg = new JSONObject();
         msg.put("Type", "start");
         msg.put("Name", name);
+        if(!login.isEmpty()) msg.put("Login", login);
         Send(msg.toJSONString().getBytes());
     }
 
@@ -124,6 +129,7 @@ public class MouseTracker{
             msg.put("Type","mousePressed");
             msg.put("Key",e.getButton().ordinal());
             msg.put("Name", name);
+            if(!login.isEmpty()) msg.put("Login", login);
             Send(msg.toJSONString().getBytes());
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -141,6 +147,7 @@ public class MouseTracker{
             msg.put("Type","mouseReleased");
             msg.put("Key",e.getButton().ordinal());
             msg.put("Name", name);
+            if(!login.isEmpty()) msg.put("Login", login);
             Send(msg.toJSONString().getBytes());
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -152,6 +159,7 @@ public class MouseTracker{
             JSONObject msg = new JSONObject();
             msg.put("Type", "PCMouseMoved");
             msg.put("Name", name);
+            if(!login.isEmpty()) msg.put("Login", login);
             msg.put("X", t.getX()/width);
             msg.put("Y", t.getY()/height);
             Send(msg.toJSONString().getBytes());
@@ -168,6 +176,7 @@ public class MouseTracker{
             value = value > 0 ? Math.ceil(value) : -Math.ceil(-value);
             msg.put("value",value);
             msg.put("Name", name);
+            if(!login.isEmpty()) msg.put("Login", login);
             Send(msg.toJSONString().getBytes());
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -180,12 +189,14 @@ public class MouseTracker{
             if(e.isControlDown() && e.getCode() == KeyCode.F4){
                 msg.put("Type", "finish");
                 msg.put("Name", name);
+                if(!login.isEmpty()) msg.put("Login", login);
                 Send(msg.toJSONString().getBytes());
                 s.close();
             }else if(!sc.isPhone || e.getText().isEmpty()){
                 msg.put("Type", "keyPressed");
                 msg.put("value", e.getCode().getCode());
                 msg.put("Name", name);
+                if(!login.isEmpty()) msg.put("Login", login);
                 Send(msg.toJSONString().getBytes());
             }
             textArea.setText("");
@@ -200,6 +211,7 @@ public class MouseTracker{
             msg.put("Type", "keyReleased");
             msg.put("value", e.getCode().getCode());
             msg.put("Name", name);
+            if(!login.isEmpty()) msg.put("Login", login);
             Send(msg.toJSONString().getBytes());
         } catch (IOException ex) {
             ex.printStackTrace();
