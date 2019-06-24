@@ -106,7 +106,6 @@ public class SessionServer extends Session{
                             }while (!Dsocket.isClosed() && (m == null || m.getNext() != -1));
                             if(messageParser.messageMap.get(head) == null) continue;
                             String msgString = new String(messageParser.parse(head));
-                            System.out.println(msgString);
                             JSONObject msg = (JSONObject) JSONValue.parse(msgString);
 
                             if(msg.containsKey("Login") && msg.get("Login").equals(login))
