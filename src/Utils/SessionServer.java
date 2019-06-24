@@ -21,23 +21,6 @@ public class SessionServer extends Session{
     Thread onStop;
     ServerSocket ss;
     MessageParser messageParser;
-    public static Set<String> autoconnect;
-    static {
-        try {
-            File file = new File("properties.properties");
-            FileInputStream propFile = new FileInputStream(file);
-            Properties props = new Properties();
-            props.load(propFile);
-            String str = (String) props.getOrDefault("autoconnect", "");
-            if(!str.isEmpty()){
-                autoconnect = new HashSet<>();
-                autoconnect.addAll((JSONArray) JSONValue.parse(str));
-            }
-            propFile.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public SessionServer(int type, int Port, Runnable doOnStopSession) throws IOException {
         FileInputStream propFile = new FileInputStream(new File("properties.properties"));
@@ -45,7 +28,8 @@ public class SessionServer extends Session{
         props.load(propFile);
         propFile.close();
 
-        String name = (String) props.getOrDefault("name", "");
+        String name = (String) props.getOrDefault("name", ""),
+                login = (String) props.getOrDefault("login", "");
 
         onStop = new Thread(doOnStopSession);
         messageParser = new MessageParser();
@@ -122,9 +106,10 @@ public class SessionServer extends Session{
                             }while (!Dsocket.isClosed() && (m == null || m.getNext() != -1));
                             if(messageParser.messageMap.get(head) == null) continue;
                             String msgString = new String(messageParser.parse(head));
+                            System.out.println(msgString);
                             JSONObject msg = (JSONObject) JSONValue.parse(msgString);
 
-                            if(msg.containsKey("Login") && autoconnect.contains(msg.get("Login")))
+                            if(msg.containsKey("Login") && msg.get("Login").equals(login))
                                 gotAccess.set(2);
                             if(gotAccess.get() == 0) {
                                 gotAccess.set(1);
@@ -239,7 +224,7 @@ public class SessionServer extends Session{
                             }
                             JSONObject msg = (JSONObject) JSONValue.parse(line);
 
-                            if(msg.containsKey("Login") && autoconnect.contains(msg.get("Login")))
+                            if(msg.containsKey("Login") && msg.get("Login").equals(login));
                                 gotAccess.set(2);
                             if(gotAccess.get() == 0) {
                                 gotAccess.set(1);

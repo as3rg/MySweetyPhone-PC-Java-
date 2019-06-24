@@ -77,23 +77,10 @@ public class Main extends Application {
 
     @Override
     public void stop() {
-        try {
-            if (tempfiles != null)
-                for (File f : tempfiles) {
-                    f.deleteOnExit();
-                }
-
-            if(SessionServer.autoconnect != null) {
-                File file = new File("properties.properties");
-                FileInputStream propFile = new FileInputStream(file);
-                Properties props = new Properties();
-                props.load(propFile);
-                props.setProperty("autoconnect", JSONArray.toJSONString(new ArrayList<>(SessionServer.autoconnect)));
-                propFile.close();
+        if (tempfiles != null)
+            for (File f : tempfiles) {
+                f.deleteOnExit();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 
