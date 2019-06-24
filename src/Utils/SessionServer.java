@@ -110,7 +110,7 @@ public class SessionServer extends Session{
 
                             if(msg.containsKey("Login") && msg.get("Login").equals(login))
                                 gotAccess.set(2);
-                            if(gotAccess.get() == 0) {
+                            else if(gotAccess.get() == 0) {
                                 gotAccess.set(1);
                                 Platform.runLater(() -> {
                                     try {
@@ -223,9 +223,9 @@ public class SessionServer extends Session{
                             }
                             JSONObject msg = (JSONObject) JSONValue.parse(line);
 
-                            if(msg.containsKey("Login") && msg.get("Login").equals(login));
+                            if(msg.containsKey("Login") && msg.get("Login").equals(login))
                                 gotAccess.set(2);
-                            if(gotAccess.get() == 0) {
+                            else if(gotAccess.get() == 0) {
                                 gotAccess.set(1);
                                 Platform.runLater(() -> {
                                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
