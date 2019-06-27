@@ -11,9 +11,12 @@ import org.json.simple.JSONValue;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.*;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -28,8 +31,8 @@ public class Receiving {
         messageParser = new MessageParser();
         JSONObject message = new JSONObject();
         socket = new DatagramSocket();
-        message.put("port", socket.getLocalPort());
-        message.put("type", "receiving");
+        message.put("Port", socket.getLocalPort());
+        message.put("Type", "receiving");
         byte[] buf2 = String.format("%-100s", message.toJSONString()).getBytes();
         DatagramSocket s = new DatagramSocket();
         s.setBroadcast(true);
@@ -77,7 +80,7 @@ public class Receiving {
                         try {
                             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                             alert.setTitle("Выполнить действие?");
-                            if (msg.containsKey("type")) switch ((String) msg.get("type")) {
+                            if (msg.containsKey("Type")) switch ((String) msg.get("Type")) {
                                 case "openSite":
                                     alert.setHeaderText("Вы действительно хотите перейти по ссылке от \"" + msg.get("Name") + "\"?");
                                     break;
@@ -85,16 +88,26 @@ public class Receiving {
                                     alert.setHeaderText("Вы действительно хотите пройти поместить данные от \"" + msg.get("Name") + "\" в буфер обмена?");
                                     break;
                             }
-                            Optional<ButtonType> option = alert.showAndWait();
 
-                            if (option.get() == ButtonType.OK)
-                                switch ((String) msg.get("type")) {
+                            Optional<ButtonType> option = null;
+
+                            File file = new File("properties.properties");
+                            FileInputStream propFile = new FileInputStream(file);
+                            Properties props = new Properties();
+                            props.load(propFile);
+                            String login = (String) props.getOrDefault("login", "");
+                            propFile.close();
+
+                            if(!msg.containsKey("Login") || !msg.get("Login").equals(login)) option = alert.showAndWait();
+
+                            if ((msg.containsKey("Login") && msg.get("Login").equals(login)) || option.get() == ButtonType.OK)
+                                switch ((String) msg.get("Type")) {
                                     case "openSite":
-                                        Desktop.getDesktop().browse(new URL((String) msg.get("site")).toURI());
+                                        Desktop.getDesktop().browse(new URL((String) msg.get("Site")).toURI());
                                         break;
                                     case "copy":
                                         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                                        clipboard.setContents(new StringSelection((String) msg.get("value")), null);
+                                        clipboard.setContents(new StringSelection((String) msg.get("Value")), null);
                                         break;
                                 }
                         } catch (IOException | URISyntaxException e) {
