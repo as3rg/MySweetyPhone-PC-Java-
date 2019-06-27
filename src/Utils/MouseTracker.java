@@ -23,6 +23,8 @@ import java.net.DatagramPacket;
 public class MouseTracker{
 
     static Point start;
+    Point lastPoint;
+    Robot r;
     static Dimension size;
     static{
         start = new Point(0,0);
@@ -36,14 +38,17 @@ public class MouseTracker{
     String name, login;
     static final int MESSAGESIZE = 100;
     TextArea textArea;
-    public MouseTracker(SessionClient sc, String name, String login) throws IOException {
+    public MouseTracker(SessionClient sc, String name, String login) throws IOException, AWTException {
         this.login = login;
         this.sc = sc;
         this.name = name;
+        r = new Robot();
         Platform.runLater(()-> {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             width = screenSize.getWidth();
             height = screenSize.getHeight();
+            r.mouseMove((int)width/2, (int)height/2);
+            lastPoint = MouseInfo.getPointerInfo().getLocation();
             s = new Stage();
             StackPane p = new StackPane();
             textArea = new TextArea();
@@ -157,12 +162,18 @@ public class MouseTracker{
     private void mouseMoved(MouseEvent t) {
         try {
             JSONObject msg = new JSONObject();
-            msg.put("Type", "PCMouseMoved");
+            msg.put("Type", "mouseMoved");
             msg.put("Name", name);
             if(!login.isEmpty()) msg.put("Login", login);
-            msg.put("X", t.getX()/width);
-            msg.put("Y", t.getY()/height);
+            msg.put("X", t.getX() - lastPoint.getX());
+            msg.put("Y", t.getY() - lastPoint.getY());
             Send(msg.toJSONString().getBytes());
+            lastPoint = new Point((int)t.getX(), (int)t.getY());
+
+            if(t.getX() <= 1 || t.getX() >= width-1 || t.getY() <= 1 || t.getY() >= height-1) {
+                lastPoint = new Point((int) width / 2, (int) height / 2);
+                r.mouseMove((int) width / 2, (int) height / 2);
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
         }

@@ -177,9 +177,6 @@ public class SessionServer extends Session{
                                             r.keyRelease(KeyEvent.VK_SHIFT);
                                             Stop();
                                             return;
-                                        case "PCMouseMoved":
-                                            r.mouseMove((int) (((Number) msg.get("X")).doubleValue() * width), (int) (((Number) msg.get("Y")).doubleValue() * height));
-                                            break;
                                         case "draw":
                                             r.mousePress(InputEvent.BUTTON1_DOWN_MASK);
                                         case "startDrawing":

@@ -19,6 +19,7 @@ import sample.FileViewer;
 import sample.Main;
 import sample.SMSViewer;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -141,7 +142,7 @@ public class SessionClient extends Session{
                         Dsocket.setBroadcast(true);
                         if(searching != null) StopSearching();
                         MouseTracker mt = new MouseTracker(this, name, login);
-                    } catch (IOException e) {
+                    } catch (IOException | AWTException e) {
                         e.printStackTrace();
                     }
                 });
