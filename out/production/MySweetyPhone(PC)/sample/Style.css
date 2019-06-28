@@ -45,10 +45,6 @@
     -fx-background-color: #202020 ;
 }
 
-.check-box{
-    -fx-background-color: #ff0000;
-}
-
 .list-view .list-cell{
     -fx-text-fill: #ffffff;
     -fx-font-size: 15;

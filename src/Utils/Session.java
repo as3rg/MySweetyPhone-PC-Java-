@@ -86,4 +86,18 @@ public abstract class Session{
                 return "Просмотр СМС";
         }
     }
+
+    public static int encodeType(String i){
+        switch (i){
+            default:
+            case "Пусто":
+                return NONE;
+            case "Эмуляция мыши":
+                return MOUSE;
+            case "Просмотр файлов":
+                return FILEVIEW;
+            case "Просмотр СМС":
+                return SMSVIEW;
+        }
+    }
 }

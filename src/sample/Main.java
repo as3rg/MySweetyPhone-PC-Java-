@@ -1,6 +1,7 @@
 package sample;
 
 import Utils.AreaChooser;
+import Utils.ServerMode;
 import Utils.SessionServer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -14,10 +15,7 @@ import org.json.simple.JSONValue;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -61,8 +59,13 @@ public class Main extends Application {
         Show.addActionListener(trayIcon.getActionListeners()[0]);
         MenuItem Close = new MenuItem("Закрыть");
         Close.addActionListener(actionEvent -> {
-            Platform.exit();
-            System.exit(0);
+            try {
+                stop();
+                Platform.exit();
+                System.exit(0);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
         MenuItem DrawingZone = new MenuItem("Выбрать Область для Граф.Планшета");
         DrawingZone.addActionListener(actionEvent -> Platform.runLater(new AreaChooser()::start));
@@ -76,7 +79,20 @@ public class Main extends Application {
     }
 
     @Override
-    public void stop() {
+    public void stop() throws IOException {
+        SystemTray systemTray = SystemTray.getSystemTray();
+        systemTray.remove(trayIcon);
+
+        FileInputStream propFileIn = new FileInputStream("properties.properties");
+        Properties props = new Properties();
+        props.load(propFileIn);
+        propFileIn.close();
+
+        FileOutputStream propFileOut = new FileOutputStream("properties.properties");
+        props.setProperty("ServerMode", Boolean.toString(ServerMode.getState()));
+        props.store(propFileOut, null);
+        propFileOut.close();
+
         if (tempfiles != null)
             for (File f : tempfiles) {
                 f.deleteOnExit();

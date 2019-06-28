@@ -1,4 +1,4 @@
-package sample;
+package Utils;
 
 import Utils.Message;
 import Utils.MessageParser;
@@ -27,7 +27,7 @@ public class Receiving {
     Thread broadcasting;
     Thread t;
     DatagramSocket socket;
-    Receiving() throws SocketException, UnknownHostException {
+    public Receiving() throws SocketException, UnknownHostException {
         messageParser = new MessageParser();
         JSONObject message = new JSONObject();
         socket = new DatagramSocket();

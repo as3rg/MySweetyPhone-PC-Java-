@@ -234,7 +234,7 @@ public class Login {
                             Properties props = new Properties();
                             props.setProperty("login", Nick.getText());
                             props.setProperty("id", result.get("id").toString());
-                            props.store(propFile, "login");
+                            props.store(propFile, null);
                             propFile.close();
                             AnchorPane pane = FXMLLoader.load(getClass().getResource("RegDevice.fxml"));
                             MainPane.getChildren().setAll(pane);

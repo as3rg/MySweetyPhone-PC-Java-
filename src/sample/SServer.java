@@ -1,9 +1,11 @@
 package sample;
 
 import Utils.Session;
+import Utils.SessionServer;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -19,10 +21,6 @@ import java.util.ResourceBundle;
 
 public class SServer {
 
-    public static final String
-            MOUSE = "Эмуляция мыши",
-            FILEVIEW = "Просмотр Файлов";
-
     @FXML
     private AnchorPane MainPane;
 
@@ -34,6 +32,9 @@ public class SServer {
 
     @FXML
     private Button NewSession;
+
+    @FXML
+    private CheckBox ServerMode;
 
     @FXML
     private ChoiceBox<String> SessionType;
@@ -65,8 +66,9 @@ public class SServer {
                 }
             });
             Resize.start();
-            SessionType.getItems().add(MOUSE);
-            SessionType.getItems().add(FILEVIEW);
+            for (int t : SessionServer.allowedTypes) {
+                SessionType.getItems().add(Session.decodeType(t));
+            }
             NewSession.setOnMouseClicked(this::OpenSession);
         }catch (Exception e){
             e.printStackTrace();
@@ -84,7 +86,7 @@ public class SServer {
             } else {
                 NewSession.setOnMouseClicked(this::CloseSession);
                 NewSession.setText("Закрыть сессию");
-                Utils.SessionServer s = new Utils.SessionServer(GetType(SessionType.getSelectionModel().getSelectedItem()),0,()->{
+                Utils.SessionServer s = new Utils.SessionServer(Session.encodeType(SessionType.getSelectionModel().getSelectedItem()),0,()->{
                     NewSession.setOnMouseClicked(this::OpenSession);
                     NewSession.setText("Открыть сессию");
                     SessionType.setDisable(false);
@@ -97,17 +99,6 @@ public class SServer {
         }
     }
 
-    private int GetType(String s){
-        switch (s){
-            case MOUSE:
-                return Session.MOUSE;
-            case FILEVIEW:
-                return Session.FILEVIEW;
-            default:
-                return Session.NONE;
-        }
-    }
-
     private void CloseSession(MouseEvent e) {
         try {
             NewSession.setOnMouseClicked(this::OpenSession);
@@ -117,5 +108,10 @@ public class SServer {
         } catch (IOException e1) {
             e1.printStackTrace();
         }
+    }
+
+    @FXML
+    private void SwitchServerMove(MouseEvent e){
+
     }
 }

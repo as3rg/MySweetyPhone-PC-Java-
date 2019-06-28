@@ -1,5 +1,6 @@
 package sample;
 
+import Utils.Receiving;
 import Utils.Request;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -8,7 +9,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.http.entity.mime.MultipartEntity;
 
 import java.io.File;
