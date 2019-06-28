@@ -1,5 +1,6 @@
 package sample;
 
+import Utils.ServerMode;
 import Utils.Session;
 import Utils.SessionServer;
 import javafx.fxml.FXML;
@@ -10,6 +11,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import org.slf4j.helpers.Util;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -45,10 +47,6 @@ public class SServer {
     @FXML
     public void initialize(){
         try{
-            FileInputStream propFile = new FileInputStream("properties.properties");
-            Properties props = new Properties();
-            props.load(propFile);
-            propFile.close();
             Thread Resize = new Thread(()->{
                 try {
                     while (MainPane.getScene() == null || MainPane.getScene().getWindow() == null) Thread.sleep(100);
@@ -59,8 +57,10 @@ public class SServer {
                     MainPane.prefWidthProperty().bind(NewSession.getScene().widthProperty());
                     MainPane.prefHeightProperty().bind(NewSession.getScene().heightProperty());
 
-                    NewSession.setDisable(false);
-                    SessionType.setDisable(false);
+
+                    ServerMode.setSelected(Utils.ServerMode.getState());
+                    NewSession.setDisable(ServerMode.isSelected());
+                    SessionType.setDisable(ServerMode.isSelected());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -111,7 +111,14 @@ public class SServer {
     }
 
     @FXML
-    private void SwitchServerMove(MouseEvent e){
-
+    void SwitchServerMode() throws IOException {
+        if(ServerMode.isSelected()){
+            if(!Session.sessions.isEmpty()) CloseSession(null);
+            Utils.ServerMode.Start();
+        }else{
+            Utils.ServerMode.Stop();
+        }
+        NewSession.setDisable(ServerMode.isSelected());
+        SessionType.setDisable(ServerMode.isSelected());
     }
 }

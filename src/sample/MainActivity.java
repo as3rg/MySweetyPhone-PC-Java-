@@ -2,6 +2,7 @@ package sample;
 
 import Utils.Receiving;
 import Utils.Request;
+import Utils.ServerMode;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -75,6 +76,10 @@ public class MainActivity {
             SClient();
             MenuPane.getChildren().removeAll(SavedButton,DevicesListButton);
         }
+
+        if(Utils.ServerMode.getState())
+            ServerMode.Start();
+
         Receiving receiving = new Receiving();
         receiving.Start();
         Thread Resize = new Thread(()->{

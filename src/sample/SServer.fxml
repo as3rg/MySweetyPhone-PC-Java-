@@ -28,12 +28,12 @@
             </VBox>
          </center>
          <bottom>
-            <CheckBox fx:id="ServerMode" alignment="CENTER" ellipsisString="" mnemonicParsing="false" onAction="SwitchServerMode" text="Свободное подключение" textFill="WHITE" BorderPane.alignment="CENTER">
+            <CheckBox fx:id="ServerMode" onAction="#SwitchServerMode" text="Свободное подключение" textFill="WHITE" BorderPane.alignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font>
                <BorderPane.margin>
-                  <Insets bottom="30.0" />
+                  <Insets bottom="100.0" />
                </BorderPane.margin>
             </CheckBox>
          </bottom>
