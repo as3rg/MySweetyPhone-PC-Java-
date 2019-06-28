@@ -67,14 +67,16 @@ public class SessionClient extends Session{
             t.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
-                    for (String item : ips.keySet()) {
-                        if (ips.get(item).value == 1) {
-                            Button b = ips.get(item).b;
-                            Platform.runLater(() -> v.getChildren().remove(b));
-                            ips.remove(item);
-                        }else
-                            ips.get(item).value--;
-                    }
+                    try {
+                        for (String item : ips.keySet()) {
+                            if (ips.get(item).value == 1) {
+                                Button b = ips.get(item).b;
+                                Platform.runLater(() -> v.getChildren().remove(b));
+                                ips.remove(item);
+                            } else
+                                ips.get(item).value--;
+                        }
+                    }catch (ConcurrentModificationException ignored){}
                 }
             }, 0, 2000);
             try {

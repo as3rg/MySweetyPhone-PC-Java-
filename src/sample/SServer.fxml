@@ -28,7 +28,7 @@
             </VBox>
          </center>
          <bottom>
-            <CheckBox fx:id="ServerMode" onAction="#SwitchServerMode" text="Свободное подключение" textFill="WHITE" BorderPane.alignment="CENTER">
+            <CheckBox fx:id="ServerMode" onAction="#SwitchServerMode" text="Автооткрытие сессий" textFill="WHITE" BorderPane.alignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font>

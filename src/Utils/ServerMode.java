@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 public class ServerMode {
     private static ArrayList<SessionServer> opened = new ArrayList<>();
 
-    static boolean State = false;
+    private static boolean State;
 
     static public boolean getState(){
         return State;
@@ -21,7 +21,8 @@ public class ServerMode {
             props.load(propFile);
             propFile.close();
 
-            if(Boolean.parseBoolean((String) props.getOrDefault("ServerMode", Boolean.toString(false))))
+            State = Boolean.parseBoolean((String) props.getOrDefault("serverMode", Boolean.toString(false)));
+            if(State)
                 Start();
         } catch (IOException e) {
             e.printStackTrace();
@@ -64,7 +65,7 @@ public class ServerMode {
         Properties props = new Properties();
         props.load(in);
         in.close();
-        props.setProperty("ServerMode", Boolean.toString(State));
+        props.setProperty("serverMode", Boolean.toString(State));
         FileOutputStream out = new FileOutputStream("properties.properties");
         props.store(out, null);
         out.close();

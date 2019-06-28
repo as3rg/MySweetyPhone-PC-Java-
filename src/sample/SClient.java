@@ -1,5 +1,6 @@
 package sample;
 
+import Utils.ServerMode;
 import Utils.Session;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,6 +11,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.SocketException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -74,13 +76,14 @@ public class SClient {
     @FXML
     private void Search(MouseEvent mouseEvent) {
         try {
+            ServerMode.Stop();
             SearchSessions.setOnMouseClicked(this::StopSearching);
             SearchSessions.setText("Остановить поиск");
             Utils.SessionClient.Search(ConnectToSession, new Thread(() -> {
                 SearchSessions.setOnMouseClicked(this::Search);
                 SearchSessions.setText("Поиск...");
             }));
-        } catch (SocketException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

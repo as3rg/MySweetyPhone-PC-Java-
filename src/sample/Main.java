@@ -89,7 +89,7 @@ public class Main extends Application {
         propFileIn.close();
 
         FileOutputStream propFileOut = new FileOutputStream("properties.properties");
-        props.setProperty("ServerMode", Boolean.toString(ServerMode.getState()));
+        props.setProperty("serverMode", Boolean.toString(ServerMode.getState()));
         props.store(propFileOut, null);
         propFileOut.close();
 
