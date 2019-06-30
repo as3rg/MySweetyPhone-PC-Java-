@@ -11,15 +11,23 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.TextArea;
 import javafx.scene.paint.Paint;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONObject;
+import sample.Main;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.net.DatagramPacket;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.text.SimpleDateFormat;
+
 public class MouseTracker{
 
     static Point start;
@@ -111,7 +119,7 @@ public class MouseTracker{
                 });
             }
             textArea.requestFocus();
-            p.getChildren().add(new Label("Для выхода нажмите Ctrl+F4"));
+            p.getChildren().add(new Label("Для выхода нажмите Ctrl+F4\nДля получения скриншота нажмите Ctrl+Print Screen"));
             Scene scene = new Scene(p, 600, 600);
             scene.getStylesheets().add("/sample/style.css");
             s.setScene(scene);
@@ -197,12 +205,43 @@ public class MouseTracker{
     public void keyPressed(KeyEvent e) {
         try {
             JSONObject msg = new JSONObject();
-            if(e.isControlDown() && e.getCode() == KeyCode.F4){
+            if(e.isControlDown() && e.getCode() == KeyCode.F4) {
                 msg.put("Type", "finish");
                 msg.put("Name", name);
-                if(!login.isEmpty()) msg.put("Login", login);
+                if (!login.isEmpty()) msg.put("Login", login);
                 Send(msg.toJSONString().getBytes());
                 s.close();
+            }else if(e.isControlDown() && e.getCode() == KeyCode.PRINTSCREEN){
+                new Thread(() -> {
+                    try {
+                        ServerSocket ss = new ServerSocket(0);
+                        JSONObject msg2 = new JSONObject();
+                        msg2.put("Type", "makeScreenshot");
+                        msg2.put("Port", ss.getLocalPort());
+                        msg2.put("Name", name);
+                        if(!login.isEmpty()) msg2.put("Login", login);
+                        Send(msg2.toJSONString().getBytes());
+                        ss.setSoTimeout(10000);
+                        Socket socket = ss.accept();
+                        BufferedImage image = ImageIO.read(socket.getInputStream());
+
+                        DirectoryChooser fc = new DirectoryChooser();
+                        fc.setTitle("Выберите папку для сохранения");
+                        final File out = fc.showDialog(null);
+                        if (out == null) return;
+
+                        File out2 = new File(out,"MySweetyPhone");
+                        out2.mkdirs();
+                        String fileName = "Screenshot"+new SimpleDateFormat("yyyyMMdd_HHmmss").format(System.currentTimeMillis())+".jpg";
+                        FileOutputStream fos = new FileOutputStream(new File(out2, fileName));
+                        ImageIO.write(image,"jpg",fos);
+                        fos.close();
+
+                        Platform.runLater(()-> Main.trayIcon.displayMessage("Скриншот получен", "Скриншот сохранен в файл \""+fileName+"\"", TrayIcon.MessageType.INFO));
+                    } catch (IOException e2) {
+                        e2.printStackTrace();
+                    }
+                }).start();
             }else if(!sc.isPhone || e.getText().isEmpty()){
                 msg.put("Type", "keyPressed");
                 msg.put("value", e.getCode().getCode());

@@ -4,17 +4,22 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.stage.DirectoryChooser;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.sikuli.script.Screen;
+import sample.Main;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class SessionServer extends Session{
@@ -192,6 +197,18 @@ public class SessionServer extends Session{
                                                     (int) (MouseTracker.start.getX() + x * MouseTracker.size.getWidth()),
                                                     (int) (MouseTracker.start.getY() + y * MouseTracker.size.getHeight())
                                             );
+                                            break;
+                                        case "makeScreenshot":
+                                            new Thread(() -> {
+                                                try {
+                                                    BufferedImage image = r.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
+                                                    Socket socket = new Socket(((InetSocketAddress) Ssocket.getRemoteSocketAddress()).getAddress(), ((Number) msg.get("Port")).intValue());
+                                                    ImageIO.write(image,"jpg",socket.getOutputStream());
+                                                    socket.close();
+                                                } catch (IOException e2) {
+                                                    e2.printStackTrace();
+                                                }
+                                            }).start();
                                             break;
                                         case "start":
                                             break;
