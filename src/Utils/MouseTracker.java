@@ -212,6 +212,10 @@ public class MouseTracker{
                 Send(msg.toJSONString().getBytes());
                 s.close();
             }else if(e.isControlDown() && e.getCode() == KeyCode.PRINTSCREEN){
+                DirectoryChooser fc = new DirectoryChooser();
+                fc.setTitle("Выберите папку для сохранения");
+                final File out = fc.showDialog(null);
+                if (out == null) return;
                 new Thread(() -> {
                     try {
                         ServerSocket ss = new ServerSocket(0);
@@ -225,16 +229,11 @@ public class MouseTracker{
                         Socket socket = ss.accept();
                         BufferedImage image = ImageIO.read(socket.getInputStream());
 
-                        DirectoryChooser fc = new DirectoryChooser();
-                        fc.setTitle("Выберите папку для сохранения");
-                        final File out = fc.showDialog(null);
-                        if (out == null) return;
-
                         File out2 = new File(out,"MySweetyPhone");
                         out2.mkdirs();
-                        String fileName = "Screenshot"+new SimpleDateFormat("yyyyMMdd_HHmmss").format(System.currentTimeMillis())+".jpg";
+                        String fileName = "Screenshot"+new SimpleDateFormat("HH:mm:ss_dd.MM.yyyy").format(System.currentTimeMillis())+".png";
                         FileOutputStream fos = new FileOutputStream(new File(out2, fileName));
-                        ImageIO.write(image,"jpg",fos);
+                        ImageIO.write(image,"png",fos);
                         fos.close();
 
                         Platform.runLater(()-> Main.trayIcon.displayMessage("Скриншот получен", "Скриншот сохранен в файл \""+fileName+"\"", TrayIcon.MessageType.INFO));

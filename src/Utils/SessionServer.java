@@ -199,11 +199,12 @@ public class SessionServer extends Session{
                                             );
                                             break;
                                         case "makeScreenshot":
+                                            final DatagramPacket p2 = p;
                                             new Thread(() -> {
                                                 try {
                                                     BufferedImage image = r.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
-                                                    Socket socket = new Socket(((InetSocketAddress) Ssocket.getRemoteSocketAddress()).getAddress(), ((Number) msg.get("Port")).intValue());
-                                                    ImageIO.write(image,"jpg",socket.getOutputStream());
+                                                    Socket socket = new Socket(p2.getAddress(), ((Number) msg.get("Port")).intValue());
+                                                    ImageIO.write(image,"png",socket.getOutputStream());
                                                     socket.close();
                                                 } catch (IOException e2) {
                                                     e2.printStackTrace();
