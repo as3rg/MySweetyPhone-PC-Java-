@@ -231,10 +231,12 @@ public class MouseTracker{
 
                         File out2 = new File(out,"MySweetyPhone");
                         out2.mkdirs();
-                        String fileName = "Screenshot"+new SimpleDateFormat("HH:mm:ss_dd.MM.yyyy").format(System.currentTimeMillis())+".png";
+                        String fileName = "Screenshot_"+new SimpleDateFormat("HH:mm:ss_dd.MM.yyyy").format(System.currentTimeMillis())+".png";
                         FileOutputStream fos = new FileOutputStream(new File(out2, fileName));
                         ImageIO.write(image,"png",fos);
                         fos.close();
+                        socket.close();
+                        ss.close();
 
                         Platform.runLater(()-> Main.trayIcon.displayMessage("Скриншот получен", "Скриншот сохранен в файл \""+fileName+"\"", TrayIcon.MessageType.INFO));
                     } catch (IOException e2) {
