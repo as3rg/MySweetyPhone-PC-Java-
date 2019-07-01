@@ -139,11 +139,6 @@ public class RegDevice {
                             onErrorShake.play();
                         });
                     }
-
-                    @Override
-                    protected void On4() {
-
-                    }
                 };
                 try {
                     request.Start("http://mysweetyphone.herokuapp.com/?Type=AddDevice&DeviceType=PC&Id="+id+"&Login="+ URLEncoder.encode(login, "UTF-8")+"&Name="+URLEncoder.encode(DeviceName.getText(), "UTF-8"), new MultipartEntity());

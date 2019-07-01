@@ -1,45 +1,34 @@
 package sample;
 
-import Utils.Request;
 import Utils.SessionClient;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-import org.apache.http.entity.mime.MultipartEntity;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import sample.Anims.Create;
-import sample.Anims.Destroy;
 
-import javax.swing.event.ChangeListener;
-import javax.swing.text.Position;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -138,7 +127,6 @@ public class SMSViewer {
             if (newContact != -1 && Messages.getChildren().isEmpty())
                 Contacts.getItems().remove(Contacts.getItems().size() - 1);
             if(Contacts.getSelectionModel().getSelectedIndex() != newContact) newContact = -1;
-            //if(Messages.getChildren().isEmpty()) Platform.runLater(()->Contacts.getItems().remove(Contacts.getItems().size()-1));
             new Thread(()->{
                 JSONObject msg = new JSONObject();
                 msg.put("Type", "showSMSs");

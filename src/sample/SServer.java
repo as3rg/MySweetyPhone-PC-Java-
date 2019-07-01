@@ -1,6 +1,5 @@
 package sample;
 
-import Utils.ServerMode;
 import Utils.Session;
 import Utils.SessionServer;
 import javafx.fxml.FXML;
@@ -11,13 +10,9 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import org.slf4j.helpers.Util;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Properties;
 import java.util.ResourceBundle;
 
 

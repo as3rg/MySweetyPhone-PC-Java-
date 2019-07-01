@@ -2,8 +2,6 @@ package sample;
 
 import Utils.Request;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -16,7 +14,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -41,15 +38,15 @@ import sample.Anims.Create;
 import sample.Anims.Destroy;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
@@ -298,12 +295,9 @@ public class Saved {
         Label DateLabel = new Label();
         vBox.setStyle("-fx-background-color: linear-gradient(from 0% 100% to 100% 0%, #d53369, #cbad6d); -fx-background-radius: 10;");
         vBox.maxWidthProperty().bind(Messages.widthProperty().divide(2));
-//        vBox.setAlignment(Pos.CENTER);
-//        vBox.setFillWidth(true);
         DateLabel.setStyle("-fx-text-fill: #ffffff;");
         DateLabel.setText(sdf.format(Date) + ", " + sender);
         DateLabel.setPadding(new Insets(0, 10, 0, 10));
-//        DateLabel.setAlignment(Pos.CENTER_RIGHT);
         textLabel.setText(text);
         vBox.setPadding(new Insets(10, 10, 10, 10));
         textLabel.setFont(Font.font(15));
@@ -605,7 +599,6 @@ public class Saved {
         MediaView Video = new MediaView();
 
         Video.setStyle("-fx-background-radius: 10 10 0 0;");
-//        Video.setFitWidth(460);
 
         Slider slider = new Slider(0,10,0);
 

@@ -4,13 +4,11 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.stage.DirectoryChooser;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.sikuli.script.Screen;
-import sample.Main;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -19,8 +17,10 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.*;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SessionServer extends Session{
     private Thread onStop;

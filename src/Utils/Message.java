@@ -1,7 +1,7 @@
 package Utils;
 
-        import java.nio.ByteBuffer;
-        import java.util.ArrayList;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
 
 public class Message {
     /**

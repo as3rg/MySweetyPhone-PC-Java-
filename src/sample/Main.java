@@ -2,7 +2,6 @@ package sample;
 
 import Utils.AreaChooser;
 import Utils.ServerMode;
-import Utils.SessionServer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -10,15 +9,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONValue;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.*;
-import java.lang.reflect.Array;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Properties;
 
 public class Main extends Application {

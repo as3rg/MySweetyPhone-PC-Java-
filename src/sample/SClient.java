@@ -1,7 +1,6 @@
 package sample;
 
 import Utils.ServerMode;
-import Utils.Session;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -12,9 +11,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.SocketException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Properties;
 import java.util.ResourceBundle;
 

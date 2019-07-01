@@ -9,7 +9,6 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -22,7 +21,6 @@ import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
-import org.json.simple.parser.JSONParser;
 
 import java.awt.*;
 import java.io.*;
@@ -268,9 +266,6 @@ public class FileViewer {
         files.add(fileName);
         folder.setPadding(new Insets(20, 20, 20, 20));
         folder.setFont(new Font(14));
-//                                        Drawable d = getDrawable(values.getJSONObject(i).getString("Type").equals("Folder") ? R.drawable.ic_file_viewer_folder : R.drawable.ic_file_viewer_file);
-//                                        d.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
-//                                        folder.setCompoundDrawablesWithIntrinsicBounds(d, null, null, null);
         Folders.getChildren().add(folder);
 
         final ContextMenu contextMenu = new ContextMenu();

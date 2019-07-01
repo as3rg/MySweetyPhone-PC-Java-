@@ -9,10 +9,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
-import java.util.Map;
 
-public abstract class Request {
+public class Request {
     protected JSONObject result;
     public String Start(String address, MultipartEntity entity){
         try {
@@ -47,9 +45,9 @@ public abstract class Request {
         }
     }
 
-    protected abstract void On0();
-    protected abstract void On1();
-    protected abstract void On2();
-    protected abstract void On3();
-    protected abstract void On4();
+    protected void On0(){}
+    protected void On1(){}
+    protected void On2(){}
+    protected void On3(){}
+    protected void On4(){}
 }

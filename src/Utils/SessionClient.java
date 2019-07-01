@@ -43,7 +43,7 @@ public class SessionClient extends Session{
     static boolean isSearching;
     static Thread searching;
     static DatagramSocket s;
-    public boolean isPhone = false;
+    public boolean isPhone;
 
     static{
         isSearching = false;

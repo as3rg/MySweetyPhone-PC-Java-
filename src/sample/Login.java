@@ -130,11 +130,6 @@ public class Login {
                             protected void On3() {
                                 throw new RuntimeException("Файл не отправлен!");
                             }
-
-                            @Override
-                            protected void On4() {
-
-                            }
                         };
                         try {
                             request.Start("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate=" + regdate + "&Login=" + URLEncoder.encode(login, "UTF-8") + "&Id=" + id + "&Name=" + URLEncoder.encode(name, "UTF-8"), new MultipartEntity());
@@ -255,11 +250,6 @@ public class Login {
                 }
 
                 @Override
-                protected void On2() {
-
-                }
-
-                @Override
                 protected void On3() {
                     Platform.runLater(()->{
                         Shake onErrorShake = new Shake(LoginButton);
@@ -267,11 +257,6 @@ public class Login {
                         Error.setText("Имя и Пароль должны быть заполнены!");
                         onErrorShake.play();
                     });
-                }
-
-                @Override
-                protected void On4() {
-
                 }
             };
             request.Start(url, new MultipartEntity());

@@ -1,7 +1,5 @@
 package Utils;
 
-import Utils.Message;
-import Utils.MessageParser;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;

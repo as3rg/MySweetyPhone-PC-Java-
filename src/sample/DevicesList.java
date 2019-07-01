@@ -14,12 +14,9 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.util.Callback;
 import org.apache.http.entity.mime.MultipartEntity;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 
 import java.io.*;
 import java.net.*;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -28,7 +25,6 @@ public class DevicesList {
 
     public class Device{
         private String Name;
-        //ImageView Type;
         private String Type;
         private Button Remove;
 
@@ -67,7 +63,7 @@ public class DevicesList {
     private TableColumn<Device, String> Name;
 
     @FXML
-    private TableView Table;
+    private TableView<Device> Table;
 
     @FXML
     private TableColumn<Device, Void> Remove;
@@ -104,32 +100,7 @@ public class DevicesList {
         login = (String)props.getOrDefault("login","");
         name = (String)props.getOrDefault("name","");
 
-        Request request = new Request() {
-            @Override
-            protected void On0() {
-
-            }
-
-            @Override
-            protected void On1() {
-
-            }
-
-            @Override
-            protected void On2() {
-
-            }
-
-            @Override
-            protected void On3() {
-
-            }
-
-            @Override
-            protected void On4() {
-
-            }
-        };
+        Request request = new Request();
         request.Start("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate="+regdate+"&Login=" + URLEncoder.encode(login, "UTF-8") + "&Id=" + id + "&Name=" + URLEncoder.encode(name, "UTF-8"), new MultipartEntity());
 
         Runnable r = () -> {
@@ -142,21 +113,6 @@ public class DevicesList {
                     for (String device : (ArrayList<String>) result.get("Phones")) {
                         devices.add(new Device(device, true));
                     }
-                }
-
-                @Override
-                protected void On1() {
-
-                }
-
-                @Override
-                protected void On2() {
-
-                }
-
-                @Override
-                protected void On3() {
-
                 }
 
                 @Override
@@ -199,32 +155,7 @@ public class DevicesList {
                             }
                         button.setOnMouseClicked(event -> {
                             Runnable r = () -> {
-                                Request request = new Request() {
-                                    @Override
-                                    protected void On0() {
-
-                                    }
-
-                                    @Override
-                                    protected void On1() {
-
-                                    }
-
-                                    @Override
-                                    protected void On2() {
-
-                                    }
-
-                                    @Override
-                                    protected void On3() {
-
-                                    }
-
-                                    @Override
-                                    protected void On4() {
-
-                                    }
-                                };
+                                Request request = new Request();
                                 try {
                                     request.Start("http://mysweetyphone.herokuapp.com/?Type=RemoveDevice&RegDate=" + regdate + "&Login=" + URLEncoder.encode(login, "UTF-8") + "&MyName=" + URLEncoder.encode(name, "UTF-8") + "&Id=" + id + "&Name=" + URLEncoder.encode(devices.get(getIndex()).getName(), "UTF-8"), new MultipartEntity());
                                 } catch (UnsupportedEncodingException e) {

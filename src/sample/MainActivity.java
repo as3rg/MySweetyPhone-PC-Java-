@@ -152,32 +152,7 @@ public class MainActivity {
         String name = (String)props.getOrDefault("name","");
         String login = (String)props.getOrDefault("login","");
         new Thread(()-> {
-            Request request = new Request() {
-                @Override
-                protected void On0() {
-
-                }
-
-                @Override
-                protected void On1() {
-
-                }
-
-                @Override
-                protected void On2() {
-
-                }
-
-                @Override
-                protected void On3() {
-
-                }
-
-                @Override
-                protected void On4() {
-
-                }
-            };
+            Request request = new Request();
             try {
                 request.Start("http://mysweetyphone.herokuapp.com/?Type=RemoveDevice&Login=" + URLEncoder.encode(login, "UTF-8") + "&Id=" + id + "&Name=" + URLEncoder.encode(name, "UTF-8"), new MultipartEntity());
             } catch (UnsupportedEncodingException e) {
