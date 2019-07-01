@@ -22,7 +22,8 @@ public abstract class Session{
             NONE = 0,
             MOUSE = 1,
             FILEVIEW = 2,
-            SMSVIEW = 3;
+            SMSVIEW = 3,
+            KEYBOARD = 4;
 
     public static Stack<Session> sessions;
 
@@ -83,6 +84,8 @@ public abstract class Session{
                 return "Просмотр файлов";
             case SMSVIEW:
                 return "Просмотр СМС";
+            case KEYBOARD:
+                return "Удаленная клавиатура Android";
         }
     }
 
@@ -97,6 +100,8 @@ public abstract class Session{
                 return FILEVIEW;
             case "Просмотр СМС":
                 return SMSVIEW;
+            case "Удаленная клавиатура Android":
+                return KEYBOARD;
         }
     }
 }

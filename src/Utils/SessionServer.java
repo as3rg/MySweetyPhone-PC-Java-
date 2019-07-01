@@ -61,7 +61,6 @@ public class SessionServer extends Session{
         message.put("port", port);
         message.put("type", type);
         message.put("name", name);
-        message.put("subtype", "PC");
         byte[] buf2 = String.format("%-100s", message.toJSONString()).getBytes();
 
         broadcastingSocket = new DatagramSocket();

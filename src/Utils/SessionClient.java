@@ -43,7 +43,6 @@ public class SessionClient extends Session{
     static boolean isSearching;
     static Thread searching;
     static DatagramSocket s;
-    public boolean isPhone;
 
     static{
         isSearching = false;
@@ -85,7 +84,7 @@ public class SessionClient extends Session{
                     JSONObject ans = (JSONObject) JSONValue.parse(new String(p.getData()));
                     String name = ans.get("name") + "(" + p.getAddress().getHostAddress() + "): " + decodeType(((Long)ans.get("type")).intValue());
                     if (!ips.containsKey(name)) {
-                        Server s = new Server(null, new SessionClient(p.getAddress(),((Long)ans.get("port")).intValue(), ((Long)ans.get("type")).intValue(), ans.containsKey("subtype") && ans.get("subtype").equals("Phone")));
+                        Server s = new Server(null, new SessionClient(p.getAddress(),((Long)ans.get("port")).intValue(), ((Long)ans.get("type")).intValue()));
                         ips.put(name,s);
                         Platform.runLater(() -> {
                             Button ip = new Button(name);
@@ -122,11 +121,10 @@ public class SessionClient extends Session{
         s.close();
     }
 
-    public SessionClient(InetAddress address, int Port, int type, boolean isPhone) throws IOException {
+    public SessionClient(InetAddress address, int Port, int type) throws IOException {
         this.address = address;
         this.port = Port;
         this.type = type;
-        this.isPhone = isPhone;
 
         File file = new File("properties.properties");
         FileInputStream propFile = new FileInputStream(file);
@@ -138,6 +136,7 @@ public class SessionClient extends Session{
 
         switch (type) {
             case MOUSE:
+            case KEYBOARD:
                 t = new Thread(() -> {
                     try {
                         Dsocket = new DatagramSocket();

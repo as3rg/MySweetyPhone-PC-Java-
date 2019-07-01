@@ -67,7 +67,7 @@ public class MouseTracker{
             textArea.setStyle("-fx-background-color: #202020;");
             p.setBackground(new Background(new BackgroundFill(Paint.valueOf("#202020"), CornerRadii.EMPTY, Insets.EMPTY)));
             p.setStyle("-fx-background-color: #202020;");
-            if(sc.isPhone){
+            if(sc.getType() == Session.KEYBOARD){
                 textArea.textProperty().addListener((observable, oldValue, newValue) -> {
                     if(newValue.isEmpty()) return;
                     new Thread(()->{
@@ -243,7 +243,7 @@ public class MouseTracker{
                         e2.printStackTrace();
                     }
                 }).start();
-            }else if(!sc.isPhone || e.getText().isEmpty()){
+            }else if(!(sc.getType() == Session.KEYBOARD) || e.getText().isEmpty()){
                 msg.put("Type", "keyPressed");
                 msg.put("value", e.getCode().getCode());
                 msg.put("Name", name);
