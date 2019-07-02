@@ -48,7 +48,12 @@ public class SessionClient extends Session{
         isSearching = false;
     }
 
-    public static void Search(Pane v, Thread onFinishSearching) throws SocketException {
+    public static void Search(Pane v, Thread onFinishSearching) throws IOException {
+        for(Session s : Session.sessions){
+            if(s instanceof SessionServer){
+                s.Stop();
+            }
+        }
         v.getChildren().clear();
         if(isSearching) {
             StopSearching();
