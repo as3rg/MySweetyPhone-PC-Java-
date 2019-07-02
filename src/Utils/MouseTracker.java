@@ -119,7 +119,7 @@ public class MouseTracker{
                 });
             }
             textArea.requestFocus();
-            p.getChildren().add(new Label("Для выхода нажмите Ctrl+F4\nДля получения скриншота нажмите Ctrl+Print Screen"));
+            p.getChildren().add(new Label("Для выхода нажмите Ctrl+F4" + (sc.getType() == Session.MOUSE ? "\nДля получения скриншота нажмите Ctrl+Print Screen" : "")));
             Scene scene = new Scene(p, 600, 600);
             scene.getStylesheets().add("/sample/style.css");
             s.setScene(scene);
