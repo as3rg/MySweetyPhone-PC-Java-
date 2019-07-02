@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -286,16 +287,18 @@ public class FileViewer {
 
         if(isFolder) {
             folder.setText("📁 " + folder.getText());
-            folder.setOnMouseClicked(v -> new Thread(() -> {
-                JSONObject msg3 = new JSONObject();
-                msg3.put("Type", "showDir");
-                msg3.put("Name", name);
-                if(!login.isEmpty()) msg3.put("Login", login);
-                msg3.put("Dir", dir);
-                msg3.put("DirName", fileName);
-                writer.println(msg3.toJSONString());
-                writer.flush();
-            }).start());
+            folder.setOnMouseClicked(v -> {
+                if(v.getButton() == MouseButton.PRIMARY) new Thread(() -> {
+                    JSONObject msg3 = new JSONObject();
+                    msg3.put("Type", "showDir");
+                    msg3.put("Name", name);
+                    if(!login.isEmpty()) msg3.put("Login", login);
+                    msg3.put("Dir", dir);
+                    msg3.put("DirName", fileName);
+                    writer.println(msg3.toJSONString());
+                    writer.flush();
+                }).start();
+            });
         }else {
             folder.setText("📄 "+folder.getText());
             javafx.scene.control.MenuItem save = new javafx.scene.control.MenuItem("Сохранить как");
