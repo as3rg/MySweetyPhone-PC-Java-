@@ -141,7 +141,9 @@ public class Saved {
 
                     @Override
                     protected void On1() {
-                        throw new RuntimeException("Неверные данные");
+                        File file = new File("properties.properties");
+                        file.delete();
+                        Platform.exit();
                     }
 
                     @Override
@@ -223,7 +225,9 @@ public class Saved {
 
                     @Override
                     protected void On1() {
-                        throw new RuntimeException("Неверные данные");
+                        File file = new File("properties.properties");
+                        file.delete();
+                        Platform.exit();
                     }
 
                     @Override
@@ -337,7 +341,9 @@ public class Saved {
 
                     @Override
                     protected void On1() {
-                        throw new RuntimeException("Неверные данные");
+                        File file = new File("properties.properties");
+                        file.delete();
+                        Platform.exit();
                     }
 
                     @Override
@@ -494,7 +500,9 @@ public class Saved {
 
                     @Override
                     protected void On1() {
-                        throw new RuntimeException("Неверные данные");
+                        File file = new File("properties.properties");
+                        file.delete();
+                        Platform.exit();
                     }
 
                     @Override
@@ -677,7 +685,9 @@ public class Saved {
 
                     @Override
                     protected void On1() {
-                        throw new RuntimeException("Неверные данные");
+                        File file = new File("properties.properties");
+                        file.delete();
+                        Platform.exit();
                     }
 
                     @Override
@@ -878,7 +888,9 @@ public class Saved {
 
                     @Override
                     protected void On1() {
-                        throw new RuntimeException("Неверные данные");
+                        File file = new File("properties.properties");
+                        file.delete();
+                        Platform.exit();
                     }
 
                     @Override
@@ -972,7 +984,9 @@ public class Saved {
 
                 @Override
                 protected void On1() {
-                    throw new RuntimeException("Неверные данные");
+                    File file = new File("properties.properties");
+                    file.delete();
+                    Platform.exit();
                 }
 
                 @Override
@@ -1039,7 +1053,9 @@ public class Saved {
 
                             @Override
                             protected void On1() {
-                                throw new RuntimeException("Неверные данные");
+                                File file = new File("properties.properties");
+                                file.delete();
+                                Platform.exit();
                             }
 
                             @Override

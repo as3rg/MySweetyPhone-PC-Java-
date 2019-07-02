@@ -25,12 +25,22 @@ public class Receiving {
     Thread broadcasting;
     Thread t;
     DatagramSocket socket;
-    public Receiving() throws SocketException, UnknownHostException {
+    public Receiving() throws IOException {
+        FileInputStream propFile = new FileInputStream(new File("properties.properties"));
+        Properties props = new Properties();
+        props.load(propFile);
+        propFile.close();
+
+
+        String name = (String) props.getOrDefault("name", ""),
+                login = (String) props.getOrDefault("login", "");
+
         messageParser = new MessageParser();
         JSONObject message = new JSONObject();
         socket = new DatagramSocket();
         message.put("Port", socket.getLocalPort());
         message.put("Type", "receiving");
+        message.put("Name", name);
         byte[] buf2 = String.format("%-100s", message.toJSONString()).getBytes();
         DatagramSocket s = new DatagramSocket();
         s.setBroadcast(true);
@@ -88,13 +98,6 @@ public class Receiving {
                             }
 
                             Optional<ButtonType> option = null;
-
-                            File file = new File("properties.properties");
-                            FileInputStream propFile = new FileInputStream(file);
-                            Properties props = new Properties();
-                            props.load(propFile);
-                            String login = (String) props.getOrDefault("login", "");
-                            propFile.close();
 
                             if(!msg.containsKey("Login") || !msg.get("Login").equals(login)) option = alert.showAndWait();
 

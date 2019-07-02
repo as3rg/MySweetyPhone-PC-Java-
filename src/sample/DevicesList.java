@@ -1,13 +1,11 @@
 package sample;
 
 import Utils.Request;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
@@ -117,7 +115,14 @@ public class DevicesList {
 
                 @Override
                 protected void On4() {
-                    throw new RuntimeException("Ваше устройство не зарегистрировано!");
+                    Platform.runLater(()-> {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Ошибка");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Ваше устройство не зарегистрировано!");
+                        alert.setOnCloseRequest(event2 -> Platform.exit());
+                        alert.show();
+                    });
                 }
             };
             try {
@@ -163,7 +168,14 @@ public class DevicesList {
                                 }
                                 if (name.equals(devices.get(getIndex()).getName())) {
                                     devices.remove(getIndex());
-                                    throw new RuntimeException("Ваше устройство не зарегистрировано!");
+                                    Platform.runLater(()-> {
+                                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                                        alert.setTitle("Ошибка");
+                                        alert.setHeaderText(null);
+                                        alert.setContentText("Ваше устройство не зарегистрировано!");
+                                        alert.setOnCloseRequest(event2 -> Platform.exit());
+                                        alert.show();
+                                    });
                                 }
                                 devices.remove(getIndex());
                             };

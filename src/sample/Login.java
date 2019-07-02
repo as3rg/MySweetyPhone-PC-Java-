@@ -87,64 +87,64 @@ public class Login {
             if(login.isEmpty()&& !name.isEmpty()){
                 AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
                 MainPane.getChildren().setAll(pane);
-            } else {
-                if (Long.parseLong((String) props.getOrDefault("id", "-1")) != -1L) {
-                    Runnable r = () -> {
-                        Request request = new Request() {
-                            @Override
-                            protected void On0() {
-                                int i = ((Long) result.getOrDefault("result", 0)).intValue();
-                                if (i == 2) {
-                                    Platform.runLater(() -> {
-                                        try {
-                                            AnchorPane pane = FXMLLoader.load(getClass().getResource("RegDevice.fxml"));
-                                            MainPane.getChildren().setAll(pane);
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                    });
-                                } else if (i == 1) {
-                                    Platform.runLater(() -> {
-                                        try {
-                                            AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
-                                            MainPane.getChildren().setAll(pane);
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                    });
+            } else if (props.containsKey("login")) {
+                Runnable r = () -> {
+                    Request request = new Request() {
+                        @Override
+                        protected void On0() {
+                            int i = ((Long) result.getOrDefault("result", 0)).intValue();
+                            if (i == 2) {
+                                Platform.runLater(() -> {
+                                    try {
+                                        AnchorPane pane = FXMLLoader.load(getClass().getResource("RegDevice.fxml"));
+                                        MainPane.getChildren().setAll(pane);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                });
+                            } else if (i == 1) {
+                                Platform.runLater(() -> {
+                                    try {
+                                        AnchorPane pane = FXMLLoader.load(getClass().getResource("MainActivity.fxml"));
+                                        MainPane.getChildren().setAll(pane);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                });
 
-                                }
                             }
+                        }
 
-                            @Override
-                            protected void On1() {
-                                throw new RuntimeException("Неверные данные");
-                            }
+                        @Override
+                        protected void On1() {
+                            File file = new File("properties.properties");
+                            file.delete();
+                            Platform.exit();
+                        }
 
-                            @Override
-                            protected void On2() {
-                                throw new RuntimeException("Ошибка приложения!");
-                            }
+                        @Override
+                        protected void On2() {
+                            throw new RuntimeException("Ошибка приложения!");
+                        }
 
-                            @Override
-                            protected void On3() {
-                                throw new RuntimeException("Файл не отправлен!");
-                            }
-                        };
-                        try {
-                            request.Start("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate=" + regdate + "&Login=" + URLEncoder.encode(login, "UTF-8") + "&Id=" + id + "&Name=" + URLEncoder.encode(name, "UTF-8"), new MultipartEntity());
-                            Nick.setDisable(false);
-                            Pass.setDisable(false);
-                            Type.setDisable(false);
-                            LoginButton.setDisable(false);
-                            ChangeToLogin();
-                        } catch (UnsupportedEncodingException | RuntimeException e) {
-                            e.printStackTrace();
+                        @Override
+                        protected void On3() {
+                            throw new RuntimeException("Файл не отправлен!");
                         }
                     };
-                    Thread t = new Thread(r);
-                    t.start();
-                }
+                    try {
+                        request.Start("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate=" + regdate + "&Login=" + URLEncoder.encode(login, "UTF-8") + "&Id=" + id + "&Name=" + URLEncoder.encode(name, "UTF-8"), new MultipartEntity());
+                        Nick.setDisable(false);
+                        Pass.setDisable(false);
+                        Type.setDisable(false);
+                        LoginButton.setDisable(false);
+                        ChangeToLogin();
+                    } catch (UnsupportedEncodingException | RuntimeException e) {
+                        e.printStackTrace();
+                    }
+                };
+                Thread t = new Thread(r);
+                t.start();
             }
         }
 
