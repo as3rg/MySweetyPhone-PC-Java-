@@ -48,12 +48,7 @@ public class SessionClient extends Session{
         isSearching = false;
     }
 
-    public static void Search(Pane v, Thread onFinishSearching) throws IOException {
-        for(Session s : Session.sessions){
-            if(s instanceof SessionServer){
-                s.Stop();
-            }
-        }
+    public static void Search(Pane v, Thread onFinishSearching) throws SocketException {
         v.getChildren().clear();
         if(isSearching) {
             StopSearching();
@@ -88,6 +83,8 @@ public class SessionClient extends Session{
                     s.receive(p);
                     JSONObject ans = (JSONObject) JSONValue.parse(new String(p.getData()));
                     String name = ans.get("name") + "(" + p.getAddress().getHostAddress() + "): " + decodeType(((Long)ans.get("type")).intValue());
+
+                    if(NetworkUtil.getLocalAddress().equals(p.getAddress())) continue;
                     if (!ips.containsKey(name)) {
                         Server s = new Server(null, new SessionClient(p.getAddress(),((Long)ans.get("port")).intValue(), ((Long)ans.get("type")).intValue()));
                         ips.put(name,s);

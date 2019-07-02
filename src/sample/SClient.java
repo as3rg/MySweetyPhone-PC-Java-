@@ -73,7 +73,6 @@ public class SClient {
     @FXML
     private void Search(MouseEvent mouseEvent) {
         try {
-            ServerMode.Stop();
             SearchSessions.setOnMouseClicked(this::StopSearching);
             SearchSessions.setText("Остановить поиск");
             Utils.SessionClient.Search(ConnectToSession, new Thread(() -> {
