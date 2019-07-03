@@ -115,7 +115,7 @@ public class MainActivity {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DevicesList.fxml"));
         Pane pane = fxmlLoader.load();
         Replace.getChildren().setAll(pane);
-        mtc = this::DevicesList;
+        Reload.setVisible(true);
     }
 
     @FXML
@@ -124,6 +124,7 @@ public class MainActivity {
         Pane pane = fxmlLoader.load();
         Replace.getChildren().setAll(pane);
         mtc = this::Saved;
+        Reload.setVisible(true);
     }
 
     @FXML
@@ -132,6 +133,7 @@ public class MainActivity {
         Pane pane = fxmlLoader.load();
         Replace.getChildren().setAll(pane);
         mtc = this::SClient;
+        Reload.setVisible(false);
     }
 
     @FXML
@@ -140,6 +142,7 @@ public class MainActivity {
         Pane pane = fxmlLoader.load();
         Replace.getChildren().setAll(pane);
         mtc = this::SServer;
+        Reload.setVisible(false);
     }
 
     @FXML
