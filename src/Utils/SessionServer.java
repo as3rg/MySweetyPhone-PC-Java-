@@ -17,15 +17,14 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.*;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class SessionServer extends Session{
     private Thread onStop;
     private ServerSocket ss;
     private MessageParser messageParser;
+
+    public static SessionServer openedServer = null;
 
     public static final int[] allowedTypes = {MOUSE, FILEVIEW};
 
@@ -102,6 +101,7 @@ public class SessionServer extends Session{
                                     if (onStop != null) {
                                         Platform.runLater(onStop);
                                         onStop = null;
+                                        openedServer = null;
                                     }
                                     m = new Message(p.getData());
                                     messageParser.messageMap.put(m.getId(), m);
@@ -232,6 +232,7 @@ public class SessionServer extends Session{
                         if (onStop != null) {
                             Platform.runLater(onStop);
                             onStop = null;
+                            openedServer = null;
                         }
                         PrintWriter writer = new PrintWriter(Ssocket.getOutputStream());
                         BufferedReader reader = new BufferedReader(new InputStreamReader(Ssocket.getInputStream()));
@@ -384,7 +385,14 @@ public class SessionServer extends Session{
     @Override
     public void Stop() throws IOException {
         super.Stop();
+        if(equals(openedServer)) openedServer = null;
         if(ss!=null)
             ss.close();
+    }
+
+    public void SingleStart(){
+        Start();
+        if(openedServer == null) openedServer = this;
+        else throw new RuntimeException("Ошибка приложения");
     }
 }

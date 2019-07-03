@@ -2,6 +2,7 @@ package sample;
 
 import Utils.Request;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -447,7 +448,7 @@ public class Saved {
 
         ImageView Image = new ImageView();
         Image.setStyle("-fx-background-radius: 10 10 0 0;");
-        Image.setFitWidth(460);
+        Image.fitWidthProperty().bind(vBox.widthProperty());
 
         (new Thread(() -> {
             while (true)
@@ -470,7 +471,7 @@ public class Saved {
 
                     BufferedImage image = ImageIO.read(new ByteArrayInputStream(Hex.decodeHex(filebody.substring(2).toCharArray())));
                     Platform.runLater(()->{
-                        Image.setFitHeight(460*image.getHeight()/image.getWidth());
+                        Image.fitHeightProperty().bind(Image.fitWidthProperty().multiply(image.getHeight()).divide(image.getWidth()));
                         Image.setImage(SwingFXUtils.toFXImage(image, null));
                     });
                     break;
@@ -652,6 +653,8 @@ public class Saved {
                         });
                         Video.getMediaPlayer().setOnReady(()->{});
                     });
+
+                    Video.fitWidthProperty().bind(vBox.widthProperty());
                     break;
                 } catch (IOException | DecoderException e) {}
         }).start();

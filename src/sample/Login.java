@@ -16,6 +16,7 @@ import sample.Anims.Shake;
 import java.io.*;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -131,6 +132,17 @@ public class Login {
                         protected void On3() {
                             throw new RuntimeException("Файл не отправлен!");
                         }
+
+                        @Override
+                        protected void OnError(Throwable e) {
+                            if(e instanceof UnknownHostException)
+                                Platform.runLater(()-> {
+                                    Shake onErrorShake = new Shake(LoginButton);
+                                    Error.setVisible(true);
+                                    Error.setText("Сервер недоуступен! Используйте Offline режим");
+                                    onErrorShake.play();
+                                });
+                        }
                     };
                     try {
                         request.Start("http://mysweetyphone.herokuapp.com/?Type=Check&DeviceType=PC&RegDate=" + regdate + "&Login=" + URLEncoder.encode(login, "UTF-8") + "&Id=" + id + "&Name=" + URLEncoder.encode(name, "UTF-8"), new MultipartEntity());
@@ -207,7 +219,7 @@ public class Login {
     }
 
     private void RegOrLogin(String url, boolean IsLogin){
-        if(!Nick.getText().matches("\\w+")) {
+        if (!Nick.getText().matches("\\w+")) {
             Error.setVisible(true);
             Error.setText("Имя содержит недопустимые символы!");
             return;
@@ -220,7 +232,7 @@ public class Login {
             Request request = new Request() {
                 @Override
                 protected void On0() {
-                    Platform.runLater(()->{
+                    Platform.runLater(() -> {
                         try {
                             File file = new File("properties.properties");
                             if (!file.exists())
@@ -241,7 +253,7 @@ public class Login {
 
                 @Override
                 protected void On1() {
-                    Platform.runLater(()->{
+                    Platform.runLater(() -> {
                         Shake onErrorShake = new Shake(LoginButton);
                         Error.setVisible(true);
                         Error.setText(IsLogin ? "Ошибка! Неверное имя или пароль" : "Ошибка! Это имя уже используется");
@@ -251,12 +263,27 @@ public class Login {
 
                 @Override
                 protected void On3() {
-                    Platform.runLater(()->{
+                    Platform.runLater(() -> {
                         Shake onErrorShake = new Shake(LoginButton);
                         Error.setVisible(true);
                         Error.setText("Имя и Пароль должны быть заполнены!");
                         onErrorShake.play();
                     });
+                }
+
+                @Override
+                protected void OnError(Throwable e) {
+                    if(e instanceof UnknownHostException)
+                        Platform.runLater(()-> {
+                            Shake onErrorShake = new Shake(LoginButton);
+                            Nick.setDisable(false);
+                            Pass.setDisable(false);
+                            Type.setDisable(false);
+                            LoginButton.setDisable(false);
+                            Error.setVisible(true);
+                            Error.setText("Сервер недоуступен! Используйте Offline режим");
+                            onErrorShake.play();
+                        });
                 }
             };
             request.Start(url, new MultipartEntity());

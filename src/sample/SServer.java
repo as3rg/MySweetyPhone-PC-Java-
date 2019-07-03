@@ -2,6 +2,7 @@ package sample;
 
 import Utils.Session;
 import Utils.SessionServer;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -49,13 +50,21 @@ public class SServer {
                     MainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
                     NewSessionMainPane.prefHeightProperty().bind(MainActivity.controller.Replace.heightProperty());
                     NewSessionMainPane.prefWidthProperty().bind(MainActivity.controller.Replace.widthProperty());
-                    MainPane.prefWidthProperty().bind(NewSession.getScene().widthProperty());
-                    MainPane.prefHeightProperty().bind(NewSession.getScene().heightProperty());
+                    MainPane.prefWidthProperty().bind(MainPane.getScene().widthProperty());
+                    MainPane.prefHeightProperty().bind(MainPane.getScene().heightProperty());
 
 
                     ServerMode.setSelected(Utils.ServerMode.getState());
                     NewSession.setDisable(ServerMode.isSelected());
                     SessionType.setDisable(ServerMode.isSelected());
+
+                    if(SessionServer.openedServer != null){
+                        NewSession.setOnMouseClicked(this::CloseSession);
+                        NewSession.setText("Закрыть сессию");
+                        SessionType.setDisable(true);
+                    }else{
+                        NewSession.setOnMouseClicked(this::OpenSession);
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -64,7 +73,6 @@ public class SServer {
             for (int t : SessionServer.allowedTypes) {
                 SessionType.getItems().add(Session.decodeType(t));
             }
-            NewSession.setOnMouseClicked(this::OpenSession);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -86,7 +94,7 @@ public class SServer {
                     NewSession.setText("Открыть сессию");
                     SessionType.setDisable(false);
                 });
-                s.Start();
+                s.SingleStart();
                 SessionType.setDisable(true);
             }
         } catch (IOException err){
@@ -98,7 +106,7 @@ public class SServer {
         try {
             NewSession.setOnMouseClicked(this::OpenSession);
             NewSession.setText("Открыть сессию");
-            Session.sessions.pop().Stop();
+            SessionServer.openedServer.Stop();
             SessionType.setDisable(false);
         } catch (IOException e1) {
             e1.printStackTrace();
@@ -108,7 +116,7 @@ public class SServer {
     @FXML
     void SwitchServerMode() throws IOException {
         if(ServerMode.isSelected()){
-            if(!Session.sessions.isEmpty()) CloseSession(null);
+            if(SessionServer.openedServer != null) CloseSession(null);
             Utils.ServerMode.Start();
         }else{
             Utils.ServerMode.Stop();

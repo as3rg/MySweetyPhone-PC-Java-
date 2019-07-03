@@ -25,16 +25,6 @@ public abstract class Session{
             SMSVIEW = 3,
             KEYBOARD = 4;
 
-    public static Stack<Session> sessions;
-
-    static {
-        sessions=new Stack<>();
-    }
-
-    public Session(){
-        sessions.add(this);
-    }
-
     public void Start(){
         t.start();
     }

@@ -40,7 +40,7 @@ public class Request {
             }
             return response;
         } catch (IOException e) {
-            e.printStackTrace();
+            OnError(e);
             return "";
         }
     }
@@ -50,4 +50,5 @@ public class Request {
     protected void On2(){}
     protected void On3(){}
     protected void On4(){}
+    protected void OnError(Throwable e){}
 }
