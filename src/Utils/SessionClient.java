@@ -80,7 +80,7 @@ public class SessionClient extends Session{
                     JSONObject ans = (JSONObject) JSONValue.parse(new String(p.getData()));
                     String name = ans.get("name") + "(" + p.getAddress().getHostAddress() + "): " + decodeType(((Long)ans.get("type")).intValue());
 
-                    if(p.getAddress().equals(NetworkUtil.getLocalAddress())) continue;
+                    if(NetworkUtil.getLocalAddresses() != null && NetworkUtil.getLocalAddresses().contains(p.getAddress())) continue;
                     if (!ips.containsKey(name)) {
                         Server s = new Server(null, new SessionClient(p.getAddress(),((Long)ans.get("port")).intValue(), ((Long)ans.get("type")).intValue()));
                         ips.put(name,s);

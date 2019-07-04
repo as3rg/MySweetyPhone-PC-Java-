@@ -25,6 +25,7 @@ public class AreaChooser{
     Stage primaryStage;
     Rectangle r;
     AnimationTimer loop;
+    java.awt.Rectangle screenRect;
     Point first = null, second = null;
 
     public void start() {
@@ -56,21 +57,31 @@ public class AreaChooser{
             @Override
             public void handle(long l) {
                 Point p = MouseInfo.getPointerInfo().getLocation();
-                label.setLayoutX(25 + p.getX());
-                label.setLayoutY(p.getY() - 50);
+                label.setLayoutX(25 + p.getX() - screenRect.getX());
+                label.setLayoutY(p.getY() - 50 - screenRect.getY());
             }
         }.start();
+
+        screenRect = new java.awt.Rectangle(0, 0, 0, 0);
+        for (GraphicsDevice gd : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()) {
+            screenRect = screenRect.union(gd.getDefaultConfiguration().getBounds());
+        }
+        primaryStage.setX(screenRect.getX());
+        primaryStage.setY(screenRect.getY());
+        primaryStage.setWidth(screenRect.getWidth());
+        primaryStage.setHeight(screenRect.getHeight());
     }
 
     public void mousePressed(MouseEvent e) {
         if(first != null && second != null)
             first = second = null;
         if(first == null) {
-            first = new Point((int) e.getScreenX(), (int) e.getScreenY());
+            first = new Point((int) e.getX(), (int) e.getY());
             loop = new AnimationTimer() {
                 @Override
                 public void handle(long l) {
-                    Point p = MouseInfo.getPointerInfo().getLocation();
+                    Point p2 = MouseInfo.getPointerInfo().getLocation();
+                    Point p = new Point((int)(p2.getX() - screenRect.getX()), (int)(p2.getY() - screenRect.getY()));
                     r.setX(Math.min(first.getX(), p.getX()));
                     r.setY(Math.min(first.getY(), p.getY()));
                     r.setHeight(Math.abs(p.getY() - first.getY()));
@@ -79,7 +90,7 @@ public class AreaChooser{
             };
             loop.start();
         }else{
-            second = new Point((int)e.getScreenX(), (int)e.getScreenY());
+            second = new Point((int) e.getX(), (int) e.getY());
             loop.stop();
             r.setHeight(Math.abs(second.getY() - first.getY()));
             r.setWidth(Math.abs(second.getX() - first.getX()));
@@ -91,7 +102,7 @@ public class AreaChooser{
             primaryStage.close();
             MouseTracker.start = new Point((int)Math.min(first.getX(), second.getX()), (int)Math.min(first.getY(), second.getY()));
             MouseTracker.size = new Dimension((int)Math.abs(second.getX() - first.getX()),(int)Math.abs(second.getY() - first.getY()));
-        }else if(e.getCode() == KeyCode.ESCAPE && first != null){
+        }else if(e.getCode() == KeyCode.ESCAPE && first != null) {
             first = second = null;
             loop.stop();
             r.setHeight(0);

@@ -201,7 +201,11 @@ public class SessionServer extends Session{
                                             final DatagramPacket p2 = p;
                                             new Thread(() -> {
                                                 try {
-                                                    BufferedImage image = r.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
+                                                    Rectangle screenRect = new Rectangle(0, 0, 0, 0);
+                                                    for (GraphicsDevice gd : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()) {
+                                                        screenRect = screenRect.union(gd.getDefaultConfiguration().getBounds());
+                                                    }
+                                                    BufferedImage image = r.createScreenCapture(screenRect);
                                                     Socket socket = new Socket(p2.getAddress(), ((Number) msg.get("Port")).intValue());
                                                     ImageIO.write(image,"png",socket.getOutputStream());
                                                     socket.close();
