@@ -14,7 +14,6 @@ public class Message {
     public static final int idSize = 4;
     public int maxSize;
     public int bodySize;
-    public static final int sendPort = 2020;
     private byte[] arr;
     private int id, next, len;
     private boolean isHeadValue;
@@ -25,7 +24,7 @@ public class Message {
         currentId = 0;
     }
 
-    private Message(int length, byte[] body, int size){
+    public Message(int length, byte[] body, int size){
         if(size > BODYMAXIMUM) {
             throw new RuntimeException("Размер превышает максимальный");
         }

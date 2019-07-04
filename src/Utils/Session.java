@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Stack;
 import java.util.Timer;
 
 public abstract class Session{
@@ -16,7 +15,7 @@ public abstract class Session{
     protected Thread t;
     protected Timer broadcasting;
     protected DatagramSocket broadcastingSocket;
-    static int BroadCastingPort = 9000;
+    static final int BroadCastingPort = 9000;
 
     public static final int
             NONE = 0,

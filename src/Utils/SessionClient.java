@@ -40,13 +40,9 @@ public class SessionClient extends Session{
     }
 
     static Map<String, Server> ips;
-    static boolean isSearching;
+    static boolean isSearching = false;
     static Thread searching;
     static DatagramSocket s;
-
-    static{
-        isSearching = false;
-    }
 
     public static void Search(Pane v, Thread onFinishSearching) throws SocketException {
         v.getChildren().clear();
@@ -84,7 +80,7 @@ public class SessionClient extends Session{
                     JSONObject ans = (JSONObject) JSONValue.parse(new String(p.getData()));
                     String name = ans.get("name") + "(" + p.getAddress().getHostAddress() + "): " + decodeType(((Long)ans.get("type")).intValue());
 
-                    if(NetworkUtil.getLocalAddress().equals(p.getAddress())) continue;
+                    if(p.getAddress().equals(NetworkUtil.getLocalAddress())) continue;
                     if (!ips.containsKey(name)) {
                         Server s = new Server(null, new SessionClient(p.getAddress(),((Long)ans.get("port")).intValue(), ((Long)ans.get("type")).intValue()));
                         ips.put(name,s);

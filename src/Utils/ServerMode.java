@@ -11,10 +11,6 @@ public class ServerMode {
 
     private static boolean State;
 
-    static public boolean getState(){
-        return State;
-    }
-
     static {
         try {
             FileInputStream propFile = new FileInputStream("properties.properties");
@@ -28,6 +24,10 @@ public class ServerMode {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    static public boolean getState(){
+        return State;
     }
 
     static private void CreateServer(int i) {
