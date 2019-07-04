@@ -63,9 +63,8 @@ public class AreaChooser{
         }.start();
 
         screenRect = new java.awt.Rectangle(0, 0, 0, 0);
-        for (GraphicsDevice gd : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()) {
+        for (GraphicsDevice gd : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices())
             screenRect = screenRect.union(gd.getDefaultConfiguration().getBounds());
-        }
         primaryStage.setX(screenRect.getX());
         primaryStage.setY(screenRect.getY());
         primaryStage.setWidth(screenRect.getWidth());
@@ -100,7 +99,7 @@ public class AreaChooser{
     public void keyPressed(KeyEvent e) {
         if(e.getCode() == KeyCode.ENTER){
             primaryStage.close();
-            MouseTracker.start = new Point((int)Math.min(first.getX(), second.getX()), (int)Math.min(first.getY(), second.getY()));
+            MouseTracker.start = new Point((int)Math.min(first.getX()+screenRect.getX(), second.getX()+screenRect.getX()), (int)Math.min(first.getY()+screenRect.getY(), second.getY()+screenRect.getY()));
             MouseTracker.size = new Dimension((int)Math.abs(second.getX() - first.getX()),(int)Math.abs(second.getY() - first.getY()));
         }else if(e.getCode() == KeyCode.ESCAPE && first != null) {
             first = second = null;
