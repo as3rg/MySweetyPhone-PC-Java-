@@ -68,7 +68,7 @@ public abstract class Session{
             case NONE:
                 return "Пусто";
             case MOUSE:
-                return "Эмуляция мыши";
+                return "Эмуляция ввода";
             case FILEVIEW:
                 return "Просмотр файлов";
             case SMSVIEW:
@@ -83,7 +83,7 @@ public abstract class Session{
             default:
             case "Пусто":
                 return NONE;
-            case "Эмуляция мыши":
+            case "Эмуляция ввода":
                 return MOUSE;
             case "Просмотр файлов":
                 return FILEVIEW;
