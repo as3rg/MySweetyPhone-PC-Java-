@@ -99,6 +99,8 @@ public class RegDevice {
                     protected void On0() {
                         Platform.runLater(()-> {
                             try {
+                                DeviceName.setDisable(false);
+                                Next.setDisable(false);
                                 props.setProperty("name", DeviceName.getText());
                                 props.setProperty("regdate", ((Long) result.get("regdate")).toString());
                                 props.store(new FileOutputStream("properties.properties"), "");
@@ -117,6 +119,8 @@ public class RegDevice {
                             Error.setVisible(true);
                             Error.setText("Вы уже используете это имя!");
                             onErrorShake.play();
+                            DeviceName.setDisable(false);
+                            Next.setDisable(false);
                         });
                     }
 
@@ -127,6 +131,8 @@ public class RegDevice {
                             Error.setVisible(true);
                             Error.setText("Ошибка приложения!");
                             onErrorShake.play();
+                            DeviceName.setDisable(false);
+                            Next.setDisable(false);
                         });
                     }
 
@@ -137,10 +143,14 @@ public class RegDevice {
                             Error.setVisible(true);
                             Error.setText("Вы должны указать имя!");
                             onErrorShake.play();
+                            DeviceName.setDisable(false);
+                            Next.setDisable(false);
                         });
                     }
                 };
                 try {
+                    DeviceName.setDisable(true);
+                    Next.setDisable(true);
                     request.Start("http://mysweetyphone.herokuapp.com/?Type=AddDevice&DeviceType=PC&Id="+id+"&Login="+ URLEncoder.encode(login, "UTF-8")+"&Name="+URLEncoder.encode(DeviceName.getText(), "UTF-8"), new MultipartEntity());
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
