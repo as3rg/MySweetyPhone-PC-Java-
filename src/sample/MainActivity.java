@@ -138,7 +138,13 @@ public class MainActivity {
     }
 
     @FXML
-    void Help(){}
+    void Help() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Help.fxml"));
+        Node pane = fxmlLoader.load();
+        Replace.getChildren().setAll(pane);
+        mtc = this::SServer;
+        Reload.setVisible(false);
+    }
 
     @FXML
     void SServer() throws IOException {
