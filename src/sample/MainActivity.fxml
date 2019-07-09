@@ -96,6 +96,14 @@
                                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                             </padding>
                         </Button>
+                        <Button alignment="CENTER" onAction="#Help" prefWidth="150.0" style="-fx-border-color: #ffffff; -fx-border-width: 0 0 1 0; -fx-background-color: #303030; -fx-background-radius: 0;" text="Помощь" textFill="WHITE">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                            <padding>
+                                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                            </padding>
+                        </Button>
                         <Button alignment="CENTER" onAction="#Exit" prefWidth="150.0" style="-fx-border-color: #ffffff; -fx-border-width: 0 0 1 0; -fx-background-color: #303030; -fx-background-radius: 0;" text="Выход" textFill="WHITE">
                             <font>
                                 <Font size="15.0" />

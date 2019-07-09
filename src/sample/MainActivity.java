@@ -115,6 +115,7 @@ public class MainActivity {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DevicesList.fxml"));
         Pane pane = fxmlLoader.load();
         Replace.getChildren().setAll(pane);
+        mtc = this::DevicesList;
         Reload.setVisible(true);
     }
 
@@ -137,6 +138,9 @@ public class MainActivity {
     }
 
     @FXML
+    void Help(){}
+
+    @FXML
     void SServer() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("SServer.fxml"));
         Pane pane = fxmlLoader.load();
@@ -154,7 +158,7 @@ public class MainActivity {
         int id = Integer.parseInt((String)props.getOrDefault("id","-1"));
         String name = (String)props.getOrDefault("name","");
         String login = (String)props.getOrDefault("login","");
-        new Thread(()-> {
+        if(!login.isEmpty()) new Thread(()-> {
             Request request = new Request();
             try {
                 request.Start("http://mysweetyphone.herokuapp.com/?Type=RemoveDevice&Login=" + URLEncoder.encode(login, "UTF-8") + "&Id=" + id + "&Name=" + URLEncoder.encode(name, "UTF-8"), new MultipartEntity());
