@@ -349,7 +349,7 @@ public class SMSViewer {
         dialog.setTitle("Введите номер телефона...");
         dialog.setHeaderText("Введите номер телефона...");
         final Optional<String> result = dialog.showAndWait();
-        if(!result.isEmpty()) return;
+        if(!result.isPresent() || result.get().isEmpty()) return;
         new Thread(() -> {
             JSONObject msg2 = new JSONObject();
             msg2.put("Type", "getContact");

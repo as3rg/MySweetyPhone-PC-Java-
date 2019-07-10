@@ -4,28 +4,28 @@ import Utils.Message;
 import Utils.Session;
 import Utils.SessionClient;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.input.*;
-import javafx.scene.layout.*;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONObject;
-import sample.Main;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -107,13 +107,13 @@ public class MouseTracker{
                             msg.put("Type", "keyReleased");
                             msg.put("Name", name);
                             if(!login.isEmpty()) msg.put("Login", login);
-                            msg.put("value", KeyCode.ALT.getCode());
+                            msg.put("value", KeyCode.ALT.impl_getCode());
                             Send(msg.toJSONString().getBytes());
-                            msg.put("value", KeyCode.SHIFT.getCode());
+                            msg.put("value", KeyCode.SHIFT.impl_getCode());
                             Send(msg.toJSONString().getBytes());
-                            msg.put("value", KeyCode.CONTROL.getCode());
+                            msg.put("value", KeyCode.CONTROL.impl_getCode());
                             Send(msg.toJSONString().getBytes());
-                            msg.put("value", KeyCode.WINDOWS.getCode());
+                            msg.put("value", KeyCode.WINDOWS.impl_getCode());
                             Send(msg.toJSONString().getBytes());
                         }
                     } catch (IOException e) {
@@ -123,7 +123,7 @@ public class MouseTracker{
             }
             textArea.requestFocus();
             p.getChildren().add(new Label("Для выхода нажмите Ctrl+F4" + (sc.getType() == Session.MOUSE ? "\nДля получения скриншота нажмите Ctrl+Print Screen" : "")));
-            Scene scene = new Scene(p, 600, 600);
+            Scene scene = new Scene(p, width, height);
             scene.getStylesheets().add("/sample/style.css");
             s.setScene(scene);
             s.setMaximized(true);
@@ -208,13 +208,13 @@ public class MouseTracker{
     public void keyPressed(KeyEvent e) {
         try {
             JSONObject msg = new JSONObject();
-            if(e.isControlDown() && e.getCode() == KeyCode.F4) {
+            if(e.isControlDown() && e.getCode().equals(KeyCode.F4)) {
                 msg.put("Type", "finish");
                 msg.put("Name", name);
                 if (!login.isEmpty()) msg.put("Login", login);
                 Send(msg.toJSONString().getBytes());
                 s.close();
-            }else if(e.isControlDown() && e.getCode() == KeyCode.PRINTSCREEN){
+            }else if(e.isControlDown() && e.getCode().equals(KeyCode.PRINTSCREEN)){
                 DirectoryChooser fc = new DirectoryChooser();
                 fc.setTitle("Выберите папку для сохранения");
                 final File out = fc.showDialog(null);
@@ -248,7 +248,7 @@ public class MouseTracker{
                 }).start();
             }else if(!(sc.getType() == Session.KEYBOARD) || e.getText().isEmpty()){
                 msg.put("Type", "keyPressed");
-                msg.put("value", e.getCode().getCode());
+                msg.put("value", e.getCode().impl_getCode());
                 msg.put("Name", name);
                 if(!login.isEmpty()) msg.put("Login", login);
                 Send(msg.toJSONString().getBytes());
@@ -260,10 +260,10 @@ public class MouseTracker{
     }
 
     public void keyReleased(KeyEvent e) {
-        try {
+        try{
             JSONObject msg = new JSONObject();
             msg.put("Type", "keyReleased");
-            msg.put("value", e.getCode().getCode());
+            msg.put("value", e.getCode().impl_getCode());
             msg.put("Name", name);
             if(!login.isEmpty()) msg.put("Login", login);
             Send(msg.toJSONString().getBytes());
