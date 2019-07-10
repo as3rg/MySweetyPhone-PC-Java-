@@ -1,5 +1,8 @@
-package Utils;
+package sample;
 
+import Utils.Message;
+import Utils.Session;
+import Utils.SessionClient;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -30,10 +33,10 @@ import java.text.SimpleDateFormat;
 
 public class MouseTracker{
 
-    static Point start;
+    public static Point start;
     Point lastPoint;
     Robot r;
-    static Dimension size;
+    public static Dimension size;
     static{
         start = new Point(0,0);
         size = Toolkit.getDefaultToolkit().getScreenSize();
@@ -44,7 +47,7 @@ public class MouseTracker{
     double height;
     Stage s;
     String name, login;
-    static final int MESSAGESIZE = 100;
+    public static final int MESSAGESIZE = 100;
     TextArea textArea;
     public MouseTracker(SessionClient sc, String name, String login) throws IOException, AWTException {
         this.login = login;
