@@ -9,6 +9,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.sikuli.script.Screen;
+import sample.MouseTracker;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

@@ -17,6 +17,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import sample.FileViewer;
 import sample.Main;
+import sample.MouseTracker;
 import sample.SMSViewer;
 
 import java.awt.*;
