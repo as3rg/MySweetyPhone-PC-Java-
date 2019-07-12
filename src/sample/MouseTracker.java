@@ -107,13 +107,13 @@ public class MouseTracker{
                             msg.put("Type", "keyReleased");
                             msg.put("Name", name);
                             if(!login.isEmpty()) msg.put("Login", login);
-                            msg.put("value", KeyCode.ALT.impl_getCode());
+                            msg.put("value", KeyCode.ALT.getCode());
                             Send(msg.toJSONString().getBytes());
-                            msg.put("value", KeyCode.SHIFT.impl_getCode());
+                            msg.put("value", KeyCode.SHIFT.getCode());
                             Send(msg.toJSONString().getBytes());
-                            msg.put("value", KeyCode.CONTROL.impl_getCode());
+                            msg.put("value", KeyCode.CONTROL.getCode());
                             Send(msg.toJSONString().getBytes());
-                            msg.put("value", KeyCode.WINDOWS.impl_getCode());
+                            msg.put("value", KeyCode.WINDOWS.getCode());
                             Send(msg.toJSONString().getBytes());
                         }
                     } catch (IOException e) {
@@ -248,7 +248,7 @@ public class MouseTracker{
                 }).start();
             }else if(!(sc.getType() == Session.KEYBOARD) || e.getText().isEmpty()){
                 msg.put("Type", "keyPressed");
-                msg.put("value", e.getCode().impl_getCode());
+                msg.put("value", e.getCode().getCode());
                 msg.put("Name", name);
                 if(!login.isEmpty()) msg.put("Login", login);
                 Send(msg.toJSONString().getBytes());
@@ -263,7 +263,7 @@ public class MouseTracker{
         try{
             JSONObject msg = new JSONObject();
             msg.put("Type", "keyReleased");
-            msg.put("value", e.getCode().impl_getCode());
+            msg.put("value", e.getCode().getCode());
             msg.put("Name", name);
             if(!login.isEmpty()) msg.put("Login", login);
             Send(msg.toJSONString().getBytes());

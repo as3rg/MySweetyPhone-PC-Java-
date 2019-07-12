@@ -99,9 +99,9 @@ public class Receiving {
 
                             Optional<ButtonType> option = null;
 
-                            if(!msg.containsKey("Login") || !msg.get("Login").equals(login)) option = alert.showAndWait();
+                            if(login.isEmpty() || !msg.containsKey("Login") || !msg.get("Login").equals(login)) option = alert.showAndWait();
 
-                            if ((msg.containsKey("Login") && msg.get("Login").equals(login)) || option.get() == ButtonType.OK)
+                            if ((!login.isEmpty() && msg.containsKey("Login") && login.equals(msg.get("Login"))) || option.get() == ButtonType.OK)
                                 switch ((String) msg.get("Type")) {
                                     case "openSite":
                                         Desktop.getDesktop().browse(new URL((String) msg.get("Site")).toURI());

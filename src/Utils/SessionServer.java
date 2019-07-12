@@ -113,9 +113,14 @@ public class SessionServer extends Session{
                                     e.printStackTrace();
                                 }
                             } while (!Dsocket.isClosed() && (m == null || m.getNext() != -1));
-                            if (messageParser.messageMap.get(head) == null) continue;
-                            String msgString = new String(messageParser.parse(head));
-                            JSONObject msg = (JSONObject) JSONValue.parse(msgString);
+                            JSONObject msg;
+                            String msgString;
+                            try {
+                                msgString = new String(messageParser.parse(head));
+                                msg = (JSONObject) JSONValue.parse(msgString);
+                            }catch (NullPointerException e){
+                                continue;
+                            }
 
                             if (gotAccess.get() == 0 && msg.containsKey("Login") && msg.get("Login").equals(login))
                                 gotAccess.set(2);
